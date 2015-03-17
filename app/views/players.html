@@ -1,0 +1,44 @@
+<div class="panel">
+    <div>
+        <h3>Register new player</h3>
+    </div>
+    <br/>
+    <div>
+        <form name="playerRegForm" class="form-horizontal" role="form" ng-submit="registerPlayer()">
+            <div class="form-group">
+                <label for="inputName3" class="col-sm-2 control-label">Name</label>
+                <div class="col-sm-4">
+                    <input class="form-control" id="inputName3" placeholder="Name" ng-model="player.name" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputName4" class="col-sm-2 control-label">Email</label>
+                <div class="col-sm-4">
+                    <input type="email" class="form-control" id="inputName4" placeholder="Email" ng-model="player.email" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-success" ng-disabled="playerRegForm.$invalid">Sign up</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="panel">
+    <div>
+        <h3>Players</h3>
+    </div>
+    <div>
+        <ul ng-repeat="player in players">
+            <h4>{{player.name}}</h4>
+            <h6>Achievements:</h6>
+            <ul>
+                <li ng-repeat="achievement in player.achievements">
+                    {{achievement.name}} ({{achievement.date | date: 'yyyy-MM-dd HH:mm'}})
+                </li>
+            </ul>
+        </ul>
+    </div>
+</div>
