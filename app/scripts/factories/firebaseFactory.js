@@ -3,7 +3,7 @@
 /**
  * Created by Andreas on 28.02.2015.
  */
-angular.module('dartXRatingApp').factory("PlayerFactory", function($FirebaseArray, $firebase, $rootScope, $q) {
+angular.module('dartXRatingApp').factory("PlayerFactory", function($FirebaseArray, $firebase, $rootScope, $q, defaultConfig) {
     var PlayerFactory = $FirebaseArray.$extendFactory({
         registerPlayer: function(player) {
             player.rating = 1500;
@@ -42,7 +42,7 @@ angular.module('dartXRatingApp').factory("PlayerFactory", function($FirebaseArra
 
     return function() {
         // create a reference to the user's profile
-        var ref = new Firebase("");
+        var ref = new Firebase(defaultConfig.firebaseBackend + '/players' + (defaultConfig.production ? '' : 'Dev'));
         // return it as a synchronized object
         var matchArray = $firebase(ref, {arrayFactory: PlayerFactory}).$asArray();
 
@@ -50,7 +50,7 @@ angular.module('dartXRatingApp').factory("PlayerFactory", function($FirebaseArra
     }
 });
 
-angular.module('dartXRatingApp').factory("MatchFactory", function($FirebaseArray, $firebase, $rootScope, $q) {
+angular.module('dartXRatingApp').factory("MatchFactory", function($FirebaseArray, $firebase, $rootScope, $q, defaultConfig) {
     var MatchFactory = $FirebaseArray.$extendFactory({
         registerMatch: function(match) {
             match.date = new Date().getTime();
@@ -69,7 +69,7 @@ angular.module('dartXRatingApp').factory("MatchFactory", function($FirebaseArray
 
     return function() {
         // create a reference to the user's profile
-        var ref = new Firebase("");
+        var ref = new Firebase(defaultConfig.firebaseBackend + '/matches' + (defaultConfig.production ? '' : 'Dev'));
         // return it as a synchronized object
         var matchArray = $firebase(ref, {arrayFactory: MatchFactory}).$asArray();
 
@@ -78,7 +78,7 @@ angular.module('dartXRatingApp').factory("MatchFactory", function($FirebaseArray
 });
 
 
-angular.module('dartXRatingApp').factory("AchievementFactory", function($FirebaseArray, $firebase, $rootScope, $q) {
+angular.module('dartXRatingApp').factory("AchievementFactory", function($FirebaseArray, $firebase, $rootScope, $q, defaultConfig) {
     var AchievementFactory = $FirebaseArray.$extendFactory({
         registerAchievement: function(achievement) {
             this.$list.$add(achievement);
@@ -97,7 +97,7 @@ angular.module('dartXRatingApp').factory("AchievementFactory", function($Firebas
 
     return function() {
         // create a reference to the user's profile
-        var ref = new Firebase("");
+        var ref = new Firebase(defaultConfig.firebaseBackend + '/achievements' + (defaultConfig.production ? '' : 'Dev'));
         // return it as a synchronized object
         var achievementArray = $firebase(ref, {arrayFactory: AchievementFactory}).$asArray();
 

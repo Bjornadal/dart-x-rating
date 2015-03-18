@@ -16,7 +16,7 @@
             <tbody>
                 <tr ng-repeat="player in players | orderBy: 'rating' : true" player-update-animation>
                     <td>{{$index+1}}</td>
-                    <td>{{player.name | split:' ':0}} <span ng-show="player.alias != null">"{{player.alias}}"</span> {{player.name | split:' ':1}} {{player.name | split:' ':2}} {{player.name | split:' ':3}}</td>
+                    <td>{{player.name}}</td>
                     <td><span ng-show="player.matches != null">{{player.wins}} / {{player.matches}}</span></td>
                     <td>{{player.rating | roundWhole}}</td>
                     <td><span ng-show="player.playedLastMatch">{{player.ratingAdjustment | roundWhole}}</span></td>
