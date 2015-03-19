@@ -1,49 +1,24 @@
 'use strict';
 
-angular.module('dartXRatingApp').controller('StatisticsCtrl', function ($scope, PlayerFactory, MatchFactory) {
-    $scope.options = {
-        datasetFill : false,
-        responsive: true
-    };
+angular.module('dartXRatingApp').controller('StatisticsCtrl', function ($scope, StatisticsService) {
+    var ref = new Firebase("");
+    $scope.startDate = new Date(new Date().setDate(new Date().getDate()-7));
+    $scope.endDate = new Date();
 
-    new PlayerFactory().getPlayersAsync().then(function(players) {
-        $scope.series = [];
-        $scope.rating = [];
-        angular.forEach(players, function(player, index) {
-            $scope.series[index] = player.name;
-            $scope.rating[index] = player.rating;
+    ref.on('value', function(dataSnapshot) {
+        StatisticsService.createLineChartRating($scope.startDate, $scope.endDate).then(function(data) {
+            console.log(data);
+            $scope.chartData = data;
         });
+    });
 
-        new MatchFactory().getMatchesAsync().then(function(matches) {
-            var fromDate = moment('2015-03-01').format('YYYY-MM-DD');
-            $scope.labels = [];
-            $scope.labels.push(fromDate);
-            $scope.data = [];
-
-            angular.forEach(matches, function(match) {
-                $scope.labels.push(moment(match.date).format('YYYY-MM-DD HH:mm'));
-                angular.forEach($scope.series, function(serie, pos) {
-                    var playerRatings = [];
-
-                    if (angular.isUndefined($scope.data[pos])) {
-                        $scope.data[pos] = [];
-                        playerRatings.push(1500);
-                        $scope.data[pos] = playerRatings;
-                    } else {
-                        playerRatings = $scope.data[pos];
-                    }
-
-                    var hasPlayed = false;
-                    var playerRating = playerRatings[playerRatings.length - 1];
-                    angular.forEach(match.players, function(player) {
-                        if (serie === player.name) {
-                            hasPlayed = true;
-                            playerRating = player.rating;
-                        }
-                    });
-                    playerRatings.push(playerRating);
-                });
-            });
+    $scope.$watch('[startDate, endDate]', function(newValue, oldValue) {
+        StatisticsService.createLineChartRating($scope.startDate, $scope.endDate).then(function(data) {
+            $scope.chartData = data;
         });
+    });
+
+    StatisticsService.createLineChartRating($scope.startDate, $scope.endDate).then(function(data) {
+        $scope.chartData = data;
     });
 });
