@@ -77,7 +77,6 @@ angular.module('dartXRatingApp').factory("MatchFactory", function($FirebaseArray
     }
 });
 
-
 angular.module('dartXRatingApp').factory("AchievementFactory", function($FirebaseArray, $firebase, $rootScope, $q, defaultConfig) {
     var AchievementFactory = $FirebaseArray.$extendFactory({
         registerAchievement: function(achievement) {
