@@ -7,7 +7,6 @@ angular.module('dartXRatingApp').controller('StatisticsCtrl', function ($scope, 
 
     $scope.players.$watch(function() {
         StatisticsService.createLineChartRating($scope.startDate, $scope.endDate).then(function(data) {
-            console.log(data);
             $scope.chartData = data;
         });
     });

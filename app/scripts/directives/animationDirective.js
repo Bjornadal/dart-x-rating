@@ -12,9 +12,11 @@ angular.module('dartXRatingApp')
                 scope.$watch('player', function(newValue, oldValue) {
                     if (newValue === oldValue) return;
 
-                    $animate.addClass(element, 'playerUpdate').then(function() {
-                        element.removeClass('playerUpdate');
-                    });
+                    if (newValue.playedLastMatch) {
+                        $animate.addClass(element, 'playerUpdate').then(function() {
+                            element.removeClass('playerUpdate');
+                        });
+                    }
                 }, true);
             }
         }
