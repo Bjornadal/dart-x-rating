@@ -7,8 +7,8 @@
  * # MainCtrl
  * Controller of the dartXRatingApp
  */
-angular.module('dartXRatingApp').controller('MainCtrl', function ($scope, $filter, RatingService, PlayerFactory, StatisticsService) {
-    var ref = new Firebase("");
+angular.module('dartXRatingApp').controller('MainCtrl', function ($scope, $filter, RatingService, PlayerFactory, StatisticsService, defaultConfig) {
+    var ref = new Firebase(defaultConfig.firebaseBackend + '/players' + (defaultConfig.production ? '' : 'Dev'));
     $scope.players = PlayerFactory();
     $scope.startDate = new Date(new Date().setDate(new Date().getDate()-7));
     $scope.endDate = new Date();

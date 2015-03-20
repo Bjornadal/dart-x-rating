@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('dartXRatingApp').controller('StatisticsCtrl', function ($scope, StatisticsService) {
-    var ref = new Firebase("");
+angular.module('dartXRatingApp').controller('StatisticsCtrl', function ($scope, StatisticsService, defaultConfig) {
+    var ref = new Firebase(defaultConfig.firebaseBackend + '/players' + (defaultConfig.production ? '' : 'Dev'));
     $scope.startDate = new Date(new Date().setDate(new Date().getDate()-7));
     $scope.endDate = new Date();
 

@@ -100,3 +100,9 @@ body {
     -webkit-animation-iteration-count: 1;
     -webkit-animation-timing-function: linear;
 }
+
+/* Removes spinner buttons on date input */
+input[type=date]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    display: none;
+}
