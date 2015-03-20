@@ -12,6 +12,7 @@
                 <th>Wins</th>
                 <th style="width: 80px;">Rating</th>
                 <th style="width: 40px;">+/-</th>
+                <th style="width: 40px;">Form</th>
             </thead>
             <tbody>
                 <tr ng-repeat="player in players | orderBy: 'rating' : true" player-update-animation>
@@ -20,6 +21,7 @@
                     <td><span ng-show="player.matches != null">{{player.wins}} / {{player.matches}}</span></td>
                     <td>{{player.rating | roundWhole}}</td>
                     <td><span ng-show="player.playedLastMatch">{{player.ratingAdjustment | roundWhole}}</span></td>
+                    <td>{{player.form}}</td>
                 </tr>
             </tbody>
         </table>

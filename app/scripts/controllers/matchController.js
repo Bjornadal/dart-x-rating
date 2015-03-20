@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dartXRatingApp').controller('MatchCtrl', function ($scope, $filter, RatingService, $location, PlayerFactory, MatchFactory) {
+angular.module('dartXRatingApp').controller('MatchCtrl', function ($scope, $filter, RatingService, $location, PlayerFactory, MatchFactory, StatisticsService) {
     $scope.match = {};
     $scope.matches = MatchFactory();
 
@@ -54,6 +54,19 @@ angular.module('dartXRatingApp').controller('MatchCtrl', function ($scope, $filt
                     player.matches = (player.matches) ? player.matches + 1 : 1;
                     player.wins = (player.wins) ? ((matchPlayer.winner) ? player.wins + 1 : player.wins) : ((matchPlayer.winner) ? 1 : 0);
                     player.playedLastMatch = true;
+
+                    // Update form
+                    var form = (matchPlayer.winner) ? 'W' : 'L';
+                    if(player.form) {
+                        if(player.form.length >= 5) {
+                            player.form = player.form.slice(1, player.form.length);
+                        }
+
+                        player.form += form;
+                    } else {
+                        player.form = form;
+                    }
+
                     $scope.players.updatePlayer(player);
                 }
             })
