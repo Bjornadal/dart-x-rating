@@ -1,51 +1,53 @@
-<div class="panel">
-    <div>
-        <h3>Register match</h3>
+<div class="col-lg-6 col-lg-offset-3">
+    <div class="panel">
+        <div>
+            <h3>Register match</h3>
+        </div>
+        <div>
+            <form name="matchForm" ng-submit="registerMatch()" novalidate match-validation>
+                <ng-form name="matchFieldForm">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Played</th>
+                            <th>Winner</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="player in match.players">
+                            <td>{{player.name}}</td>
+                            <td>
+                                <input class="checkbox form-control" type="checkbox" ng-click="togglePlayer(player)">
+                            </td>
+                            <td style="width: 100px;">
+                                <button type="button" class="btn" ng-class="{'btn-success' : player.winner}" ng-click="setWinner(player)" ng-show="player.wasPlaying">
+                                    <span ng-show="player.winner">Winner</span>
+                                    <span ng-show="!player.winner">Loser</span>
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <input class="btn btn-success" type="submit" value="Register" ng-disabled="matchForm.$invalid">
+                </ng-form>
+            </form>
+        </div>
     </div>
-    <div>
-        <form name="matchForm" ng-submit="registerMatch()" novalidate match-validation>
-            <ng-form name="matchFieldForm">
-                <table class="table table-hover">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Played</th>
-                        <th>Winner</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="player in match.players">
-                        <td>{{player.name}}</td>
-                        <td>
-                            <input class="checkbox form-control" type="checkbox" ng-click="togglePlayer(player)">
-                        </td>
-                        <td style="width: 100px;">
-                            <button type="button" class="btn" ng-class="{'btn-success' : player.winner}" ng-click="setWinner(player)" ng-show="player.wasPlaying">
-                                <span ng-show="player.winner">Winner</span>
-                                <span ng-show="!player.winner">Loser</span>
-                            </button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <input class="btn btn-success" type="submit" value="Register" ng-disabled="matchForm.$invalid">
-            </ng-form>
-        </form>
-    </div>
-</div>
 
-<div class="panel">
-    <div>
-        <h3>Match History</h3>
-    </div>
-    <div>
-        <div ng-repeat="match in matches | orderBy: 'date' : true | limitTo: 10">
-            <h5>{{match.date | date: 'yyyy-MM-dd HH:mm' }}</h5>
-            <ul>
-                <li ng-repeat="player in match.players">
-                    {{player.name}} | {{player.ratingAdjustment | roundWhole}} <span ng-show="player.winner">(Winner)</span>
-                </li>
-            </ul>
+    <div class="panel">
+        <div>
+            <h3>Match History</h3>
+        </div>
+        <div>
+            <div ng-repeat="match in matches | orderBy: 'date' : true | limitTo: 10">
+                <h5>{{match.date | date: 'yyyy-MM-dd HH:mm' }}</h5>
+                <ul>
+                    <li ng-repeat="player in match.players">
+                        {{player.name}} | {{player.ratingAdjustment | roundWhole}} <span ng-show="player.winner">(Winner)</span>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>

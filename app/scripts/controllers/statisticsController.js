@@ -5,6 +5,10 @@ angular.module('dartXRatingApp').controller('StatisticsCtrl', function ($scope, 
     $scope.startDate = new Date(new Date().setDate(new Date().getDate()-7));
     $scope.endDate = new Date();
 
+    StatisticsService.generateStatistics().then(function(players) {
+        $scope.players = players;
+    });
+
     $scope.players.$watch(function() {
         StatisticsService.createLineChartRating($scope.startDate, $scope.endDate).then(function(data) {
             $scope.chartData = data;
