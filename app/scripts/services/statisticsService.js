@@ -19,7 +19,23 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
         return foundPlayer;
     };
 
-    function generateStreaks() {
+    var higestRatingimprovement = function() {
+        angular.forEach(players, function (player) {
+            player.stats.highestRatingImprovement = 0;
+            angular.forEach(matches, function (match) {
+                angular.forEach(match.players, function (p) {
+                    if (p.name == player.name) {
+                        if (p.ratingAdjustment >= player.stats.highestRatingImprovement) {
+                            player.stats.highestRatingImprovement = p.ratingAdjustment;
+                        }
+                    }
+                });
+            });
+        });
+    };
+
+    var generateStreaks = function() {
+        var deferred = $q.defer();
         angular.forEach(players, function (player) {
             player.stats = {};
             player.stats.biggestWinStreak = 0;
@@ -52,8 +68,10 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
             });
             player.stats.currentWinStreak = currentWinStreak;
             player.stats.currentLoseStreak = currentLoseStreak;
+            deferred.resolve();
         });
-    }
+        return deferred.promise;
+    };
 
     this.generateStatistics = function() {
         var deferred = $q.defer();
@@ -63,7 +81,8 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
                 matchFactory.getMatchesAsync()
                     .then(function(m) {
                         matches = m;
-                        generateStreaks();
+                        generateStreaks()
+                            .then(higestRatingimprovement());
                     })
             })
             .then(function() {

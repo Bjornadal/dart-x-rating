@@ -14,10 +14,11 @@
                             <tr>
                                 <th>#</th>
                                 <th>Name</th>
-                                <th>Wins</th>
+                                <th style="min-width: 70px;">Wins</th>
                                 <th>%</th>
                                 <th>Rating</th>
                                 <th>Form</th>
+                                <th>HRI</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -28,6 +29,7 @@
                             <td>{{player.wins | percentage: player.matches : 0}}</td>
                             <td>{{player.rating | roundWhole}}</td>
                             <td>{{player.form}}</td>
+                            <td>{{player.stats.highestRatingImprovement | number: 2}}</td>
                         </tr>
                         </tbody>
                     </table>
