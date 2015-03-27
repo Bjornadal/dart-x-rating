@@ -1,74 +1,72 @@
 <div class="container-fluid">
     <div class="col-lg-10 col-lg-offset-1">
-        <div class="col-lg-5">
-            <div class="panel">
-                <div>
-                    <h3>Stats</h3>
-                </div>
-                <div>
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th colspan="6">&nbsp;</th>
-                            </tr>
-                            <tr>
-                                <th>#</th>
-                                <th>Name</th>
-                                <th style="min-width: 70px;">Wins</th>
-                                <th>%</th>
-                                <th>Rating</th>
-                                <th>Form</th>
-                                <th>HRI</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        <tr ng-repeat="player in players | orderBy: 'rating' : true" player-update-animation>
-                            <td>{{$index+1}}</td>
-                            <td>{{player.name}}</td>
-                            <td><span ng-show="player.matches != null">{{player.wins}} / {{player.matches}}</span></td>
-                            <td>{{player.wins | percentage: player.matches : 0}}</td>
-                            <td>{{player.rating | roundWhole}}</td>
-                            <td>{{player.form}}</td>
-                            <td>{{player.stats.highestRatingImprovement | number: 2}}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
+        <div class="panel">
+            <div>
+                <h3>Stats</h3>
             </div>
-        </div>
-        <div class="col-lg-7">
-            <div class="panel">
-                <h3>Streaks</h3>
+            <div>
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th class="testShow" colspan="3"></th>
-                            <th colspan="2">Current</th>
-                            <th colspan="2">Biggest</th>
+                            <th colspan="6">&nbsp;</th>
                         </tr>
                         <tr>
-                            <th class="testShow">#</th>
-                            <th class="testShow">Name</th>
-                            <th class="testShow">Rating</th>
-                            <th>Wins</th>
-                            <th>Losses</th>
-                            <th>Win</th>
-                            <th>Lose</th>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th style="min-width: 70px;">Wins</th>
+                            <th>%</th>
+                            <th>Rating</th>
+                            <th>Hi/Low Rating</th>
+                            <th>Form</th>
+                            <th>RI</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="player in players | orderBy: 'rating': true">
-                            <td class="testShow">{{$index+1}}</td>
-                            <td class="testShow">{{player.name}}</td>
-                            <td class="testShow">{{player.rating | roundWhole}}</td>
-                            <td>{{player.stats.currentWinStreak}}</td>
-                            <td>{{player.stats.currentLoseStreak}}</td>
-                            <td>{{player.stats.biggestWinStreak}} ({{player.stats.dateBiggestWinStreak | date: 'yyyy-MM-dd'}})</td>
-                            <td>{{player.stats.biggestLoseStreak}} ({{player.stats.dateBiggestLoseStreak | date: 'yyyy-MM-dd'}})</td>
-                        </tr>
+                    <tr ng-repeat="player in players | orderBy: 'rating' : true" player-update-animation>
+                        <td>{{$index+1}}</td>
+                        <td>{{player.name}}</td>
+                        <td><span ng-show="player.matches != null">{{player.wins}} / {{player.matches}}</span></td>
+                        <td>{{player.wins | percentage: player.matches : 0}}</td>
+                        <td>{{player.rating | roundWhole}}</td>
+                        <td>{{player.stats.highestRating | roundWhole}} / {{player.stats.lowestRating | roundWhole}}</td>
+                        <td>{{player.form}}</td>
+                        <td>{{player.stats.highestRatingImprovement | number: 2}} / {{player.stats.lowestRatingImprovement | number: 2}}</td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
+        </div>
+        <div class="panel">
+            <h3>Streaks</h3>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th colspan="3"></th>
+                        <th colspan="2">Current</th>
+                        <th colspan="2">Biggest</th>
+                    </tr>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Rating</th>
+                        <th>Wins</th>
+                        <th>Losses</th>
+                        <th>Win</th>
+                        <th>Lose</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="player in players | orderBy: 'rating': true">
+                        <td>{{$index+1}}</td>
+                        <td>{{player.name}}</td>
+                        <td>{{player.rating | roundWhole}}</td>
+                        <td>{{player.stats.currentWinStreak}}</td>
+                        <td>{{player.stats.currentLoseStreak}}</td>
+                        <td>{{player.stats.biggestWinStreak}} ({{player.stats.dateBiggestWinStreak | date: 'yyyy-MM-dd'}})</td>
+                        <td>{{player.stats.biggestLoseStreak}} ({{player.stats.dateBiggestLoseStreak | date: 'yyyy-MM-dd'}})</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
     <div class="col-lg-10 col-lg-offset-1">

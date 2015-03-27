@@ -19,14 +19,30 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
         return foundPlayer;
     };
 
-    var higestRatingimprovement = function() {
+    var ratingStats = function() {
         angular.forEach(players, function (player) {
-            player.stats.highestRatingImprovement = 0;
+            player.stats.highestRating = 1500;
+            player.stats.lowestRating = 1500;
+            player.stats.highestRatingImprovement = 1;
+            player.stats.lowestRatingImprovement = 1;
             angular.forEach(matches, function (match) {
-                angular.forEach(match.players, function (p) {
-                    if (p.name == player.name) {
-                        if (p.ratingAdjustment >= player.stats.highestRatingImprovement) {
-                            player.stats.highestRatingImprovement = p.ratingAdjustment;
+                angular.forEach(match.players, function (matchPlayer) {
+                    if (matchPlayer.name == player.name) {
+                        //Highest rating
+                        if (matchPlayer.rating >= player.stats.highestRating) {
+                            player.stats.highestRating = matchPlayer.rating;
+                        }
+                        //Lowest rating
+                        if (matchPlayer.rating < player.stats.lowestRating) {
+                            player.stats.lowestRating = matchPlayer.rating;
+                        }
+                        //Highest ratingimprovement
+                        if (matchPlayer.ratingAdjustment >= player.stats.highestRatingImprovement) {
+                            player.stats.highestRatingImprovement = matchPlayer.ratingAdjustment;
+                        }
+                        //Lowest ratingimprovement
+                        if (matchPlayer.ratingAdjustment < player.stats.lowestRatingImprovement) {
+                            player.stats.lowestRatingImprovement = matchPlayer.ratingAdjustment;
                         }
                     }
                 });
@@ -82,7 +98,7 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
                     .then(function(m) {
                         matches = m;
                         generateStreaks()
-                            .then(higestRatingimprovement());
+                            .then(ratingStats());
                     })
             })
             .then(function() {
