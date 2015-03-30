@@ -1,6 +1,7 @@
 'use strict';
 
-angular.module('dartXRatingApp').controller('MatchCtrl', function ($scope, $filter, RatingService, $location, PlayerFactory, MatchFactory, StatisticsService) {
+angular.module('dartXRatingApp').controller('MatchCtrl', function ($scope, $filter, RatingService, $location, PlayerFactory, MatchFactory, AchievementFactory) {
+    var achievementFactory = new AchievementFactory;
     $scope.match = {};
     $scope.matches = MatchFactory();
 
@@ -38,7 +39,7 @@ angular.module('dartXRatingApp').controller('MatchCtrl', function ($scope, $filt
             }
         });
 
-        // Update plauers
+        // Update players
         angular.forEach($scope.players, function(player) {
             player.playedLastMatch = false;
             $scope.players.updatePlayer(player);
@@ -46,6 +47,7 @@ angular.module('dartXRatingApp').controller('MatchCtrl', function ($scope, $filt
 
         // Update player ratings
         RatingService.calculateRating(toSave.players);
+
         angular.forEach(toSave.players, function(matchPlayer) {
             angular.forEach($scope.players, function(player) {
                 if (matchPlayer.email === player.email) {
@@ -67,6 +69,53 @@ angular.module('dartXRatingApp').controller('MatchCtrl', function ($scope, $filt
                         player.form = form;
                     }
 
+                    /*
+                    * Update achievements
+                    * Not yet finished!
+                    */
+                    //if (player.playedLastMatch && matchPlayer.winner) {
+                    //    var playerWinStreak = getPlayerWinStreak(player) + 1;
+                    //    console.log(player.name + " has winstreak of " + playerWinStreak + " and rating of " + player.rating);
+                    //    achievementFactory.getAchievementsAsync()
+                    //        .then(function(achievements) {
+                    //            angular.forEach(achievements, function(achievement) {
+                    //                console.log(player.name + " has achivement " + achievement.name + " ? " + hasPlayerAchievement(player, achievement));
+                    //                if (!hasPlayerAchievement(player, achievement)) {
+                    //                    achievement.date = moment();
+                    //                    if (angular.isUndefined(player.achievements)) {
+                    //                        player.achievements = [];
+                    //                    }
+                    //                    if (achievement.name === 'Over 1600 rating' && player.rating >= 1600) {
+                    //                        console.log(player.name + " is rewarded with the achievement " + achievement.name);
+                    //                        player.achievements.push(achievement);
+                    //                    } else if (achievement.name === 'Over 1700 rating' && player.rating >= 1700) {
+                    //                        console.log(player.name + " is rewarded with the achievement " + achievement.name);
+                    //                        player.achievements.push(achievement);
+                    //                    } else if (achievement.name === 'Over 1800 rating' && player.rating >= 1800) {
+                    //                        console.log(player.name + " is rewarded with the achievement " + achievement.name);
+                    //                        player.achievements.push(achievement);
+                    //                    } else if (achievement.name === 'Over 1900 rating' && player.rating >= 1900) {
+                    //                        console.log(player.name + " is rewarded with the achievement " + achievement.name);
+                    //                        player.achievements.push(achievement);
+                    //                    } else if (achievement.name === 'Over 2000 rating' && player.rating >= 2000) {
+                    //                        console.log(player.name + " is rewarded with the achievement " + achievement.name);
+                    //                        player.achievements.push(achievement);
+                    //                    }
+                    //
+                    //                    if (achievement.name === 'Win streak 3x' && playerWinStreak == 3) {
+                    //                        console.log(player.name + " is rewarded with the achievement " + achievement.name);
+                    //                        player.achievements.push(achievement);
+                    //                    } else if (achievement.name === 'Win streak 5x' && playerWinStreak == 5) {
+                    //                        console.log(player.name + " is rewarded with the achievement " + achievement.name);
+                    //                        player.achievements.push(achievement);
+                    //                    } else if (achievement.name === 'Win streak 10x' && playerWinStreak == 10) {
+                    //                        console.log(player.name + " is rewarded with the achievement " + achievement.name);
+                    //                        player.achievements.push(achievement);
+                    //                    }
+                    //                }
+                    //            })
+                    //        });
+                    //}
                     $scope.players.updatePlayer(player);
                 }
             })
@@ -82,4 +131,30 @@ angular.module('dartXRatingApp').controller('MatchCtrl', function ($scope, $filt
         // Redirect to rating summary
         $location.url('/');
     };
+
+    var getPlayerWinStreak = function(player) {
+        var winstreak = 0;
+        angular.forEach($scope.matches, function (match) {
+            angular.forEach(match.players, function (matchPlayer) {
+                if (matchPlayer.email == player.email) {
+                    if (matchPlayer.winner) {
+                        winstreak++;
+                    } else {
+                        winstreak = 0;
+                    }
+                }
+            });
+        });
+        return winstreak;
+    };
+
+    var hasPlayerAchievement = function(player, achievement) {
+        var hasAchievement = false;
+        angular.forEach(player.achievements, function(a) {
+            if (!hasAchievement && achievement.name == a.name) {
+                hasAchievement = true;
+            }
+        });
+        return hasAchievement;
+    }
 });

@@ -7,25 +7,24 @@ angular.module('dartXRatingApp').controller('StatisticsCtrl', function ($scope, 
 
     StatisticsService.generateStatistics().then(function(players) {
         $scope.players = players;
-    });
 
-    $scope.players.$watch(function() {
-        StatisticsService.createLineChartRating($scope.startDate, $scope.endDate)
-            .then(function(data) {
+        $scope.$watch('[startDate, endDate]', function(newValue, oldValue) {
+            StatisticsService.createLineChartRating($scope.startDate, $scope.endDate).then(function(data) {
                 $scope.chartData = data;
-                StatisticsService.generateStatistics().then(function(players) {
-                    $scope.players = players;
+            });
+        });
+
+        $scope.players.$watch(function(event) {
+            StatisticsService.updateStatistics().then(function(players) {
+                $scope.players = players;
+                StatisticsService.createLineChartRating($scope.startDate, $scope.endDate).then(function(data) {
+                    $scope.chartData = data;
                 });
             });
-    });
+        });
 
-    $scope.$watch('[startDate, endDate]', function(newValue, oldValue) {
         StatisticsService.createLineChartRating($scope.startDate, $scope.endDate).then(function(data) {
             $scope.chartData = data;
         });
-    });
-
-    StatisticsService.createLineChartRating($scope.startDate, $scope.endDate).then(function(data) {
-        $scope.chartData = data;
     });
 });

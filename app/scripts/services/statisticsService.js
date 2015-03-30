@@ -9,18 +9,58 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
     var matchFactory = new MatchFactory;
     var players, matches;
 
-    var getPlayerByMail = function(name) {
-        var foundPlayer = null;
-        angular.forEach(players, function(player) {
-            if (foundPlayer == null && player.name == name) {
-                foundPlayer = player;
-            }
-        });
-        return foundPlayer;
+    this.generateStatistics = function() {
+        var deferred = $q.defer();
+        loadData()
+            .then(ratingStats)
+            .then(wins)
+            .then(function() {
+                deferred.resolve(players);
+            })
+            .catch(function(error) {
+                deferred.reject(error);
+            });
+        return deferred.promise;
+    };
+
+    this.updateStatistics = function() {
+        var deferred = $q.defer();
+        ratingStats()
+            .then(wins)
+            .then(function() {
+                deferred.resolve(players);
+            })
+            .catch(function(error) {
+                deferred.reject(error);
+            });
+        return deferred.promise;
+    };
+
+    var loadData = function() {
+        var deferred = $q.defer();
+        playerFactory.getPlayersAsync()
+            .then(function(p) {
+                players = p;
+            })
+            .then(matchFactory.getMatchesAsync)
+            .then(function(m) {
+                matches = m;
+            })
+            .then(function() {
+                deferred.resolve(players);
+            })
+            .catch(function(error) {
+                deferred.reject(error);
+            });
+        return deferred.promise;
     };
 
     var ratingStats = function() {
+        var deferred = $q.defer();
         angular.forEach(players, function (player) {
+            if (angular.isUndefined(player.stats)) {
+                player.stats = {};
+            }
             player.stats.highestRating = 1500;
             player.stats.lowestRating = 1500;
             player.stats.highestRatingImprovement = 1;
@@ -48,12 +88,18 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
                 });
             });
         });
+        deferred.resolve();
+        return deferred.promise;
     };
 
-    var generateStreaks = function() {
+    var wins = function() {
         var deferred = $q.defer();
         angular.forEach(players, function (player) {
-            player.stats = {};
+            if (angular.isUndefined(player.stats)) {
+                player.stats = {};
+            }
+            player.stats.matches = player.matches;
+            player.stats.wins = player.wins;
             player.stats.biggestWinStreak = 0;
             player.stats.biggestLoseStreak = 0;
             var winStreak = 0, loseStreak = 0, currentWinStreak = 0, currentLoseStreak = 0;
@@ -84,96 +130,57 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
             });
             player.stats.currentWinStreak = currentWinStreak;
             player.stats.currentLoseStreak = currentLoseStreak;
-            deferred.resolve();
         });
+        deferred.resolve();
         return deferred.promise;
     };
-
-    this.generateStatistics = function() {
-        var deferred = $q.defer();
-        playerFactory.getPlayersAsync()
-            .then(function(p) {
-                players = p;
-                matchFactory.getMatchesAsync()
-                    .then(function(m) {
-                        matches = m;
-                        generateStreaks()
-                            .then(ratingStats());
-                    })
-            })
-            .then(function() {
-                deferred.resolve(players);
-            })
-            .catch(function(error) {
-                deferred.reject(error);
-            });
-        return deferred.promise;
-    };
-
 
     this.createLineChartRating = function(startDate, endDate) {
         var deferred = $q.defer();
-
+        var dateFormat = "yyyy-MM-dd";
         var chartData = {};
-
         chartData.options = {
             datasetFill : false,
             responsive: true
         };
+        chartData.series = [];
+        chartData.rating = [];
+        angular.forEach(players, function(player, index) {
+            chartData.series[index] = player.name;
+            chartData.rating[index] = player.rating;
+        });
+        var fromDate = moment(startDate).format('YYYY-MM-DD');
+        chartData.labels = [];
+        chartData.labels.push(fromDate);
+        chartData.data = [];
 
-        playerFactory.getPlayersAsync()
-            .then(function(players) {
-                chartData.series = [];
-                chartData.rating = [];
-                angular.forEach(players, function(player, index) {
-                    chartData.series[index] = player.name;
-                    chartData.rating[index] = player.rating;
-                });
+        angular.forEach(matches, function(match, index) {
+            if ($filter('date')(match.date, dateFormat) >= $filter('date')(startDate, dateFormat) && $filter('date')(match.date, dateFormat) <= $filter('date')(endDate, dateFormat)) {
+                chartData.labels.push(moment(match.date).format('YYYY-MM-DD HH:mm'));
+                angular.forEach(chartData.series, function (serie, pos) {
+                    var playerRatings = [];
 
-                matchFactory.getMatchesAsync()
-                    .then(function(matches) {
-                        var fromDate = moment(startDate).format('YYYY-MM-DD');
-                        chartData.labels = [];
-                        chartData.labels.push(fromDate);
-                        chartData.data = [];
+                    if (angular.isUndefined(chartData.data[pos])) {
+                        chartData.data[pos] = [];
+                        playerRatings.push(1500);
+                        chartData.data[pos] = playerRatings;
+                    } else {
+                        playerRatings = chartData.data[pos];
+                    }
 
-                        angular.forEach(matches, function(match, index) {
-                            if ($filter('date')(match.date, 'yyyy-MM-dd') >= $filter('date')(startDate, 'yyyy-MM-dd') && $filter('date')(match.date, 'yyyy-MM-dd') <= $filter('date')(endDate, 'yyyy-MM-dd')) {
-                                chartData.labels.push(moment(match.date).format('YYYY-MM-DD HH:mm'));
-                                angular.forEach(chartData.series, function (serie, pos) {
-                                    var playerRatings = [];
-
-                                    if (angular.isUndefined(chartData.data[pos])) {
-                                        chartData.data[pos] = [];
-                                        playerRatings.push(1500);
-                                        chartData.data[pos] = playerRatings;
-                                    } else {
-                                        playerRatings = chartData.data[pos];
-                                    }
-
-                                    var hasPlayed = false;
-                                    var playerRating = playerRatings[playerRatings.length - 1];
-                                    angular.forEach(match.players, function (player) {
-                                        if (serie === player.name) {
-                                            hasPlayed = true;
-                                            playerRating = player.rating;
-                                        }
-                                    });
-                                    playerRatings.push(playerRating);
-                                });
-                            }
-                        });
-                    })
-                    .then(function() {
-                        deferred.resolve(chartData);
-                    })
-                    .catch(function(error) {
-                        deferred.reject(error);
+                    var hasPlayed = false;
+                    var playerRating = playerRatings[playerRatings.length - 1];
+                    angular.forEach(match.players, function (player) {
+                        if (serie === player.name) {
+                            hasPlayed = true;
+                            playerRating = player.rating;
+                        }
                     });
-            })
-            .catch(function(error) {
-                deferred.reject(error);
-            });
+                    playerRatings.push(playerRating);
+                });
+            }
+        });
+        deferred.resolve(chartData);
         return deferred.promise;
     };
 });
