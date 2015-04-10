@@ -116,3 +116,16 @@ input[type=date]::-webkit-inner-spin-button {
         display: table-cell;
     }
 }
+
+.funFact {
+    text-align: center;
+}
+
+.funFact-show-hide {
+    -webkit-transition:all linear 2s;
+    transition:all linear 2s;
+}
+
+.funFact-show-hide.ng-hide {
+    opacity:0;
+}
