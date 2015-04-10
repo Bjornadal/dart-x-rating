@@ -85,11 +85,11 @@ angular.module('dartXRatingApp').controller('MatchCtrl', function ($scope, $filt
                                         }
 
                                         if (matchPlayer.winner) {
-                                            if ((achievement.name === 'Over 1600 rating' && player.rating >= 1600) ||
-                                                (achievement.name === 'Over 1700 rating' && player.rating >= 1700) ||
-                                                (achievement.name === 'Over 1800 rating' && player.rating >= 1800) ||
-                                                (achievement.name === 'Over 1900 rating' && player.rating >= 1900) ||
-                                                (achievement.name === 'Over 2000 rating' && player.rating >= 2000) ||
+                                            if ((achievement.name === '1600 rating' && player.rating >= 1600) ||
+                                                (achievement.name === '1700 rating' && player.rating >= 1700) ||
+                                                (achievement.name === '1800 rating' && player.rating >= 1800) ||
+                                                (achievement.name === '1900 rating' && player.rating >= 1900) ||
+                                                (achievement.name === '2000 rating' && player.rating >= 2000) ||
                                                 (achievement.name === 'Win streak 3x' && playerWinStreak == 3) ||
                                                 (achievement.name === 'Win streak 5x' && playerWinStreak == 5) ||
                                                 (achievement.name === 'Win streak 10x' && playerWinStreak == 10)) {
