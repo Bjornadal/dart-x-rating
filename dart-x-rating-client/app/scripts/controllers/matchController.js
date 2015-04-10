@@ -70,53 +70,46 @@ angular.module('dartXRatingApp').controller('MatchCtrl', function ($scope, $filt
                     }
 
                     /*
-                    * Update achievements
-                    * Not yet finished!
+                    * Automatic registration of achievements
                     */
-                    //if (player.playedLastMatch && matchPlayer.winner) {
-                    //    var playerWinStreak = getPlayerWinStreak(player) + 1;
-                    //    console.log(player.name + " has winstreak of " + playerWinStreak + " and rating of " + player.rating);
-                    //    achievementFactory.getAchievementsAsync()
-                    //        .then(function(achievements) {
-                    //            angular.forEach(achievements, function(achievement) {
-                    //                console.log(player.name + " has achivement " + achievement.name + " ? " + hasPlayerAchievement(player, achievement));
-                    //                if (!hasPlayerAchievement(player, achievement)) {
-                    //                    achievement.date = moment();
-                    //                    if (angular.isUndefined(player.achievements)) {
-                    //                        player.achievements = [];
-                    //                    }
-                    //                    if (achievement.name === 'Over 1600 rating' && player.rating >= 1600) {
-                    //                        console.log(player.name + " is rewarded with the achievement " + achievement.name);
-                    //                        player.achievements.push(achievement);
-                    //                    } else if (achievement.name === 'Over 1700 rating' && player.rating >= 1700) {
-                    //                        console.log(player.name + " is rewarded with the achievement " + achievement.name);
-                    //                        player.achievements.push(achievement);
-                    //                    } else if (achievement.name === 'Over 1800 rating' && player.rating >= 1800) {
-                    //                        console.log(player.name + " is rewarded with the achievement " + achievement.name);
-                    //                        player.achievements.push(achievement);
-                    //                    } else if (achievement.name === 'Over 1900 rating' && player.rating >= 1900) {
-                    //                        console.log(player.name + " is rewarded with the achievement " + achievement.name);
-                    //                        player.achievements.push(achievement);
-                    //                    } else if (achievement.name === 'Over 2000 rating' && player.rating >= 2000) {
-                    //                        console.log(player.name + " is rewarded with the achievement " + achievement.name);
-                    //                        player.achievements.push(achievement);
-                    //                    }
-                    //
-                    //                    if (achievement.name === 'Win streak 3x' && playerWinStreak == 3) {
-                    //                        console.log(player.name + " is rewarded with the achievement " + achievement.name);
-                    //                        player.achievements.push(achievement);
-                    //                    } else if (achievement.name === 'Win streak 5x' && playerWinStreak == 5) {
-                    //                        console.log(player.name + " is rewarded with the achievement " + achievement.name);
-                    //                        player.achievements.push(achievement);
-                    //                    } else if (achievement.name === 'Win streak 10x' && playerWinStreak == 10) {
-                    //                        console.log(player.name + " is rewarded with the achievement " + achievement.name);
-                    //                        player.achievements.push(achievement);
-                    //                    }
-                    //                }
-                    //            })
-                    //        });
-                    //}
-                    $scope.players.updatePlayer(player);
+                    if (player.playedLastMatch) {
+                        var playerWinStreak = getPlayerWinStreak(player) + 1;
+                        var playerLoseStreak = getPlayerLoseStreak(player) + 1;
+                        achievementFactory.getAchievementsAsync()
+                            .then(function (achievements) {
+                                angular.forEach(achievements, function (achievement) {
+                                    if (!hasPlayerAchievement(player, achievement)) {
+                                        achievement.date = moment().format("YYYY-MM-DD HH:mm");
+                                        if (angular.isUndefined(player.achievements)) {
+                                            player.achievements = [];
+                                        }
+
+                                        if (matchPlayer.winner) {
+                                            if ((achievement.name === '1600 rating' && player.rating >= 1600) ||
+                                                (achievement.name === '1700 rating' && player.rating >= 1700) ||
+                                                (achievement.name === '1800 rating' && player.rating >= 1800) ||
+                                                (achievement.name === '1900 rating' && player.rating >= 1900) ||
+                                                (achievement.name === '2000 rating' && player.rating >= 2000) ||
+                                                (achievement.name === 'Win streak 3x' && playerWinStreak == 3) ||
+                                                (achievement.name === 'Win streak 5x' && playerWinStreak == 5) ||
+                                                (achievement.name === 'Win streak 10x' && playerWinStreak == 10)) {
+
+                                                player.achievements.push(achievement);
+                                            }
+                                        } else {
+                                            if (achievement.name === 'Lose streak 10x' && playerLoseStreak == 10) {
+                                                player.achievements.push(achievement);
+                                            }
+                                        }
+                                    }
+                                })
+                            })
+                            .then(function () {
+                                $scope.players.updatePlayer(player);
+                            });
+                    } else {
+                        $scope.players.updatePlayer(player);
+                    }
                 }
             })
         });
@@ -146,6 +139,22 @@ angular.module('dartXRatingApp').controller('MatchCtrl', function ($scope, $filt
             });
         });
         return winstreak;
+    };
+
+    var getPlayerLoseStreak = function(player) {
+        var loseStreak = 0;
+        angular.forEach($scope.matches, function(match) {
+            angular.forEach(match.players, function (matchPlayer) {
+                if (matchPlayer.email == player.email) {
+                    if (matchPlayer.winner) {
+                        loseStreak = 0;
+                    } else {
+                        loseStreak++;
+                    }
+                }
+            });
+        });
+        return loseStreak;
     };
 
     var hasPlayerAchievement = function(player, achievement) {
