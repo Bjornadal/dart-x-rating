@@ -1,0 +1,20 @@
+info:
+    app:
+        name: dart-x-rating-api
+        description: Dart-x-rating API
+    build:
+        artifact: ${project.artifactId}
+        name: ${project.name}
+        description: ${project.description}
+        version: ${project.version}
+
+server:
+    port: 8092
+    contextPath: /dartxrating
+
+spring:
+    application:
+        name: dart-x-rating-api
+
+management:
+    contextPath: /manage
