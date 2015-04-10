@@ -15,6 +15,9 @@ server:
 spring:
     application:
         name: dart-x-rating-api
+    data:
+      mongodb:
+        uri: mongodb://localhost:27017/dartxrating?&autoConnectRetry=true&slaveOk=true&maxPoolSize=20
 
 management:
     contextPath: /manage

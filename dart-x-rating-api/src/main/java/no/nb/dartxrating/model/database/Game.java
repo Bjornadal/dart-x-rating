@@ -1,14 +1,17 @@
 package no.nb.dartxrating.model.database;
 
 import org.joda.time.DateTime;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
 /**
  * Created by andreasb on 10.04.15.
  */
-public class Match {
+@Document(collection = "Games")
+public class Game {
     private int id;
+    private League league;
     private DateTime dateTime;
     private List<Placement> placements;
 
@@ -18,6 +21,14 @@ public class Match {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public League getLeague() {
+        return league;
+    }
+
+    public void setLeague(League league) {
+        this.league = league;
     }
 
     public DateTime getDateTime() {

@@ -1,8 +1,11 @@
 package no.nb.dartxrating.model.database;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 /**
  * Created by andreasb on 10.04.15.
  */
+@Document(collection = "Achievements")
 public class Achievement {
     private int id;
     private String name;
