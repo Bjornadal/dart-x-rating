@@ -6,8 +6,8 @@ angular.module('dartXRatingApp').controller('StatisticsCtrl', function ($scope, 
     $scope.achievements = AchievementFactory();
     $scope.startDate = new Date(new Date().setDate(new Date().getDate()-7));
     $scope.endDate = new Date();
-    var funfact = ["Her kommer det masse random funfacts etter hvert...", "... noen må bare laga all den rare statistikken først..."];
 
+    var funFacts = ["Dart X Rating Awesome Fun Facts"];
     updateFunFact(true);
     $interval(function() {
         updateFunFact(false);
@@ -15,6 +15,8 @@ angular.module('dartXRatingApp').controller('StatisticsCtrl', function ($scope, 
 
     StatisticsService.generateStatistics().then(function(players) {
         $scope.players = players;
+
+        funFacts = StatisticsService.getFunFacts();
 
         $scope.$watch('[startDate, endDate]', function(newValue, oldValue) {
             StatisticsService.createLineChartRating($scope.startDate, $scope.endDate).then(function(data) {
@@ -38,15 +40,17 @@ angular.module('dartXRatingApp').controller('StatisticsCtrl', function ($scope, 
 
     function updateFunFact(firstRun) {
         var delay = 2000;
-        var index = Math.floor(Math.random() * funfact.length);
+        var index = 0;
         if (firstRun) {
             delay = 0;
-            index = 0;
         } else {
+            while (index < 1) {
+                index = Math.floor(Math.random() * funFacts.length);
+            }
             $scope.showFunFact = false;
         }
         $timeout(function() {
-            $scope.funFact = funfact[index];
+            $scope.funFact = funFacts[index];
             $scope.showFunFact = true;
         }, delay);
     }
