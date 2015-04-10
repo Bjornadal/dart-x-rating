@@ -4,7 +4,6 @@
 
 angular.module('dartXRatingApp')
     .constant('defaultConfig', {
-        'firebaseBackend': 'https://shining-inferno-5763.firebaseio.com',
-        'deploydBackend': 'http://localhost:2403',
+        'firebaseBackend': 'https://YOUR-FIREBASE.firebaseio.com',
         'production': false
     });
