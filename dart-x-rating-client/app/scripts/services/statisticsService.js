@@ -189,7 +189,6 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
         var playerWithMostMatches = null, playerWithFewestMatches = null, playerWithMostWins = null, playerWithFewestWins = null, playerWithHighestRating = null, playerWithLowestRating = null;
 
         angular.forEach(players, function(player) {
-            console.log(player);
             //Most matches
             if (playerWithMostMatches === null || playerWithMostMatches.stats.matches < player.stats.matches) playerWithMostMatches = player;
             //Least matches
@@ -212,7 +211,6 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
         funFacts.push($filter('bold')(playerWithHighestRating.name) + ' has the all-time highest rating of ' + $filter('bold')($filter('roundWhole')(playerWithHighestRating.stats.highestRating)));
         funFacts.push($filter('bold')(playerWithLowestRating.name) + ' has the all-time lowest rating of ' + $filter('bold')($filter('roundWhole')(playerWithLowestRating.stats.lowestRating)));
 
-        console.log(funFacts);
         return funFacts;
     };
 });
