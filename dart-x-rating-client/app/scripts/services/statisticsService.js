@@ -4,7 +4,7 @@
  * Created by raymondk on 18.03.15.
  */
 
-angular.module('dartXRatingApp').service('StatisticsService', function($q, $filter, PlayerFactory, MatchFactory, $sce) {
+angular.module('dartXRatingApp').service('StatisticsService', function($q, $filter, PlayerFactory, MatchFactory) {
     var playerFactory = new PlayerFactory;
     var matchFactory = new MatchFactory;
     var players, matches;
@@ -186,31 +186,31 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
 
     this.getFunFacts = function() {
         var funFacts = ['Dart X Rating Fun Awesome Facts'];
-        var playerWithMostMatches = null, playerWithLeastMatches = null, playerWithMostWins = null, playerWithLeastWins = null, playerWithHighestRating = null, playerWithLowestRating = null;
+        var playerWithMostMatches = null, playerWithFewestMatches = null, playerWithMostWins = null, playerWithFewestWins = null, playerWithHighestRating = null, playerWithLowestRating = null;
 
         angular.forEach(players, function(player) {
             console.log(player);
             //Most matches
             if (playerWithMostMatches === null || playerWithMostMatches.stats.matches < player.stats.matches) playerWithMostMatches = player;
             //Least matches
-            if (playerWithLeastMatches === null || playerWithLeastMatches.stats.matches > player.stats.matches) playerWithLeastMatches = player;
+            if (playerWithFewestMatches === null || playerWithFewestMatches.stats.matches > player.stats.matches) playerWithFewestMatches = player;
             //Most wins
             if (playerWithMostWins === null || playerWithMostWins.stats.wins < player.stats.wins) playerWithMostWins = player;
             //Least wins
-            if (playerWithLeastWins === null || playerWithLeastWins.stats.wins > player.stats.wins) playerWithLeastWins = player;
+            if (playerWithFewestWins === null || playerWithFewestWins.stats.wins > player.stats.wins) playerWithFewestWins = player;
             //Highest rating
             if (playerWithHighestRating === null || playerWithHighestRating.stats.highestRating < player.stats.highestRating) playerWithHighestRating = player;
             //Lowest rating
             if (playerWithLowestRating === null || playerWithLowestRating.stats.lowestRating > player.stats.lowestRating) playerWithLowestRating = player;
         });
 
-        funFacts.push('There as been played a totalt of ' + $sce.trustAsHtml('<b>'+matches.length+'</b>') + ' matches');
-        funFacts.push($sce.trustAsHtml('<b>'+playerWithMostMatches.name+'</b>') + ' has played the most matches with ' + $sce.trustAsHtml('<b>'+playerWithMostMatches.stats.matches+'</b>'));
-        funFacts.push($sce.trustAsHtml('<b>'+playerWithLeastMatches.name+'</b>') + ' has played the least matches with ' + $sce.trustAsHtml('<b>'+playerWithLeastMatches.stats.matches+'</b>'));
-        funFacts.push($sce.trustAsHtml('<b>'+playerWithMostWins.name+'</b>') + ' has won the most matches with a totalt of ' + $sce.trustAsHtml('<b>'+playerWithMostWins.stats.wins+'</b>'));
-        funFacts.push($sce.trustAsHtml('<b>'+playerWithLeastWins.name+'</b>') + ' has won the least matches with a totalt of only ' + $sce.trustAsHtml('<b>'+playerWithLeastWins.stats.wins+'</b>'));
-        funFacts.push($sce.trustAsHtml('<b>'+playerWithHighestRating.name+'</b>') + ' has the all-time highest rating of ' + $sce.trustAsHtml('<b>'+$filter('roundWhole')(playerWithHighestRating.stats.highestRating)+'</b>'));
-        funFacts.push($sce.trustAsHtml('<b>'+playerWithLowestRating.name+'</b>') + ' has the all-time lowest rating of ' + $sce.trustAsHtml('<b>'+$filter('roundWhole')(playerWithLowestRating.stats.lowestRating)+'</b>'));
+        funFacts.push('There as been played a totalt of ' + $filter('bold')(matches.length) + ' matches');
+        funFacts.push($filter('bold')(playerWithMostMatches.name) + ' has played the most matches with ' + $filter('bold')(playerWithMostMatches.stats.matches));
+        funFacts.push($filter('bold')(playerWithFewestMatches.name) + ' has played the fewest matches with ' + $filter('bold')(playerWithFewestMatches.stats.matches));
+        funFacts.push($filter('bold')(playerWithMostWins.name) + ' has won the most matches with a totalt of ' + $filter('bold')(playerWithMostWins.stats.wins));
+        funFacts.push($filter('bold')(playerWithFewestWins.name) + ' has won the fewest matches with a totalt of only ' + $filter('bold')(playerWithFewestWins.stats.wins));
+        funFacts.push($filter('bold')(playerWithHighestRating.name) + ' has the all-time highest rating of ' + $filter('bold')($filter('roundWhole')(playerWithHighestRating.stats.highestRating)));
+        funFacts.push($filter('bold')(playerWithLowestRating.name) + ' has the all-time lowest rating of ' + $filter('bold')($filter('roundWhole')(playerWithLowestRating.stats.lowestRating)));
 
         console.log(funFacts);
         return funFacts;
