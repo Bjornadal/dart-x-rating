@@ -31,9 +31,9 @@
                         <td><span ng-show="player.matches != null">{{player.stats.wins}} / {{player.stats.matches}}</span></td>
                         <td>{{player.stats.wins | percentage: player.stats.matches : 0}}</td>
                         <td>{{player.rating | roundWhole}}</td>
-                        <td>{{player.stats.highestRating | roundWhole}} / {{player.stats.lowestRating | roundWhole}}</td>
+                        <td>{{player.stats.highestRating.value | roundWhole}} / {{player.stats.lowestRating.value | roundWhole}}</td>
                         <td>{{player.form}}</td>
-                        <td>{{player.stats.highestRatingImprovement | number: 2}} / {{player.stats.lowestRatingImprovement | number: 2}}</td>
+                        <td>{{player.stats.highestRatingImprovement.value | number: 2}} / {{player.stats.lowestRatingImprovement.value | number: 2}}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -65,8 +65,8 @@
                         <td>{{player.rating | roundWhole}}</td>
                         <td>{{player.stats.currentWinStreak}}</td>
                         <td>{{player.stats.currentLoseStreak}}</td>
-                        <td>{{player.stats.biggestWinStreak}} ({{player.stats.dateBiggestWinStreak | date: 'yyyy-MM-dd'}})</td>
-                        <td>{{player.stats.biggestLoseStreak}} ({{player.stats.dateBiggestLoseStreak | date: 'yyyy-MM-dd'}})</td>
+                        <td>{{player.stats.biggestWinStreak.value}} ({{player.stats.biggestWinStreak.date | date: 'yyyy-MM-dd'}})</td>
+                        <td>{{player.stats.biggestLoseStreak.value}} ({{player.stats.biggestLoseStreak.date | date: 'yyyy-MM-dd'}})</td>
                     </tr>
                 </tbody>
             </table>

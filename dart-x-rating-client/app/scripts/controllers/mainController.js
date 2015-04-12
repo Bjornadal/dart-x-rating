@@ -13,9 +13,14 @@ angular.module('dartXRatingApp').controller('MainCtrl', function ($scope, $filte
     $scope.endDate = new Date();
 
     var funFacts = ["Dart X Rating Awesome Fun Facts"];
-    updateFunFact(true);
+    var funFactIndex = 0;
+    updateFunFact(funFactIndex);
     $interval(function() {
-        updateFunFact(false);
+        funFactIndex++;
+        if (funFactIndex >= funFacts.length) {
+            funFactIndex = 0;
+        }
+        updateFunFact(funFactIndex);
     }, 10000);
 
     StatisticsService.generateStatistics().then(function(players) {
@@ -35,13 +40,11 @@ angular.module('dartXRatingApp').controller('MainCtrl', function ($scope, $filte
         });
     });
 
-    function updateFunFact(firstRun) {
+    function updateFunFact(index) {
         var delay = 2000;
-        var index = 0;
-        if (firstRun) {
+        if (index === 0) {
             delay = 0;
         } else {
-            while (index < 1) index = Math.floor(Math.random() * funFacts.length);
             $scope.showFunFact = false;
         }
         $timeout(function() {

@@ -117,10 +117,6 @@ input[type=date]::-webkit-inner-spin-button {
     }
 }
 
-.funFact {
-    text-align: center;
-}
-
 .funFact-show-hide {
     -webkit-transition:all linear 2s;
     transition:all linear 2s;
