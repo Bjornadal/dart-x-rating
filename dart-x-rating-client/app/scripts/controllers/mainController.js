@@ -25,7 +25,7 @@ angular.module('dartXRatingApp').controller('MainCtrl', function ($scope, $filte
 
     StatisticsService.generateStatistics().then(function(players) {
         $scope.players = players;
-        funFacts = StatisticsService.getFunFacts();
+        funFacts = StatisticsService.generateFunFacts();
     });
 
     $scope.players.$watch(function() {

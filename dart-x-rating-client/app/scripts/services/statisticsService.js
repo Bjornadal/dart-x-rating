@@ -14,7 +14,7 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
         var deferred = $q.defer();
         loadData()
             .then(ratingStats)
-            .then(wins)
+            .then(matchStats)
             .then(function() {
                 deferred.resolve(players);
             })
@@ -27,7 +27,7 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
     this.updateStatistics = function() {
         var deferred = $q.defer();
         ratingStats()
-            .then(wins)
+            .then(matchStats)
             .then(function() {
                 deferred.resolve(players);
             })
@@ -105,7 +105,7 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
         return deferred.promise;
     };
 
-    var wins = function() {
+    var matchStats = function() {
         var deferred = $q.defer();
         angular.forEach(players, function (player) {
             if (angular.isUndefined(player.stats)) {
@@ -203,11 +203,12 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
         return deferred.promise;
     };
 
-    this.getFunFacts = function() {
+    this.generateFunFacts = function() {
         var funFacts = ['Dart X Rating Awesome Fun Facts'];
         var playersWithMostMatches = [], playersWithFewestMatches = [], playersWithMostWins = [], playersWithFewestWins = [], playersWithHighestRating = [], playersWithLowestRating = [];
         var playersWithHighestRatingImprovement = [], playersWithHighestRatingLoss = [];
         var playersWithHighestWinStreak = [], playersWithHighestLoseStreak = [];
+        var playersWithMostAchievements = [];
 
         angular.forEach(players, function(player) {
             //Most matches
@@ -321,6 +322,21 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
                     playersWithHighestLoseStreak.push(player);
                 }
             }
+            //Most achievements
+            if (!angular.isUndefined(player.achievements)) {
+                player.stats.achievements = {};
+                player.stats.achievements.value = player.achievements.length;
+                if (playersWithMostAchievements.length === 0) {
+                    playersWithMostAchievements.push(player);
+                } else {
+                    if (player.achievements.length > playersWithMostAchievements[playersWithMostAchievements.length - 1].achievements.length) {
+                        playersWithMostAchievements = [];
+                        playersWithMostAchievements.push(player);
+                    } else if (player.achievements.length === playersWithMostAchievements[playersWithMostAchievements.length - 1].achievements.length) {
+                        playersWithMostAchievements.push(player);
+                    }
+                }
+            }
         });
 
         funFacts.push('There as been played a totalt of ' + $filter('bold')(matches.length) + ' matches');
@@ -334,6 +350,7 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
         funFacts.push(buildFact(playersWithHighestRatingLoss, playersWithHighestRatingLoss[0].stats.highestRatingLoss, ' has the highest loss of rating with ', 2));
         funFacts.push(buildFact(playersWithHighestWinStreak, playersWithHighestWinStreak[0].stats.biggestWinStreak, ' has won the most matches in a row with ', 0));
         funFacts.push(buildFact(playersWithHighestLoseStreak, playersWithHighestLoseStreak[0].stats.biggestLoseStreak, ' has lost the most matches in a row with ', 0));
+        funFacts.push(buildFact(playersWithMostAchievements, playersWithMostAchievements[0].stats.achievements, ' has the most achievements with ', 0));
 
         console.log(funFacts);
         return funFacts;
