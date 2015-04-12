@@ -37,13 +37,11 @@ public class PlayerController {
     @RequestMapping(value = "/leagues/{leagueId}/players", method = RequestMethod.POST)
     public ResponseEntity createPlayer(@PathVariable String leagueId, @RequestBody Player player) {
 
-        player.setId(UUID.randomUUID().toString());
+        player.setPlayerId(UUID.randomUUID().toString());
         player.setRating(1500);
 
         League league = leagueRepository.findOne(leagueId);
-        List<Player> leaguePlayers = leagueRepository.findOne(leagueId).getPlayers();
-        leaguePlayers.add(player);
-        league.setPlayers(leaguePlayers);
+        league.getPlayers().add(player);
         leagueRepository.save(league);
 
         return new ResponseEntity<Player>(HttpStatus.CREATED);

@@ -1,7 +1,9 @@
 package no.nb.dartxrating.model.database;
 
 import org.joda.time.DateTime;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.hateoas.ResourceSupport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,18 +11,24 @@ import java.util.List;
 /**
  * Created by andreasb on 10.04.15.
  */
-@Document(collection = "Leagues")
+@Document(collection = "leagues")
 public class League {
-    private String id;
+    @Id
+    private String leagueId;
     private String name;
-    private List<Player> players;
+    private List<Player> players = new ArrayList<>();
+    private List<Game> games = new ArrayList<>();
 
-    public String getId() {
-        return id;
+    public League() {
+
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public String getLeagueId() {
+        return leagueId;
+    }
+
+    public void setLeagueId(String leagueId) {
+        this.leagueId = leagueId;
     }
 
     public String getName() {
@@ -32,13 +40,18 @@ public class League {
     }
 
     public List<Player> getPlayers() {
-        if (players == null) {
-            players = new ArrayList<>();
-        }
         return players;
     }
 
     public void setPlayers(List<Player> players) {
         this.players = players;
+    }
+
+    public List<Game> getGames() {
+        return games;
+    }
+
+    public void setGames(List<Game> games) {
+        this.games = games;
     }
 }

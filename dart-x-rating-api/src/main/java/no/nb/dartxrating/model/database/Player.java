@@ -1,31 +1,32 @@
 package no.nb.dartxrating.model.database;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by andreasb on 10.04.15.
  */
-@XmlRootElement
-@Document(collection = "Players")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Player {
-    private String id;
+    private String playerId;
     private String name;
     private String email;
     private double rating;
+    private double previousRating;
+    private double ratingAdjustment;
     private List<Achievement> achievements;
 
-    public String getId() {
-        return id;
+    public Player() {
+
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public String getPlayerId() {
+        return playerId;
+    }
+
+    public void setPlayerId(String playerId) {
+        this.playerId = playerId;
     }
 
     public String getName() {
@@ -50,6 +51,22 @@ public class Player {
 
     public void setRating(double rating) {
         this.rating = rating;
+    }
+
+    public double getPreviousRating() {
+        return previousRating;
+    }
+
+    public void setPreviousRating(double previousRating) {
+        this.previousRating = previousRating;
+    }
+
+    public double getRatingAdjustment() {
+        return ratingAdjustment;
+    }
+
+    public void setRatingAdjustment(double ratingAdjustment) {
+        this.ratingAdjustment = ratingAdjustment;
     }
 
     public List<Achievement> getAchievements() {

@@ -3,39 +3,35 @@ package no.nb.dartxrating.model.database;
 import org.joda.time.DateTime;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by andreasb on 10.04.15.
  */
-@Document(collection = "Games")
 public class Game {
-    private int id;
-    private League league;
-    private DateTime dateTime;
-    private List<Placement> placements;
+    private String gameId;
+    private Date dateTime;
+    private List<Placement> placements = new ArrayList<>();
 
-    public int getId() {
-        return id;
+    public Game() {
+
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public String getGameId() {
+        return gameId;
     }
 
-    public League getLeague() {
-        return league;
+    public void setGameId(String gameId) {
+        this.gameId = gameId;
     }
 
-    public void setLeague(League league) {
-        this.league = league;
-    }
-
-    public DateTime getDateTime() {
+    public Date getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(DateTime dateTime) {
+    public void setDateTime(Date dateTime) {
         this.dateTime = dateTime;
     }
 
