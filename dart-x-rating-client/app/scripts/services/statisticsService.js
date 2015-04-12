@@ -71,9 +71,9 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
             player.stats.highestRatingImprovement = {};
             player.stats.highestRatingImprovement.value = 1;
             player.stats.highestRatingImprovement.date = moment('01.03.2015', DATE_FORMAT);
-            player.stats.lowestRatingImprovement = {};
-            player.stats.lowestRatingImprovement.value = 1;
-            player.stats.lowestRatingImprovement.date = moment('01.03.2015', DATE_FORMAT);
+            player.stats.highestRatingLoss = {};
+            player.stats.highestRatingLoss.value = 1;
+            player.stats.highestRatingLoss.date = moment('01.03.2015', DATE_FORMAT);
             angular.forEach(matches, function (match) {
                 angular.forEach(match.players, function (matchPlayer) {
                     if (matchPlayer.name == player.name) {
@@ -87,15 +87,15 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
                             player.stats.lowestRating.value = matchPlayer.rating;
                             player.stats.lowestRating.date = match.date;
                         }
-                        //Highest ratingimprovement
+                        //Highest rating improvement
                         if (matchPlayer.ratingAdjustment >= player.stats.highestRatingImprovement.value) {
                             player.stats.highestRatingImprovement.value = matchPlayer.ratingAdjustment;
                             player.stats.highestRatingImprovement.date = match.date;
                         }
-                        //Lowest ratingimprovement
-                        if (matchPlayer.ratingAdjustment < player.stats.lowestRatingImprovement.value) {
-                            player.stats.lowestRatingImprovement.value = matchPlayer.ratingAdjustment;
-                            player.stats.lowestRatingImprovement.date = match.date;
+                        //Highest rating loss
+                        if (matchPlayer.ratingAdjustment < player.stats.highestRatingLoss.value) {
+                            player.stats.highestRatingLoss.value = matchPlayer.ratingAdjustment;
+                            player.stats.highestRatingLoss.date = match.date;
                         }
                     }
                 });
@@ -111,8 +111,10 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
             if (angular.isUndefined(player.stats)) {
                 player.stats = {};
             }
-            player.stats.matches = player.matches;
-            player.stats.wins = player.wins;
+            player.stats.matches = {};
+            player.stats.matches.value = player.matches;
+            player.stats.wins = {};
+            player.stats.wins.value = player.wins;
             player.stats.biggestWinStreak = {};
             player.stats.biggestWinStreak.value = 0;
             player.stats.biggestWinStreak.date = moment('01.03.2015', DATE_FORMAT);
@@ -203,27 +205,100 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
 
     this.getFunFacts = function() {
         var funFacts = ['Dart X Rating Awesome Fun Facts'];
-        var playerWithMostMatches = null, playerWithFewestMatches = null, playerWithMostWins = null, playerWithFewestWins = null, playerWithHighestRating = null, playerWithLowestRating = null;
-        var playerWithHighestRatingImprovement = null, playerWithLowestRatingImprovement = null;
+        var playersWithMostMatches = [], playersWithFewestMatches = [], playersWithMostWins = [], playersWithFewestWins = [], playersWithHighestRating = [], playersWithLowestRating = [];
+        var playersWithHighestRatingImprovement = [], playersWithHighestRatingLoss = [];
         var playersWithHighestWinStreak = [], playersWithHighestLoseStreak = [];
 
         angular.forEach(players, function(player) {
             //Most matches
-            if (playerWithMostMatches === null || playerWithMostMatches.stats.matches < player.stats.matches) playerWithMostMatches = player;
-            //Least matches
-            if (playerWithFewestMatches === null || playerWithFewestMatches.stats.matches > player.stats.matches) playerWithFewestMatches = player;
+            if (playersWithMostMatches.length === 0) {
+                playersWithMostMatches.push(player);
+            } else {
+                if (player.stats.matches.value > playersWithMostMatches[playersWithMostMatches.length-1].stats.matches.value) {
+                    playersWithMostMatches = [];
+                    playersWithMostMatches.push(player);
+                } else if (player.stats.matches.value === playersWithMostMatches[playersWithMostMatches.length-1].stats.matches.value) {
+                    playersWithMostMatches.push(player);
+                }
+            }
+            //Fewest matches
+            if (playersWithFewestMatches.length === 0) {
+                playersWithFewestMatches.push(player);
+            } else {
+                if (player.stats.matches.value < playersWithFewestMatches[playersWithFewestMatches.length-1].stats.matches.value) {
+                    playersWithFewestMatches = [];
+                    playersWithFewestMatches.push(player);
+                } else if (player.stats.matches.value === playersWithFewestMatches[playersWithFewestMatches.length-1].stats.matches.value) {
+                    playersWithFewestMatches.push(player);
+                }
+            }
             //Most wins
-            if (playerWithMostWins === null || playerWithMostWins.stats.wins < player.stats.wins) playerWithMostWins = player;
-            //Least wins
-            if (playerWithFewestWins === null || playerWithFewestWins.stats.wins > player.stats.wins) playerWithFewestWins = player;
+            if (playersWithMostWins.length === 0) {
+                playersWithMostWins.push(player);
+            } else {
+                if (player.stats.wins.value > playersWithMostWins[playersWithMostWins.length-1].stats.wins.value) {
+                    playersWithMostWins = [];
+                    playersWithMostWins.push(player);
+                } else if (player.stats.wins.value === playersWithMostWins[playersWithMostWins.length-1].stats.wins.value) {
+                    playersWithMostWins.push(player);
+                }
+            }
+            //Fewest wins
+            if (playersWithFewestWins.length === 0) {
+                playersWithFewestWins.push(player);
+            } else {
+                if (player.stats.wins.value < playersWithFewestWins[playersWithFewestWins.length-1].stats.wins.value) {
+                    playersWithFewestWins = [];
+                    playersWithFewestWins.push(player);
+                } else if (player.stats.wins.value === playersWithFewestWins[playersWithFewestWins.length-1].stats.wins.value) {
+                    playersWithFewestWins.push(player);
+                }
+            }
             //Highest rating
-            if (playerWithHighestRating === null || playerWithHighestRating.stats.highestRating.value < player.stats.highestRating.value) playerWithHighestRating = player;
+            if (playersWithHighestRating.length === 0) {
+                playersWithHighestRating.push(player);
+            } else {
+                if ($filter('number')(player.stats.highestRating.value, 2) > $filter('number')(playersWithHighestRating[playersWithHighestRating.length-1].stats.highestRating.value, 2)) {
+                    playersWithHighestRating = [];
+                    playersWithHighestRating.push(player);
+                } else if ($filter('number')(player.stats.highestRating.value, 2) === $filter('number')(playersWithHighestRating[playersWithHighestRating.length-1].stats.highestRating.value, 2)) {
+                    playersWithHighestRating.push(player);
+                }
+            }
             //Lowest rating
-            if (playerWithLowestRating === null || playerWithLowestRating.stats.lowestRating.value > player.stats.lowestRating.value) playerWithLowestRating = player;
+            if (playersWithLowestRating.length === 0) {
+                playersWithLowestRating.push(player);
+            } else {
+                if ($filter('number')(player.stats.lowestRating.value, 2) < $filter('number')(playersWithLowestRating[playersWithLowestRating.length-1].stats.lowestRating.value, 2)) {
+                    playersWithLowestRating = [];
+                    playersWithLowestRating.push(player);
+                } else if ($filter('number')(player.stats.lowestRating.value, 2) === $filter('number')(playersWithLowestRating[playersWithLowestRating.length-1].stats.lowestRating.value, 2)) {
+                    playersWithLowestRating.push(player);
+                }
+            }
             //Highest rating improvement
-            if (playerWithHighestRatingImprovement === null || playerWithHighestRatingImprovement.stats.highestRatingImprovement.value < player.stats.highestRatingImprovement.value) playerWithHighestRatingImprovement = player;
-            //Lowest rating improvement
-            if (playerWithLowestRatingImprovement === null || playerWithLowestRatingImprovement.stats.lowestRatingImprovement.value < player.stats.lowestRatingImprovement.value) playerWithLowestRatingImprovement = player;
+            if (playersWithHighestRatingImprovement.length === 0) {
+                playersWithHighestRatingImprovement.push(player);
+            } else {
+                if ($filter('number')(player.stats.highestRatingImprovement.value, 2) < $filter('number')(playersWithHighestRatingImprovement[playersWithHighestRatingImprovement.length-1].stats.highestRatingImprovement.value, 2)) {
+                    playersWithHighestRatingImprovement = [];
+                    playersWithHighestRatingImprovement.push(player);
+                } else if ($filter('number')(player.stats.highestRatingImprovement.value, 2) === $filter('number')(playersWithHighestRatingImprovement[playersWithHighestRatingImprovement.length-1].stats.highestRatingImprovement.value, 2)) {
+                    playersWithHighestRatingImprovement.push(player);
+                }
+            }
+            //Highest rating loss
+            if (playersWithHighestRatingLoss.length === 0) {
+                playersWithHighestRatingLoss.push(player);
+            } else {
+                if ($filter('number')(player.stats.highestRatingLoss.value, 2) > $filter('number')(playersWithHighestRatingLoss[playersWithHighestRatingLoss.length-1].stats.highestRatingLoss.value, 2)) {
+                    playersWithHighestRatingLoss = [];
+                    playersWithHighestRatingLoss.push(player);
+                } else if ($filter('number')(player.stats.highestRatingLoss.value, 2) === $filter('number')(playersWithHighestRatingLoss[playersWithHighestRatingLoss.length-1].stats.highestRatingLoss.value, 2)) {
+                    playersWithHighestRatingLoss.push(player);
+                }
+            }
+
             //Highest win streak
             if (playersWithHighestWinStreak.length === 0) {
                 playersWithHighestWinStreak.push(player);
@@ -249,23 +324,24 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
         });
 
         funFacts.push('There as been played a totalt of ' + $filter('bold')(matches.length) + ' matches');
-        funFacts.push($filter('bold')(playerWithMostMatches.name) + ' has played the most matches with ' + $filter('bold')(playerWithMostMatches.stats.matches));
-        funFacts.push($filter('bold')(playerWithFewestMatches.name) + ' has played the fewest matches with ' + $filter('bold')(playerWithFewestMatches.stats.matches));
-        funFacts.push($filter('bold')(playerWithMostWins.name) + ' has won the most matches with a totalt of ' + $filter('bold')(playerWithMostWins.stats.wins));
-        funFacts.push($filter('bold')(playerWithFewestWins.name) + ' has won the fewest matches with a totalt of only ' + $filter('bold')(playerWithFewestWins.stats.wins));
-        funFacts.push($filter('bold')(playerWithHighestRating.name) + ' has the all-time highest rating of ' + $filter('bold')($filter('roundWhole')(playerWithHighestRating.stats.highestRating.value)) + ' - ' + moment(playerWithHighestRating.stats.highestRating.date).format(DATE_FORMAT));
-        funFacts.push($filter('bold')(playerWithLowestRating.name) + ' has the all-time lowest rating of ' + $filter('bold')($filter('roundWhole')(playerWithLowestRating.stats.lowestRating.value)) + ' - ' + moment(playerWithHighestRating.stats.lowestRating.date).format(DATE_FORMAT));
-        funFacts.push($filter('bold')(playerWithHighestRatingImprovement.name) + ' gained the highest improvement in rating with ' + $filter('bold')($filter('number')(playerWithHighestRatingImprovement.stats.highestRatingImprovement.value, 2)) + ' - ' + moment(playerWithHighestRating.stats.highestRatingImprovement.date).format(DATE_FORMAT));
-        funFacts.push($filter('bold')(playerWithLowestRatingImprovement.name) + ' gained the lowest improvement in rating with ' + $filter('bold')($filter('number')(playerWithLowestRatingImprovement.stats.lowestRatingImprovement.value, 2)) + ' - ' + moment(playerWithHighestRating.stats.lowestRatingImprovement.date).format(DATE_FORMAT));
-        funFacts.push(buildFact(playersWithHighestWinStreak, playersWithHighestWinStreak[0].stats.biggestWinStreak, ' has the most wins in a row with '));
-        funFacts.push(buildFact(playersWithHighestLoseStreak, playersWithHighestLoseStreak[0].stats.biggestLoseStreak, ' has the most losses in a row with '));
+        funFacts.push(buildFact(playersWithMostMatches, playersWithMostMatches[0].stats.matches, ' has played the most matches with ', 0));
+        funFacts.push(buildFact(playersWithFewestMatches, playersWithFewestMatches[0].stats.matches, ' has played the fewest matches with ', 0));
+        funFacts.push(buildFact(playersWithMostWins, playersWithMostWins[0].stats.wins, ' has won the most matches with a totalt of ', 0));
+        funFacts.push(buildFact(playersWithFewestWins, playersWithFewestWins[0].stats.wins, ' has won the fewest matches with a totalt of only ', 0));
+        funFacts.push(buildFact(playersWithHighestRating, playersWithHighestRating[0].stats.highestRating, ' has the all-time highest rating of ', 2));
+        funFacts.push(buildFact(playersWithLowestRating, playersWithLowestRating[0].stats.lowestRating, ' has the all-time lowest rating of ', 2));
+        funFacts.push(buildFact(playersWithHighestRatingImprovement, playersWithHighestRatingImprovement[0].stats.highestRatingImprovement, ' gained the highest improvement in rating with ', 2));
+        funFacts.push(buildFact(playersWithHighestRatingLoss, playersWithHighestRatingLoss[0].stats.highestRatingLoss, ' has the highest loss of rating with ', 2));
+        funFacts.push(buildFact(playersWithHighestWinStreak, playersWithHighestWinStreak[0].stats.biggestWinStreak, ' has won the most matches in a row with ', 0));
+        funFacts.push(buildFact(playersWithHighestLoseStreak, playersWithHighestLoseStreak[0].stats.biggestLoseStreak, ' has lost the most matches in a row with ', 0));
 
+        console.log(funFacts);
         return funFacts;
     };
 
-    var buildFact = function(players, stat, text) {
+    var buildFact = function(players, stat, text, decimals) {
         var string = "";
-        if (players.length === 1) {
+        if (players.length === 1 && !angular.isUndefined(stat.date)) {
             string += moment(stat.date).format(DATE_FORMAT) + ' - ';
         }
         angular.forEach(players, function(player, index) {
@@ -276,7 +352,7 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
                 string += ' and ';
             }
         });
-        string += text + $filter('bold')(stat.value);
+        string += text + $filter('bold')($filter('number')(stat.value, decimals));
         return string;
     };
 });

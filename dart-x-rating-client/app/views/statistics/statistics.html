@@ -28,12 +28,12 @@
                     <tr ng-repeat="player in players | orderBy: 'rating' : true" player-update-animation>
                         <td>{{$index+1}}</td>
                         <td>{{player.name}}</td>
-                        <td><span ng-show="player.matches != null">{{player.stats.wins}} / {{player.stats.matches}}</span></td>
-                        <td>{{player.stats.wins | percentage: player.stats.matches : 0}}</td>
+                        <td><span ng-show="player.stats.matches.value != null">{{player.stats.wins.value}} / {{player.stats.matches.value}}</span></td>
+                        <td>{{player.stats.wins.value | percentage: player.stats.matches.value : 0}}</td>
                         <td>{{player.rating | roundWhole}}</td>
                         <td>{{player.stats.highestRating.value | roundWhole}} / {{player.stats.lowestRating.value | roundWhole}}</td>
                         <td>{{player.form}}</td>
-                        <td>{{player.stats.highestRatingImprovement.value | number: 2}} / {{player.stats.lowestRatingImprovement.value | number: 2}}</td>
+                        <td>{{player.stats.highestRatingImprovement.value | number: 2}} / {{player.stats.highestRatingLoss.value | number: 2}}</td>
                     </tr>
                     </tbody>
                 </table>
