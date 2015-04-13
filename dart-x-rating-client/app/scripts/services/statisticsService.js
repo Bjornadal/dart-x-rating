@@ -281,7 +281,7 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
             if (playersWithHighestRatingImprovement.length === 0) {
                 playersWithHighestRatingImprovement.push(player);
             } else {
-                if ($filter('number')(player.stats.highestRatingImprovement.value, 2) < $filter('number')(playersWithHighestRatingImprovement[playersWithHighestRatingImprovement.length-1].stats.highestRatingImprovement.value, 2)) {
+                if ($filter('number')(player.stats.highestRatingImprovement.value, 2) > $filter('number')(playersWithHighestRatingImprovement[playersWithHighestRatingImprovement.length-1].stats.highestRatingImprovement.value, 2)) {
                     playersWithHighestRatingImprovement = [];
                     playersWithHighestRatingImprovement.push(player);
                 } else if ($filter('number')(player.stats.highestRatingImprovement.value, 2) === $filter('number')(playersWithHighestRatingImprovement[playersWithHighestRatingImprovement.length-1].stats.highestRatingImprovement.value, 2)) {
@@ -352,6 +352,7 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
         funFacts.push(buildFact(playersWithHighestLoseStreak, playersWithHighestLoseStreak[0].stats.biggestLoseStreak, ' has lost the most matches in a row with ', 0));
         funFacts.push(buildFact(playersWithMostAchievements, playersWithMostAchievements[0].stats.achievements, ' has the most achievements with ', 0));
 
+        console.log(funFacts);
         return funFacts;
     };
 
