@@ -46,11 +46,11 @@ public class GameController {
         for(Placement placement : game.getPlacements()) {
             Player strippedPlayer = new Player();
             strippedPlayer.setPlayerId(placement.getPlayer().getPlayerId());
-            List<Player> filterdPlayer = league.getPlayers().stream()
+            Player filteredPlayer = league.getPlayers().stream()
                                                             .filter(p -> p.getPlayerId().equals(strippedPlayer.getPlayerId()))
-                                                            .collect(Collectors.toList());
-            strippedPlayer.setRating(filterdPlayer.get(0).getRating());
-            strippedPlayer.setName(filterdPlayer.get(0).getName());
+                                                            .collect(Collectors.toList()).get(0);
+            strippedPlayer.setRating(filteredPlayer.getRating());
+            strippedPlayer.setName(filteredPlayer.getName());
             placement.setPlayer(strippedPlayer);
             strippedGame.getPlacements().add(placement);
         }
@@ -63,6 +63,7 @@ public class GameController {
                     leaguePlayer.setRating(gamePlayer.getRating());
                     leaguePlayer.setPreviousRating(gamePlayer.getPreviousRating());
                     leaguePlayer.setRatingAdjustment(gamePlayer.getRatingAdjustment());
+                    leaguePlayer.setGames(leaguePlayer.getGames() + 1);
                 }
             }
         }

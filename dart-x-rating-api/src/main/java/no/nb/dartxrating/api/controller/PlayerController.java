@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Created by andreasb on 10.04.15.
@@ -19,9 +20,6 @@ import java.util.UUID;
 
 @RestController
 public class PlayerController {
-
-    @Autowired
-    private PlayerRepository playerRepository;
 
     @Autowired
     private LeagueRepository leagueRepository;
@@ -45,5 +43,21 @@ public class PlayerController {
         leagueRepository.save(league);
 
         return new ResponseEntity<Player>(HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/leagues/{leagueId}/players/{playerId}", method = RequestMethod.POST)
+    public ResponseEntity createPlayer(@PathVariable String leagueId, @PathVariable String playerId, @RequestBody Player player) {
+        League league = leagueRepository.findOne(leagueId);
+        List<Player> leaguePlayers = league.getPlayers();
+
+        Player oldPlayer = leaguePlayers.stream()
+                .filter(p -> p.getPlayerId().equals(playerId))
+                .collect(Collectors.toList()).get(0);
+
+        oldPlayer.merge(player);
+
+        leagueRepository.save(league);
+
+        return new ResponseEntity<Player>(HttpStatus.OK);
     }
 }

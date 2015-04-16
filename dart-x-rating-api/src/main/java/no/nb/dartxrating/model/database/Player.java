@@ -15,10 +15,20 @@ public class Player {
     private double rating;
     private double previousRating;
     private double ratingAdjustment;
+    private int games;
+    private int wins;
     private List<Achievement> achievements;
 
     public Player() {
 
+    }
+
+    public void merge(Player player) {
+        this.name = (player.getName() != null) ? player.getName() : this.name;
+        this.email = (player.getEmail() != null) ? player.getEmail() : this.email;
+        this.rating = (player.getRating() != 0) ? player.getRating() : this.rating;
+        this.previousRating = (player.getPreviousRating() != 0) ? player.getPreviousRating() : this.previousRating;
+        this.ratingAdjustment = (player.getRatingAdjustment() != 0) ? player.getRatingAdjustment() : this.ratingAdjustment;
     }
 
     public String getPlayerId() {
@@ -75,5 +85,21 @@ public class Player {
 
     public void setAchievements(List<Achievement> achievements) {
         this.achievements = achievements;
+    }
+
+    public int getGames() {
+        return games;
+    }
+
+    public void setGames(int games) {
+        this.games = games;
+    }
+
+    public int getWins() {
+        return wins;
+    }
+
+    public void setWins(int wins) {
+        this.wins = wins;
     }
 }
