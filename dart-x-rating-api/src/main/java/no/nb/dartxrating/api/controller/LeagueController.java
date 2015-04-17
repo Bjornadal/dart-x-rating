@@ -1,5 +1,6 @@
 package no.nb.dartxrating.api.controller;
 
+import no.nb.dartxrating.api.repository.GameRepository;
 import no.nb.dartxrating.api.repository.LeagueRepository;
 import no.nb.dartxrating.api.repository.PlayerRepository;
 import no.nb.dartxrating.model.database.League;
@@ -10,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 /**
  * Created by andreasb on 10.04.15.
@@ -22,6 +26,9 @@ public class LeagueController {
 
     @Autowired
     private PlayerRepository playerRepository;
+
+    @Autowired
+    private GameRepository gameRepository;
 
     @RequestMapping(value = "/leagues", method = RequestMethod.POST)
     public ResponseEntity<League> createLeague(@RequestBody League league) {
@@ -38,14 +45,37 @@ public class LeagueController {
     }
 
     @RequestMapping(value = "/leagues", method = RequestMethod.GET)
-    public ResponseEntity<List<League>> listLeagues() {
-        return new ResponseEntity<>(leagueRepository.findAll(), HttpStatus.OK);
+    public ResponseEntity<List<League>> listLeagues(@RequestParam(required = false) String[] expand) {
+        List<League> leagues = leagueRepository.findAll();
+        for (League league : leagues) {
+            league.add(linkTo(methodOn(LeagueController.class).getLeague(league.getLeagueId(), null)).withSelfRel());
+
+            //Expand
+            if (expand != null) {
+                for (String item : expand) {
+                    //Expand games
+                    if (item.equals("games")) {
+                        league.setGames(gameRepository.findByLeagueId(league.getLeagueId()));
+                    }
+                    //Expand players
+                    if (item.equals("players")) {
+                        league.setPlayers(playerRepository.findByLeagueId(league.getLeagueId()));
+                    }
+                }
+            }
+        }
+
+        return new ResponseEntity<>(leagues, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/leagues/{leagueId}", method = RequestMethod.GET)
-    public ResponseEntity<League> getLeague(@PathVariable String leagueId) {
+    public ResponseEntity<League> getLeague(@PathVariable String leagueId, @RequestParam(required = false) String[] expand) {
         League league = leagueRepository.findOne(leagueId);
-        league.setPlayers(playerRepository.findByLeagueId(leagueId));
+        league.add(linkTo(methodOn(GameController.class).listGames(league.getLeagueId())).withRel("games"));
+        league.add(linkTo(methodOn(PlayerController.class).listPlayers(league.getLeagueId())).withRel("players"));
+
+
+
         return new ResponseEntity<>(league, HttpStatus.OK);
     }
 }

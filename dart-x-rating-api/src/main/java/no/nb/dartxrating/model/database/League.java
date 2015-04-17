@@ -1,12 +1,11 @@
 package no.nb.dartxrating.model.database;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.joda.time.DateTime;
+import com.fasterxml.jackson.annotation.JsonValue;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.hateoas.ResourceSupport;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,11 +13,12 @@ import java.util.List;
  */
 @Document(collection = "Leagues")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class League {
+public class League extends ResourceSupport {
     @Id
     private String leagueId;
     private String name;
     private List<Player> players;
+    private List<Game> games;
 
     public League() {
 
@@ -30,6 +30,10 @@ public class League {
 
     public void setLeagueId(String leagueId) {
         this.leagueId = leagueId;
+    }
+
+    public String getExpand() {
+        return "players,games";
     }
 
     public String getName() {
@@ -46,5 +50,13 @@ public class League {
 
     public void setPlayers(List<Player> players) {
         this.players = players;
+    }
+
+    public List<Game> getGames() {
+        return games;
+    }
+
+    public void setGames(List<Game> games) {
+        this.games = games;
     }
 }
