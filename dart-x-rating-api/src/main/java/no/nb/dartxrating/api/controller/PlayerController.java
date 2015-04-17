@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -30,7 +31,8 @@ public class PlayerController {
     }
 
     @RequestMapping(value = "/leagues/{leagueId}/players", method = RequestMethod.POST)
-    public ResponseEntity createPlayer(@PathVariable String leagueId, @RequestBody Player player) {
+    public ResponseEntity createPlayer(@PathVariable String leagueId,
+                                       @Valid @RequestBody Player player) {
         player.setPlayerId(UUID.randomUUID().toString());
         player.setRating(1500);
         player.setLeagueId(leagueId);
@@ -39,7 +41,9 @@ public class PlayerController {
     }
 
     @RequestMapping(value = "/leagues/{leagueId}/players/{playerId}", method = RequestMethod.POST)
-    public ResponseEntity createPlayer(@PathVariable String leagueId, @PathVariable String playerId, @RequestBody Player player) {
+    public ResponseEntity updatePlayer(@PathVariable String leagueId,
+                                       @PathVariable String playerId,
+                                       @RequestBody Player player) {
         Player oldPlayer = playerRepository.findOne(playerId);
         oldPlayer.merge(player);
         playerRepository.save(player);

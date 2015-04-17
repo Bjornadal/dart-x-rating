@@ -1,11 +1,10 @@
 package no.nb.dartxrating.model.database;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonValue;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.hateoas.ResourceSupport;
-
 import java.util.List;
 
 /**
@@ -16,7 +15,10 @@ import java.util.List;
 public class League extends ResourceSupport {
     @Id
     private String leagueId;
+    @NotEmpty
     private String name;
+    @NotEmpty
+    private String password;
     private List<Player> players;
     private List<Game> games;
 
@@ -42,6 +44,14 @@ public class League extends ResourceSupport {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPassword(boolean display) {
+        return (display) ? this.password : null;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public List<Player> getPlayers() {

@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -40,7 +41,8 @@ public class GameController {
     }
 
     @RequestMapping(value = "/leagues/{leagueId}/games", method = RequestMethod.POST)
-    public ResponseEntity<Game> createGame(@PathVariable String leagueId, @RequestBody Game game) {
+    public ResponseEntity<Game> createGame(@PathVariable String leagueId,
+                                           @Valid @RequestBody Game game) {
         List<Player> leaguePlayers = playerRepository.findByLeagueId(leagueId);
 
         Game strippedGame = new Game();
