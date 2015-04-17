@@ -1,6 +1,8 @@
 package no.nb.dartxrating.model.database;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.joda.time.DateTime;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
@@ -10,8 +12,12 @@ import java.util.List;
 /**
  * Created by andreasb on 10.04.15.
  */
+@Document(collection = "Games")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Game {
+    @Id
     private String gameId;
+    private String leagueId;
     private Date dateTime;
     private List<Placement> placements = new ArrayList<>();
 
@@ -25,6 +31,14 @@ public class Game {
 
     public void setGameId(String gameId) {
         this.gameId = gameId;
+    }
+
+    public String getLeagueId() {
+        return leagueId;
+    }
+
+    public void setLeagueId(String leagueId) {
+        this.leagueId = leagueId;
     }
 
     public Date getDateTime() {

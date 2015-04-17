@@ -1,6 +1,8 @@
 package no.nb.dartxrating.api.controller;
 
+import no.nb.dartxrating.api.repository.GameRepository;
 import no.nb.dartxrating.api.repository.LeagueRepository;
+import no.nb.dartxrating.api.repository.PlayerRepository;
 import no.nb.dartxrating.api.service.RatingService;
 import no.nb.dartxrating.model.database.Game;
 import no.nb.dartxrating.model.database.League;
@@ -23,30 +25,33 @@ import java.util.stream.Collectors;
 public class GameController {
 
     @Autowired
-    private LeagueRepository leagueRepository;
+    private GameRepository gameRepository;
+
+    @Autowired
+    private PlayerRepository playerRepository;
 
     @Autowired
     private RatingService ratingService;
 
     @RequestMapping(value = "/leagues/{leagueId}/games", method = RequestMethod.GET)
     public ResponseEntity<List<Game>> listGames(@PathVariable String leagueId) {
-        List<Game> games = leagueRepository.findOne(leagueId).getGames();
-
-        return new ResponseEntity<List<Game>>(games, HttpStatus.OK);
+        List<Game> games = gameRepository.findByLeagueId(leagueId);
+        return new ResponseEntity<>(games, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/leagues/{leagueId}/games", method = RequestMethod.POST)
     public ResponseEntity<Game> createGame(@PathVariable String leagueId, @RequestBody Game game) {
-
-        League league = leagueRepository.findOne(leagueId);
+        List<Player> leaguePlayers = playerRepository.findByLeagueId(leagueId);
 
         Game strippedGame = new Game();
         strippedGame.setGameId(UUID.randomUUID().toString());
+        strippedGame.setLeagueId(leagueId);
         strippedGame.setDateTime(DateTime.now().toDateTimeISO().toDate());
+
         for(Placement placement : game.getPlacements()) {
             Player strippedPlayer = new Player();
             strippedPlayer.setPlayerId(placement.getPlayer().getPlayerId());
-            Player filteredPlayer = league.getPlayers().stream()
+            Player filteredPlayer = leaguePlayers.stream()
                                                             .filter(p -> p.getPlayerId().equals(strippedPlayer.getPlayerId()))
                                                             .collect(Collectors.toList()).get(0);
             strippedPlayer.setRating(filteredPlayer.getRating());
@@ -58,20 +63,21 @@ public class GameController {
         List<Player> calculatedRating = ratingService.calculateRatings(strippedGame);
 
         for (Player gamePlayer : calculatedRating) {
-            for (Player leaguePlayer : league.getPlayers()) {
+            for (Player leaguePlayer : leaguePlayers) {
                 if (gamePlayer.getPlayerId().equals(leaguePlayer.getPlayerId())) {
                     leaguePlayer.setRating(gamePlayer.getRating());
                     leaguePlayer.setPreviousRating(gamePlayer.getPreviousRating());
                     leaguePlayer.setRatingAdjustment(gamePlayer.getRatingAdjustment());
                     leaguePlayer.setGames(leaguePlayer.getGames() + 1);
+
+                    playerRepository.save(leaguePlayer);
                 }
             }
         }
 
-        league.getGames().add(strippedGame);
-        leagueRepository.save(league);
+        gameRepository.save(strippedGame);
 
-        return new ResponseEntity<Game>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

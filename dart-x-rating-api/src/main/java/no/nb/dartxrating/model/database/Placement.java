@@ -1,8 +1,12 @@
 package no.nb.dartxrating.model.database;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 /**
  * Created by andreasb on 10.04.15.
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Placement implements Cloneable {
     private int placement;
     private Player player;

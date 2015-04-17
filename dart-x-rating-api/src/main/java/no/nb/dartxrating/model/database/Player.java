@@ -1,15 +1,20 @@
 package no.nb.dartxrating.model.database;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
 /**
  * Created by andreasb on 10.04.15.
  */
+@Document(collection = "Players")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Player {
+    @Id
     private String playerId;
+    private String leagueId;
     private String name;
     private String email;
     private double rating;
@@ -101,5 +106,13 @@ public class Player {
 
     public void setWins(int wins) {
         this.wins = wins;
+    }
+
+    public String getLeagueId() {
+        return leagueId;
+    }
+
+    public void setLeagueId(String leagueId) {
+        this.leagueId = leagueId;
     }
 }
