@@ -42,6 +42,10 @@ angular
                 templateUrl: 'views/statistics/statistics.html',
                 controller: 'StatisticsCtrl'
             })
+            .when('/admin', {
+                templateUrl: 'views/admin/index.html',
+                controller: 'AdminCtrl'
+            })
             .otherwise({
                 redirectTo: '/'
             });
