@@ -352,7 +352,6 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
         funFacts.push(buildFact(playersWithHighestLoseStreak, playersWithHighestLoseStreak[0].stats.biggestLoseStreak, ' has lost the most matches in a row with ', 0));
         funFacts.push(buildFact(playersWithMostAchievements, playersWithMostAchievements[0].stats.achievements, ' has the most achievements with ', 0));
 
-        console.log(funFacts);
         return funFacts;
     };
 
