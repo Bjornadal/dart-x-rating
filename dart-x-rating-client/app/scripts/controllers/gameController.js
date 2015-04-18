@@ -39,7 +39,7 @@ angular.module('dartXRatingApp').controller('GameCtrl', function ($scope, $filte
             $scope.players = DartService.getPlayers();
 
             // Redirect to rating summary
-            $location.url('/');
+            $location.url('/ratings');
         });
     };
 

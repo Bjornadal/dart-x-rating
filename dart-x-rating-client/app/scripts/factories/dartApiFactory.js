@@ -9,9 +9,9 @@ angular.module('dartXRatingApp').factory("LeagueFactory", function($resource, de
 });
 
 angular.module('dartXRatingApp').factory("PlayerFactory", function($resource, defaultConfig) {
-    return $resource(defaultConfig.dartApi + "/leagues/:leagueId/players", null,
+    return $resource(defaultConfig.dartApi + "/leagues/:leagueId/players/:playerId", null,
         {
-
+            addAchievement: {method:"POST", url: defaultConfig.dartApi + "/leagues/:leagueId/players/:playerId/achievements"}
         })
 });
 
@@ -21,3 +21,11 @@ angular.module('dartXRatingApp').factory("GameFactory", function($resource, defa
 
         })
 });
+
+angular.module('dartXRatingApp').factory("AchievementFactory", function($resource, defaultConfig) {
+    return $resource(defaultConfig.dartApi + "/achievements", null,
+        {
+
+        })
+});
+
