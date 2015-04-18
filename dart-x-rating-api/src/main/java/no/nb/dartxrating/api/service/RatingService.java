@@ -3,6 +3,7 @@ package no.nb.dartxrating.api.service;
 import no.nb.dartxrating.model.database.Game;
 import no.nb.dartxrating.model.database.Placement;
 import no.nb.dartxrating.model.database.Player;
+import no.nb.dartxrating.model.database.PlayerPlacement;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,14 +18,14 @@ public class RatingService {
 
     private final int kValue = 32;
 
-    public List<Player> calculateRatings(Game game) {
+    public List<PlayerPlacement> calculateRatings(Game game) {
 
         List<Placement> currentPlacements = new ArrayList<>();
         for (Placement currentPlacement : game.getPlacements()) {
             Placement placement = new Placement();
             placement.setPlacement(currentPlacement.getPlacement());
 
-            Player player = new Player();
+            PlayerPlacement player = new PlayerPlacement();
             player.setPlayerId(currentPlacement.getPlayer().getPlayerId());
             player.setName(currentPlacement.getPlayer().getName());
             player.setRating(currentPlacement.getPlayer().getRating());
@@ -34,15 +35,14 @@ public class RatingService {
         }
 
         for (Placement placement : game.getPlacements()) {
-            Player player = placement.getPlayer();
+            PlayerPlacement player = placement.getPlayer();
             double rating = player.getRating();
-            player.setPreviousRating(rating);
             double ratingAdjustment = 0;
             int wl = (placement.getPlacement() == 1) ? 1 : 0;
             boolean playerWinner = (placement.getPlacement() == 1);
 
             for (Placement comparePlacement : currentPlacements) {
-                Player comparePlayer = comparePlacement.getPlayer();
+                PlayerPlacement comparePlayer = comparePlacement.getPlayer();
                 boolean comparePlayerWinner = (comparePlacement.getPlacement() == 1);
                 if (!player.getPlayerId().equals(comparePlayer.getPlayerId()) && (playerWinner || (!playerWinner && comparePlayerWinner))) {
                     double opponentRating = comparePlayer.getRating();
@@ -62,7 +62,7 @@ public class RatingService {
             System.out.println("=========================================");
         }
 
-        List<Player> players = new ArrayList<>();
+        List<PlayerPlacement> players = new ArrayList<>();
         game.getPlacements().forEach(element -> players.add(element.getPlayer()));
 
         return players;

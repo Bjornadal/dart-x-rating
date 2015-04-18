@@ -7,13 +7,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * Created by andreasb on 10.04.15.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Placement implements Cloneable {
+public class Placement {
     private int placement;
-    private Player player;
-
-    public Placement clone() throws CloneNotSupportedException {
-        return (Placement)super.clone();
-    }
+    private PlayerPlacement player;
 
     public int getPlacement() {
         return placement;
@@ -23,11 +19,11 @@ public class Placement implements Cloneable {
         this.placement = placement;
     }
 
-    public Player getPlayer() {
+    public PlayerPlacement getPlayer() {
         return player;
     }
 
-    public void setPlayer(Player player) {
+    public void setPlayer(PlayerPlacement player) {
         this.player = player;
     }
 

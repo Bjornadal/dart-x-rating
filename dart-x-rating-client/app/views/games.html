@@ -29,16 +29,16 @@
                         </tr>
                         </tbody>
                     </table>
-                    <input class="btn btn-success" type="submit" value="Register" ng-disabled="gameForm.$invalid">
+                    <input class="btn btn-info" type="submit" value="Register" ng-disabled="gameForm.$invalid">
                 </ng-form>
             </form>
         </div>
     </div>
 
     <div class="panel">
-        <h2>Game History</h2>
-        <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo" aria-expanded="false">View history</button>
-        <div id="demo" class="collapse">
+        <h2>Games</h2>
+        <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#gameHistory" aria-expanded="false">View games</button>
+        <div id="gameHistory" class="collapse">
             <div ng-repeat="game in games | orderBy: 'dateTime' : true | limitTo: 10">
                 <h5>{{game.dateTime | date: 'yyyy-MM-dd HH:mm' }}</h5>
                 <ul>

@@ -7,7 +7,7 @@
  * # MainCtrl
  * Controller of the dartXRatingApp
  */
-angular.module('dartXRatingApp').controller('MainCtrl', function ($scope, $filter, StatisticsService, $timeout, $location, $interval, DartService) {
+angular.module('dartXRatingApp').controller('RatingCtrl', function ($scope, $filter, StatisticsService, $timeout, $location, $interval, DartService) {
     $scope.selectedLeague = DartService.getSelectedLeague();
     $scope.players = DartService.getPlayers();
     $scope.startDate = new Date(new Date().setDate(new Date().getDate()-7));

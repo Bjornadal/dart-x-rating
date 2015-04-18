@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ public class Player {
     private int games;
     private int wins;
     private boolean playedLastGame;
-    private List<Achievement> achievements;
+    private List<Achievement> achievements = new ArrayList<>();
 
     public Player() {
 

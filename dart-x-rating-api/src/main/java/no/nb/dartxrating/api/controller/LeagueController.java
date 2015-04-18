@@ -39,7 +39,7 @@ public class LeagueController {
         league.setLeagueId(UUID.randomUUID().toString());
         league.setPassword(PasswordHash.createHash(league.getPassword(true)));
         leagueRepository.save(league);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(league, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/leagues/{leagueId}", method = RequestMethod.POST)

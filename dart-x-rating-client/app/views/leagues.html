@@ -1,0 +1,53 @@
+<div class="container">
+    <div class="row">
+        <h2>Welcome to Dart-x-rating</h2>
+        <p>Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla </p>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Create new League</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-horizontal">
+                        <div class="input-group" style="margin-bottom: 20px;">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-text-background"></i></span>
+                            <input ng-model="newLeague.name" type="text" class="form-control" placeholder="Name" />
+                        </div>
+                        <div class="input-group" style="margin-bottom: 20px;">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-text-background"></i></span>
+                            <input ng-model="newLeague.password" type="password" class="form-control" id="inputLeaguePassword" placeholder="Administrator password">
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#/admin">Raymond</a></li>
+                                <li><a href="#/admin">Andreas</a></li>
+                            </ul>
+                        </div>
+                        <div class="input-group-btn">
+                            <button ng-click="createLeague()" class="form-control btn-info">Register</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Find League</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-horizontal">
+                        <div class="input-group" style="margin-bottom: 20px;">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                            <input type="text" ng-model="selectedLeague" typeahead="league as league.name for league in leagues | filter:$viewValue | limitTo:8" class="form-control">
+                        </div>
+                        <div class="input-group-btn">
+                            <button ng-click="selectLeague()" class="form-control btn-info">Select</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
