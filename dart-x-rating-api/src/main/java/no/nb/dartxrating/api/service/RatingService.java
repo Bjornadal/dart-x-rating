@@ -21,12 +21,16 @@ public class RatingService {
 
         List<Placement> currentPlacements = new ArrayList<>();
         for (Placement currentPlacement : game.getPlacements()) {
-            try {
-                currentPlacements.add(currentPlacement.clone());
-            }
-            catch (CloneNotSupportedException cne) {
-                currentPlacements.add(currentPlacement);
-            }
+            Placement placement = new Placement();
+            placement.setPlacement(currentPlacement.getPlacement());
+
+            Player player = new Player();
+            player.setPlayerId(currentPlacement.getPlayer().getPlayerId());
+            player.setName(currentPlacement.getPlayer().getName());
+            player.setRating(currentPlacement.getPlayer().getRating());
+            placement.setPlayer(player);
+
+            currentPlacements.add(placement);
         }
 
         for (Placement placement : game.getPlacements()) {
@@ -39,8 +43,8 @@ public class RatingService {
 
             for (Placement comparePlacement : currentPlacements) {
                 Player comparePlayer = comparePlacement.getPlayer();
-                boolean comparePlayerWinner = (placement.getPlacement() != 1);
-                if (player.getPlayerId().equals(comparePlayer.getPlayerId()) && (playerWinner || (!playerWinner && comparePlayerWinner))) {
+                boolean comparePlayerWinner = (comparePlacement.getPlacement() == 1);
+                if (!player.getPlayerId().equals(comparePlayer.getPlayerId()) && (playerWinner || (!playerWinner && comparePlayerWinner))) {
                     double opponentRating = comparePlayer.getRating();
                     double winChance = 1/(1 + (Math.pow(10, ((opponentRating - rating) / 400))));
                     double currentRatingAdjustment = (rating+kValue*(wl-winChance))-rating;

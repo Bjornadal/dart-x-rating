@@ -1,0 +1,8 @@
+<div class="container">
+    <h3>Select league</h3>
+    <div class="form-group">
+        <input type="text" ng-model="selectedLeague" typeahead="league as league.name for league in leagues | filter:$viewValue | limitTo:8" class="form-control">
+    </div>
+    <h5>Selected: {{selectedLeague.name}}</h5>
+    <button ng-click="selectLeague()" class="btn btn-primary" ng-disabled="!selectedLeague">Select</button>
+</div>

@@ -64,6 +64,11 @@ public class GameController {
 
         List<Player> calculatedRating = ratingService.calculateRatings(strippedGame);
 
+        for (Player leaguePlayer : leaguePlayers) {
+            leaguePlayer.setPlayedLastGame(false);
+            playerRepository.save(leaguePlayer);
+        }
+
         for (Player gamePlayer : calculatedRating) {
             for (Player leaguePlayer : leaguePlayers) {
                 if (gamePlayer.getPlayerId().equals(leaguePlayer.getPlayerId())) {
@@ -71,7 +76,7 @@ public class GameController {
                     leaguePlayer.setPreviousRating(gamePlayer.getPreviousRating());
                     leaguePlayer.setRatingAdjustment(gamePlayer.getRatingAdjustment());
                     leaguePlayer.setGames(leaguePlayer.getGames() + 1);
-
+                    leaguePlayer.setPlayedLastGame(true);
                     playerRepository.save(leaguePlayer);
                 }
             }

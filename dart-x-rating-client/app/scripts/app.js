@@ -22,6 +22,10 @@ angular
     ])
     .config(function ($routeProvider) {
         $routeProvider
+            .when('/login', {
+                templateUrl: 'views/login.html',
+                controller: 'LoginCtrl'
+            })
             .when('/', {
                 templateUrl: 'views/main.html',
                 controller: 'MainCtrl'
@@ -34,9 +38,9 @@ angular
                 templateUrl: 'views/achievements.html',
                 controller: 'AchievementsCtrl'
             })
-            .when('/match', {
-                templateUrl: 'views/match.html',
-                controller: 'MatchCtrl'
+            .when('/games', {
+                templateUrl: 'views/games.html',
+                controller: 'GameCtrl'
             })
             .when('/statistics', {
                 templateUrl: 'views/statistics/statistics.html',
@@ -49,7 +53,7 @@ angular
             .otherwise({
                 redirectTo: '/'
             });
-    }).run(function($rootScope) {
+    }).run(function($rootScope, $location, DartService) {
         $rootScope.createGuid = function() {
             function s4() {
                 return Math.floor((1 + Math.random()) * 0x10000)
@@ -59,4 +63,14 @@ angular
             return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
                 s4() + '-' + s4() + s4() + s4();
         }
+
+        $rootScope.$on( "$routeChangeStart", function(event, next, current) {
+            if (!DartService.getSelectedLeague()) {
+                // no logged user, redirect to /login
+                if ( next.templateUrl === "views/login.html") {
+                } else {
+                    $location.path("/login");
+                }
+            }
+        });
     });

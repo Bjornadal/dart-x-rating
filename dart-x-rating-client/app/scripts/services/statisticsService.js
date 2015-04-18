@@ -4,10 +4,10 @@
  * Created by raymondk on 18.03.15.
  */
 
-angular.module('dartXRatingApp').service('StatisticsService', function($q, $filter, PlayerFactory, MatchFactory) {
+angular.module('dartXRatingApp').service('StatisticsService', function($q, $filter) {
     var DATE_FORMAT = 'DD.MM.YYYY';
-    var playerFactory = new PlayerFactory;
-    var matchFactory = new MatchFactory;
+    var playerFactory;
+    var matchFactory;
     var players, matches;
 
     this.generateStatistics = function() {

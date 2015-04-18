@@ -22,6 +22,7 @@ public class Player {
     private double ratingAdjustment;
     private int games;
     private int wins;
+    private boolean playedLastGame;
     private List<Achievement> achievements;
 
     public Player() {
@@ -114,5 +115,13 @@ public class Player {
 
     public void setLeagueId(String leagueId) {
         this.leagueId = leagueId;
+    }
+
+    public boolean isPlayedLastGame() {
+        return playedLastGame;
+    }
+
+    public void setPlayedLastGame(boolean playedLastGame) {
+        this.playedLastGame = playedLastGame;
     }
 }

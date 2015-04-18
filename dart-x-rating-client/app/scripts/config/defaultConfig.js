@@ -4,6 +4,5 @@
 
 angular.module('dartXRatingApp')
     .constant('defaultConfig', {
-        'firebaseBackend': 'https://YOUR-FIREBASE.firebaseio.com',
-        'production': false
+        'dartApi': 'http://localhost:8092/dartxrating'
     });
