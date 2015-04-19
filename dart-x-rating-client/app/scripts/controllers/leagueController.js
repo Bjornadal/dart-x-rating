@@ -8,15 +8,30 @@ angular.module('dartXRatingApp').controller('LeagueCtrl', function ($scope, $fil
     $scope.leagues = DartService.getLeagues();
 
     $scope.selectLeague = function() {
-        DartService.setLeague($scope.selectedLeague).then(function() {
-            $location.path("/ratings");
+        DartService.setLeague($scope.selectedLeague);
+        DartService.authenticate($scope.selectedLeague).then(function(success) {
+            if (success) {
+                $location.path("/ratings");
+            }
+            else {
+                $scope.wrongPassword = true;
+            }
         });
     };
 
     $scope.createLeague = function() {
+        var newLeague = $scope.newLeague;
         DartService.addLeague($scope.newLeague).then(function(league) {
+            league.password = newLeague.password;
             DartService.setLeague(league);
-            $location.path("/ratings");
+            DartService.authenticate(league).then(function(success) {
+                if (success) {
+                    $location.path("/ratings");
+                }
+                else {
+                    $scope.wrongPassword = true;
+                }
+            });
         });
         $scope.newLeague = {};
     };

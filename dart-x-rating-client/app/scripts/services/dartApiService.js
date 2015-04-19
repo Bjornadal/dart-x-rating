@@ -5,6 +5,34 @@
 angular.module('dartXRatingApp').service('DartService', function (LeagueFactory, PlayerFactory, GameFactory, AchievementFactory, $cookies, $q, $http, defaultConfig) {
     this.selectedLeague;
 
+    this.authenticate = function(league) {
+        var deferred = $q.defer();
+
+        if (league.password) {
+            $http({
+                method: "POST",
+                url:  defaultConfig.dartApi + "/leagues/" + league.leagueId + "/authenticate",
+                headers: {
+                    'password': league.password
+                }
+            }).
+                success(function(data, status) {
+                    $cookies.authToken = data.token;
+                    deferred.resolve(true);
+                }).
+                error(function(data, status) {
+                    console.log("Failed to get authentication token. Wrong password?");
+                    deferred.resolve(false);
+                });
+        }
+        else {
+            $cookies.authToken = "";
+            deferred.resolve(true);
+        }
+
+        return deferred.promise;
+    };
+
     this.logout = function() {
         this.selectedLeague = null;
         $cookies.authToken = "";
@@ -20,35 +48,8 @@ angular.module('dartXRatingApp').service('DartService', function (LeagueFactory,
     };
 
     this.setLeague = function(league) {
-        var deferred = $q.defer();
-
-        if (league.password) {
-            $http({
-                method: "POST",
-                url:  defaultConfig.dartApi + "/leagues/" + league.leagueId + "/authenticate",
-                headers: {
-                    'password': league.password
-                }
-            }).
-                success(function(data, status) {
-                    defaultConfig.authToken = data.token;
-                    $cookies.authToken = data.token;
-                    deferred.resolve();
-                }).
-                error(function(data, status) {
-                    console.log("Failed to get authentication token");
-                    deferred.resolve();
-                });
-        }
-        else {
-            $cookies.authToken = "";
-            deferred.resolve();
-        }
-
         this.selectedLeague = league;
         $cookies.selectedLeague = angular.toJson(league);
-
-        return deferred.promise;
     };
 
     this.getSelectedLeague = function() {
@@ -62,7 +63,6 @@ angular.module('dartXRatingApp').service('DartService', function (LeagueFactory,
 
         return this.selectedLeague;
     };
-
 
     this.addLeague = function(league) {
         return LeagueFactory.save(league).$promise;

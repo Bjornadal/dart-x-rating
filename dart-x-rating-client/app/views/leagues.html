@@ -46,6 +46,12 @@
                             <button ng-click="selectLeague()" class="form-control btn-info">Select</button>
                         </div>
                     </div>
+                    <br/>
+                    <div class="alert alert-danger" role="alert" ng-show="wrongPassword">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        <span class="sr-only">Error:</span>
+                        Wrong password
+                    </div>
                 </div>
             </div>
         </div>
