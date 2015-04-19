@@ -27,8 +27,7 @@ angular.module('dartXRatingApp').service('DartService', function (LeagueFactory,
 
 
     this.addLeague = function(league) {
-        var deferred = LeagueFactory.save(league);
-        return deferred.$promise;
+        return LeagueFactory.save(league).$promise;
     };
 
     this.getPlayers = function() {
@@ -36,11 +35,11 @@ angular.module('dartXRatingApp').service('DartService', function (LeagueFactory,
     };
 
     this.addPlayer = function(player) {
-        PlayerFactory.save({leagueId: this.selectedLeague.leagueId}, player);
+        return PlayerFactory.save({leagueId: this.selectedLeague.leagueId}, player).$promise;
     };
 
     this.addAchievementOnPlayer = function(achievement, player) {
-        PlayerFactory.addAchievement({leagueId: this.selectedLeague.leagueId, playerId: player.playerId}, achievement);
+        return PlayerFactory.addAchievement({leagueId: this.selectedLeague.leagueId, playerId: player.playerId}, achievement).$promise;
     };
 
     this.getGames = function() {
@@ -48,8 +47,7 @@ angular.module('dartXRatingApp').service('DartService', function (LeagueFactory,
     };
 
     this.addGame = function(game) {
-        var deferred = GameFactory.save({leagueId: this.selectedLeague.leagueId}, game);
-        return deferred.$promise;
+        return GameFactory.save({leagueId: this.selectedLeague.leagueId}, game).$promise;
     };
 
     this.getAchievements = function() {
@@ -57,6 +55,6 @@ angular.module('dartXRatingApp').service('DartService', function (LeagueFactory,
     };
 
     this.addAchievement = function(achievement) {
-        AchievementFactory.save(achievement);
+        return AchievementFactory.save(achievement).$promise;
     };
 });
