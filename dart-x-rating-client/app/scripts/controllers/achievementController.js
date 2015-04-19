@@ -5,7 +5,7 @@
  */
 
 angular.module('dartXRatingApp').controller('AchievementCtrl', function ($scope, DartService) {
-
+    $scope.isLeagueAdmin = DartService.isLeagueAdmin();
     $scope.players = DartService.getPlayers();
     $scope.achievements = DartService.getAchievements();
     $scope.achievement = {};

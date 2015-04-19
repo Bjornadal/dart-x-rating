@@ -8,8 +8,9 @@ angular.module('dartXRatingApp').controller('LeagueCtrl', function ($scope, $fil
     $scope.leagues = DartService.getLeagues();
 
     $scope.selectLeague = function() {
-        DartService.setLeague($scope.selectedLeague);
-        $location.path("/ratings");
+        DartService.setLeague($scope.selectedLeague).then(function() {
+            $location.path("/ratings");
+        });
     };
 
     $scope.createLeague = function() {

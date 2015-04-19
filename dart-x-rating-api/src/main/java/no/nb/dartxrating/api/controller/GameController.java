@@ -3,6 +3,7 @@ package no.nb.dartxrating.api.controller;
 import no.nb.dartxrating.api.repository.GameRepository;
 import no.nb.dartxrating.api.repository.LeagueRepository;
 import no.nb.dartxrating.api.repository.PlayerRepository;
+import no.nb.dartxrating.api.security.SecurityService;
 import no.nb.dartxrating.api.service.RatingService;
 import no.nb.dartxrating.model.database.*;
 import org.joda.time.DateTime;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * Created by andreasb on 10.04.15.
@@ -31,6 +31,9 @@ public class GameController {
     @Autowired
     private RatingService ratingService;
 
+    @Autowired
+    private SecurityService securityService;
+
     @RequestMapping(value = "/leagues/{leagueId}/games", method = RequestMethod.GET)
     public ResponseEntity<List<Game>> listGames(@PathVariable String leagueId) {
         List<Game> games = gameRepository.findByLeagueId(leagueId);
@@ -39,7 +42,12 @@ public class GameController {
 
     @RequestMapping(value = "/leagues/{leagueId}/games", method = RequestMethod.POST)
     public ResponseEntity<Game> createGame(@PathVariable String leagueId,
+                                           @RequestHeader("authToken") String authToken,
                                            @Valid @RequestBody Game game) {
+        if (!securityService.hasAccess(leagueId, authToken)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         // Set game variables
         game.setGameId(UUID.randomUUID().toString());
         game.setLeagueId(leagueId);

@@ -19,10 +19,6 @@
                         <div class="input-group" style="margin-bottom: 20px;">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-text-background"></i></span>
                             <input ng-model="newLeague.password" type="password" class="form-control" id="inputLeaguePassword" placeholder="Administrator password">
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="#/admin">Raymond</a></li>
-                                <li><a href="#/admin">Andreas</a></li>
-                            </ul>
                         </div>
                         <div class="input-group-btn">
                             <button ng-click="createLeague()" class="form-control btn-info">Register</button>
@@ -41,6 +37,10 @@
                         <div class="input-group" style="margin-bottom: 20px;">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
                             <input type="text" ng-model="selectedLeague" typeahead="league as league.name for league in leagues | filter:$viewValue | limitTo:8" class="form-control">
+                        </div>
+                        <div class="input-group" style="margin-bottom: 20px;">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-text-background"></i></span>
+                            <input ng-model="selectedLeague.password" type="password" class="form-control" placeholder="Administrator password (Optional)">
                         </div>
                         <div class="input-group-btn">
                             <button ng-click="selectLeague()" class="form-control btn-info">Select</button>

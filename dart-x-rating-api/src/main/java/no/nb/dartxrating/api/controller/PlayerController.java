@@ -2,6 +2,7 @@ package no.nb.dartxrating.api.controller;
 
 import no.nb.dartxrating.api.repository.LeagueRepository;
 import no.nb.dartxrating.api.repository.PlayerRepository;
+import no.nb.dartxrating.api.security.SecurityService;
 import no.nb.dartxrating.model.database.Achievement;
 import no.nb.dartxrating.model.database.League;
 import no.nb.dartxrating.model.database.Player;
@@ -26,6 +27,9 @@ public class PlayerController {
     @Autowired
     private PlayerRepository playerRepository;
 
+    @Autowired
+    private SecurityService securityService;
+
     @RequestMapping(value = "/leagues/{leagueId}/players", method = RequestMethod.GET)
     public ResponseEntity<List<Player>> listPlayers(@PathVariable String leagueId) {
         List<Player> leaguePlayers = playerRepository.findByLeagueId(leagueId);
@@ -34,7 +38,12 @@ public class PlayerController {
 
     @RequestMapping(value = "/leagues/{leagueId}/players", method = RequestMethod.POST)
     public ResponseEntity createPlayer(@PathVariable String leagueId,
+                                       @RequestHeader("authToken") String authToken,
                                        @Valid @RequestBody Player player) {
+        if (!securityService.hasAccess(leagueId, authToken)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         player.setPlayerId(UUID.randomUUID().toString());
         player.setRating(1500);
         player.setLeagueId(leagueId);
@@ -45,7 +54,12 @@ public class PlayerController {
     @RequestMapping(value = "/leagues/{leagueId}/players/{playerId}", method = RequestMethod.POST)
     public ResponseEntity updatePlayer(@PathVariable String leagueId,
                                        @PathVariable String playerId,
+                                       @RequestHeader("authToken") String authToken,
                                        @RequestBody Player player) {
+        if (!securityService.hasAccess(leagueId, authToken)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         Player oldPlayer = playerRepository.findOne(playerId);
         oldPlayer.merge(player);
         playerRepository.save(player);
@@ -54,8 +68,13 @@ public class PlayerController {
 
     @RequestMapping(value = "/leagues/{leagueId}/players/{playerId}/achievements", method = RequestMethod.POST)
     public ResponseEntity<Player> addAchievement(@PathVariable String leagueId,
-                                       @PathVariable String playerId,
-                                       @RequestBody Achievement achievement) {
+                                                 @PathVariable String playerId,
+                                                 @RequestHeader("authToken") String authToken,
+                                                 @RequestBody Achievement achievement) {
+        if (!securityService.hasAccess(leagueId, authToken)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         Player player = playerRepository.findOne(playerId);
         achievement.setDateTime(DateTime.now().toDateTimeISO().toDate());
         player.getAchievements().add(achievement);

@@ -1,6 +1,7 @@
 'use strict';
 
 angular.module('dartXRatingApp').controller('GameCtrl', function ($scope, $filter, $location, DartService) {
+    $scope.isLeagueAdmin = DartService.isLeagueAdmin();
     $scope.game = {};
     $scope.games = DartService.getGames();
     $scope.players = DartService.getPlayers();

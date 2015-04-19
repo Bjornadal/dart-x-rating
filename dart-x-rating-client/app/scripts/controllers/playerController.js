@@ -9,6 +9,7 @@
  */
 angular.module('dartXRatingApp')
     .controller('PlayerCtrl', function ($scope, DartService) {
+        $scope.isLeagueAdmin = DartService.isLeagueAdmin();
         $scope.player = {};
         $scope.players = DartService.getPlayers();
 

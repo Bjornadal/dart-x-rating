@@ -66,7 +66,7 @@ angular
 
         $rootScope.$on( "$routeChangeStart", function(event, next, current) {
             if (!DartService.getSelectedLeague()) {
-                // no logged user, redirect to /login
+                // no league selected, redirect to /login
                 if ( next.templateUrl === "views/leagues.html") {
                 } else {
                     $location.path("/");

@@ -17,7 +17,6 @@ public class Player {
     private String playerId;
     private String leagueId;
     private String name;
-    private String email;
     private double rating;
     private double previousRating;
     private double ratingAdjustment;
@@ -32,7 +31,6 @@ public class Player {
 
     public void merge(Player player) {
         this.name = (player.getName() != null) ? player.getName() : this.name;
-        this.email = (player.getEmail() != null) ? player.getEmail() : this.email;
         this.rating = (player.getRating() != 0) ? player.getRating() : this.rating;
         this.previousRating = (player.getPreviousRating() != 0) ? player.getPreviousRating() : this.previousRating;
         this.ratingAdjustment = (player.getRatingAdjustment() != 0) ? player.getRatingAdjustment() : this.ratingAdjustment;
@@ -52,14 +50,6 @@ public class Player {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public double getRating() {
