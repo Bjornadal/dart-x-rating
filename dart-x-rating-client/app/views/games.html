@@ -1,11 +1,11 @@
 <div class="container">
     <div class="panel">
         <div>
-            <h3>Register match</h3>
+            <h2>Register game</h2>
         </div>
         <div>
-            <form name="matchForm" ng-submit="registerMatch()" novalidate match-validation>
-                <ng-form name="matchFieldForm">
+            <form name="gameForm" ng-submit="registerGame()" novalidate game-validation>
+                <ng-form name="gameFieldForm">
                     <table class="table table-hover">
                         <thead>
                         <tr>
@@ -15,7 +15,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="player in match.players">
+                        <tr ng-repeat="player in players">
                             <td>{{player.name}}</td>
                             <td>
                                 <input class="checkbox form-control" type="checkbox" ng-click="togglePlayer(player)">
@@ -29,22 +29,21 @@
                         </tr>
                         </tbody>
                     </table>
-                    <input class="btn btn-success" type="submit" value="Register" ng-disabled="matchForm.$invalid">
+                    <input class="btn btn-info" type="submit" value="Register" ng-disabled="gameForm.$invalid">
                 </ng-form>
             </form>
         </div>
     </div>
 
     <div class="panel">
-        <div>
-            <h3>Match History</h3>
-        </div>
-        <div>
-            <div ng-repeat="match in matches | orderBy: 'date' : true | limitTo: 10">
-                <h5>{{match.date | date: 'yyyy-MM-dd HH:mm' }}</h5>
+        <h2>Games</h2>
+        <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#gameHistory" aria-expanded="false">View games</button>
+        <div id="gameHistory" class="collapse">
+            <div ng-repeat="game in games | orderBy: 'dateTime' : true | limitTo: 10">
+                <h5>{{game.dateTime | date: 'yyyy-MM-dd HH:mm' }}</h5>
                 <ul>
-                    <li ng-repeat="player in match.players">
-                        {{player.name}} | {{player.ratingAdjustment | roundWhole}} <span ng-show="player.winner">(Winner)</span>
+                    <li ng-repeat="placement in game.placements">
+                        {{placement.player.name}} | {{placement.player.ratingAdjustment | roundWhole}} <span ng-show="placement.placement == 1">(Winner)</span>
                     </li>
                 </ul>
             </div>

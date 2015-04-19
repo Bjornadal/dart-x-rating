@@ -1,8 +1,11 @@
 package no.nb.dartxrating.model.database;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.joda.time.DateTime;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.Date;
 
 /**
  * Created by andreasb on 10.04.15.
@@ -15,6 +18,7 @@ public class Achievement {
     private String achievementId;
     private String name;
     private String description;
+    private Date dateTime;
 
     public String getAchievementId() {
         return achievementId;
@@ -38,5 +42,13 @@ public class Achievement {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Date getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(Date dateTime) {
+        this.dateTime = dateTime;
     }
 }

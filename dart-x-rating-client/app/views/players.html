@@ -1,7 +1,7 @@
 <div class="container">
     <div class="panel">
         <div>
-            <h3>Register new player</h3>
+            <h2>Register new player</h2>
         </div>
         <br/>
         <div>
@@ -20,7 +20,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-success" ng-disabled="playerRegForm.$invalid">Sign up</button>
+                        <button type="submit" class="btn btn-info" ng-disabled="playerRegForm.$invalid">Sign up</button>
                     </div>
                 </div>
             </form>
@@ -28,16 +28,15 @@
     </div>
 
     <div class="panel">
-        <div>
-            <h3>Players</h3>
-        </div>
-        <div>
+        <h2>Players</h2>
+        <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#players" aria-expanded="false">View players</button>
+        <div id="players" class="collapse">
             <ul ng-repeat="player in players">
                 <h4>{{player.name}}</h4>
                 <h6>Achievements:</h6>
                 <ul>
                     <li ng-repeat="achievement in player.achievements">
-                        {{achievement.name}} ({{achievement.date | date: 'yyyy-MM-dd HH:mm'}})
+                        {{achievement.name}} ({{achievement.dateTime | date: 'yyyy-MM-dd HH:mm'}})
                     </li>
                 </ul>
             </ul>
