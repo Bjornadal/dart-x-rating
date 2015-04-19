@@ -31,6 +31,7 @@ angular.module('dartXRatingApp').service('DartService', function (LeagueFactory,
                 }
             }).
                 success(function(data, status) {
+                    defaultConfig.authToken = data.token;
                     $cookies.authToken = data.token;
                     deferred.resolve();
                 }).
@@ -68,23 +69,23 @@ angular.module('dartXRatingApp').service('DartService', function (LeagueFactory,
     };
 
     this.getPlayers = function() {
-        return PlayerFactory.query({leagueId: this.selectedLeague.leagueId});
+        return PlayerFactory.players($cookies.authToken).query({leagueId: this.selectedLeague.leagueId});
     };
 
     this.addPlayer = function(player) {
-        return PlayerFactory.save({leagueId: this.selectedLeague.leagueId}, player).$promise;
+        return PlayerFactory.players($cookies.authToken).save({leagueId: this.selectedLeague.leagueId}, player).$promise;
     };
 
     this.addAchievementOnPlayer = function(achievement, player) {
-        return PlayerFactory.addAchievement({leagueId: this.selectedLeague.leagueId, playerId: player.playerId}, achievement).$promise;
+        return PlayerFactory.players($cookies.authToken).addAchievement({leagueId: this.selectedLeague.leagueId, playerId: player.playerId}, achievement).$promise;
     };
 
     this.getGames = function() {
-        return GameFactory.query({leagueId: this.selectedLeague.leagueId});
+        return GameFactory.games($cookies.authToken).query({leagueId: this.selectedLeague.leagueId});
     };
 
     this.addGame = function(game) {
-        return GameFactory.save({leagueId: this.selectedLeague.leagueId}, game).$promise;
+        return GameFactory.games($cookies.authToken).save({leagueId: this.selectedLeague.leagueId}, game).$promise;
     };
 
     this.getAchievements = function() {
