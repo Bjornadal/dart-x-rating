@@ -73,6 +73,8 @@ public class LeagueController {
         List<League> leagues = leagueRepository.findAll();
         for (League league : leagues) {
             league.add(linkTo(methodOn(LeagueController.class).getLeague(league.getLeagueId(), null)).withSelfRel());
+            league.add(linkTo(methodOn(GameController.class).listGames(league.getLeagueId())).withRel("games"));
+            league.add(linkTo(methodOn(PlayerController.class).listPlayers(league.getLeagueId())).withRel("players"));
 
             //Expand
             if (expand != null) {

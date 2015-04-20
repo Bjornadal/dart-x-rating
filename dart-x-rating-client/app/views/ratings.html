@@ -14,7 +14,7 @@
                 <th>Games</th>
                 <th style="width: 80px;">Rating</th>
                 <th style="width: 40px;">+/-</th>
-                <th style="width: 40px;">Form</th>
+                <!--<th style="width: 40px;">Form</th>-->
                 </thead>
                 <tbody>
                 <tr ng-repeat="player in players | orderBy: 'rating' : true" player-update-animation>
@@ -23,7 +23,7 @@
                     <td><span ng-show="player.games != null">{{player.games}}</span></td>
                     <td>{{player.rating | roundWhole}}</td>
                     <td><span ng-show="player.playedLastGame">{{player.ratingAdjustment | roundWhole}}</span></td>
-                    <td>{{player.form}}</td>
+                    <!--<td>{{player.form}}</td>-->
                 </tr>
                 </tbody>
             </table>

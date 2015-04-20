@@ -22,7 +22,7 @@
 <![endif]-->
 
 <!-- Add your site or application content here -->
-<div class="header" ng-controller="HeaderCtrl">
+<div class="header" ng-controller="HeaderCtrl" ng-show="hasSelectedLeague">
     <div class="navbar navbar-default" role="navigation">
         <div class="container">
             <div class="navbar-header">
@@ -32,29 +32,22 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <img height="50px" src="images/logo.png" />
+                <img height="50px" style="padding: 5px;" src="images/logo.png" />
             </div>
             <div class="collapse navbar-collapse" id="js-navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li ng-show="hasSelectedLeague" ng-class="{ active: isActive('/ratings')}"><a href="#/ratings">Ratings</a></li>
-                    <li ng-show="hasSelectedLeague" ng-class="{ active: isActive('/games')}"><a ng-href="#/games">Games</a></li>
-                    <li ng-show="hasSelectedLeague" class="dropdown">
-                        <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Players <span class="caret"></span></a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li ng-class="{ active: isActive('/players')}"><a ng-href="#/players">Players</a></li>
-                            <li ng-class="{ active: isActive('/achievements')}"><a ng-href="#/achievements">Achievements</a></li>
-                        </ul>
-                    </li>
+                    <li ng-class="{ active: isActive('/ratings')}"><a href="#/ratings">Ratings</a></li>
+                    <li ng-class="{ active: isActive('/games')}"><a ng-href="#/games">Games</a></li>
+                    <li ng-class="{ active: isActive('/players')}"><a ng-href="#/players">Players</a></li>
+                    <li ng-class="{ active: isActive('/achievements')}"><a ng-href="#/achievements">Achievements</a></li>
                     <li ng-show="false" ng-class="{ active: isActive('/statistics')}"><a ng-href="#/statistics">Statistics</a></li>
                     <li ng-show="false" ng-class="{ active: isActive('/admin')}"><a href="#/admin">Admin</a></li>
-
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
-                    <p ng-show="hasSelectedLeague && isLeagueAdmin" class="navbar-text">Signed in as League admin</p>
-                    <li ng-show="hasSelectedLeague"><a href="#" ng-click="logout()">Logout</a></li>
+                    <p ng-show="isLeagueAdmin" class="navbar-text">Signed in as admin</p>
+                    <li><a href="#" ng-click="logout()">Logout</a></li>
                 </ul>
-
             </div>
         </div>
     </div>
