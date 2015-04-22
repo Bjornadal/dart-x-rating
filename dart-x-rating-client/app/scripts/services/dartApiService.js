@@ -89,10 +89,10 @@ angular.module('dartXRatingApp').service('DartService', function (LeagueFactory,
     };
 
     this.getAchievements = function() {
-        return AchievementFactory.query();
+        return AchievementFactory.query({leagueId: this.selectedLeague.leagueId});
     };
 
     this.addAchievement = function(achievement) {
-        return AchievementFactory.save(achievement).$promise;
+        return AchievementFactory.save({leagueId: this.selectedLeague.leagueId}, achievement).$promise;
     };
 });

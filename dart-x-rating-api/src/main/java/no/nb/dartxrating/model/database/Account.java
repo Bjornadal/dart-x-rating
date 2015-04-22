@@ -18,7 +18,8 @@ public class Account {
     private String email;
     private Date dateCreated;
     private String systemRole;
-    private List<HasLeagueRole> leagueRoles;
+    private List<String> roles;
+    private List<LeagueRole> leagueRoles;
 
     public String getAccountId() {
         return accountId;
@@ -60,12 +61,12 @@ public class Account {
         this.dateCreated = dateCreated;
     }
 
-    public List<HasLeagueRole> getLeagueRoles() {
-        return leagueRoles;
+    public List<String> getRoles() {
+        return roles;
     }
 
-    public void setLeagueRoles(List<HasLeagueRole> leagueRoles) {
-        this.leagueRoles = leagueRoles;
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
     }
 
     public String getSystemRole() {
@@ -74,5 +75,13 @@ public class Account {
 
     public void setSystemRole(String systemRole) {
         this.systemRole = systemRole;
+    }
+
+    public List<LeagueRole> getLeagueRoles() {
+        return leagueRoles;
+    }
+
+    public void setLeagueRoles(List<LeagueRole> leagueRoles) {
+        this.leagueRoles = leagueRoles;
     }
 }

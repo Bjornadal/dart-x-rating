@@ -80,6 +80,7 @@ public class LeagueController {
             league.add(linkTo(methodOn(LeagueController.class).getLeague(league.getLeagueId(), null)).withSelfRel());
             league.add(linkTo(methodOn(GameController.class).listGames(league.getLeagueId())).withRel("games"));
             league.add(linkTo(methodOn(PlayerController.class).listPlayers(league.getLeagueId())).withRel("players"));
+            league.add(linkTo(methodOn(AchievementController.class).listAchievements(league.getLeagueId())).withRel("achievements"));
 
             //Expand
             if (expand != null) {

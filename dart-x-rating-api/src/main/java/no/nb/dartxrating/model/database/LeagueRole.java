@@ -3,7 +3,7 @@ package no.nb.dartxrating.model.database;
 /**
  * Created by andreasb on 22.04.15.
  */
-public class HasLeagueRole {
+public class LeagueRole {
     private String leagueId;
     private String role;
 

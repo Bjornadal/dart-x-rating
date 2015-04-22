@@ -42,7 +42,7 @@ angular.module('dartXRatingApp').factory("GameFactory", function($resource, defa
 });
 
 angular.module('dartXRatingApp').factory("AchievementFactory", function($resource, defaultConfig) {
-    return $resource(defaultConfig.dartApi + "/achievements", null,
+    return $resource(defaultConfig.dartApi + "/leagues/:leagueId/achievements", null,
         {
 
         })
