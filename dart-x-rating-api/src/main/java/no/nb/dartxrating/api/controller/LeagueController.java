@@ -1,10 +1,12 @@
 package no.nb.dartxrating.api.controller;
 
+import no.nb.dartxrating.api.repository.AchievementRepository;
 import no.nb.dartxrating.api.repository.GameRepository;
 import no.nb.dartxrating.api.repository.LeagueRepository;
 import no.nb.dartxrating.api.repository.PlayerRepository;
 import no.nb.dartxrating.api.security.PasswordHash;
 import no.nb.dartxrating.api.security.SecurityService;
+import no.nb.dartxrating.model.database.Achievement;
 import no.nb.dartxrating.model.database.League;
 import no.nb.dartxrating.model.rest.AuthToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,9 @@ public class LeagueController {
 
     @Autowired
     private GameRepository gameRepository;
+
+    @Autowired
+    private AchievementRepository achievementRepository;
 
     @Autowired
     private SecurityService securityService;
@@ -87,6 +92,10 @@ public class LeagueController {
                     if (item.equals("players")) {
                         league.setPlayers(playerRepository.findByLeagueId(league.getLeagueId()));
                     }
+                    // Expand achievements
+                    if (item.equals("achievements")) {
+                        league.setAchievements(achievementRepository.findByLeagueId(league.getLeagueId()));
+                    }
                 }
             }
         }
@@ -100,6 +109,7 @@ public class LeagueController {
         League league = leagueRepository.findOne(leagueId);
         league.add(linkTo(methodOn(GameController.class).listGames(league.getLeagueId())).withRel("games"));
         league.add(linkTo(methodOn(PlayerController.class).listPlayers(league.getLeagueId())).withRel("players"));
+        league.add(linkTo(methodOn(AchievementController.class).listAchievements(league.getLeagueId())).withRel("achievements"));
 
         //Expand
         if (expand != null) {
@@ -111,6 +121,10 @@ public class LeagueController {
                 //Expand players
                 if (item.equals("players")) {
                     league.setPlayers(playerRepository.findByLeagueId(league.getLeagueId()));
+                }
+                // Expand achievements
+                if (item.equals("achievements")) {
+                    league.setAchievements(achievementRepository.findByLeagueId(league.getLeagueId()));
                 }
             }
         }

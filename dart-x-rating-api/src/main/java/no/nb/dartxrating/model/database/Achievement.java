@@ -1,7 +1,6 @@
 package no.nb.dartxrating.model.database;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.joda.time.DateTime;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -16,6 +15,7 @@ public class Achievement {
 
     @Id
     private String achievementId;
+    private String leagueId;
     private String name;
     private String description;
     private Date dateTime;
@@ -26,6 +26,14 @@ public class Achievement {
 
     public void setAchievementId(String achievementId) {
         this.achievementId = achievementId;
+    }
+
+    public String getLeagueId() {
+        return leagueId;
+    }
+
+    public void setLeagueId(String leagueId) {
+        this.leagueId = leagueId;
     }
 
     public String getName() {
