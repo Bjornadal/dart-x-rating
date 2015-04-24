@@ -40,9 +40,9 @@ public class PlayerController {
     public ResponseEntity createPlayer(@PathVariable String leagueId,
                                        @RequestHeader("authToken") String authToken,
                                        @Valid @RequestBody Player player) {
-        if (!securityService.hasAccess(leagueId, authToken)) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
+//        if (!securityService.hasAccess(leagueId, authToken)) {
+//            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+//        }
 
         player.setPlayerId(UUID.randomUUID().toString());
         player.setRating(1500);
@@ -56,9 +56,9 @@ public class PlayerController {
                                        @PathVariable String playerId,
                                        @RequestHeader("authToken") String authToken,
                                        @RequestBody Player player) {
-        if (!securityService.hasAccess(leagueId, authToken)) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
+//        if (!securityService.hasAccess(leagueId, authToken)) {
+//            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+//        }
 
         Player oldPlayer = playerRepository.findOne(playerId);
         oldPlayer.merge(player);
@@ -71,9 +71,9 @@ public class PlayerController {
                                                  @PathVariable String playerId,
                                                  @RequestHeader("authToken") String authToken,
                                                  @RequestBody Achievement achievement) {
-        if (!securityService.hasAccess(leagueId, authToken)) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
+//        if (!securityService.hasAccess(leagueId, authToken)) {
+//            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+//        }
 
         Player player = playerRepository.findOne(playerId);
         achievement.setDateTime(DateTime.now().toDateTimeISO().toDate());

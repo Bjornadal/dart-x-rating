@@ -15,11 +15,19 @@ public class Account {
     private String accountId;
     private String username;
     private String password;
+    private String name;
     private String email;
     private Date dateCreated;
-    private String systemRole;
     private List<String> roles;
     private List<LeagueRole> leagueRoles;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getAccountId() {
         return accountId;
@@ -67,14 +75,6 @@ public class Account {
 
     public void setRoles(List<String> roles) {
         this.roles = roles;
-    }
-
-    public String getSystemRole() {
-        return systemRole;
-    }
-
-    public void setSystemRole(String systemRole) {
-        this.systemRole = systemRole;
     }
 
     public List<LeagueRole> getLeagueRoles() {

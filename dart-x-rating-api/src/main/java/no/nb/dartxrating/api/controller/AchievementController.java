@@ -34,9 +34,9 @@ public class AchievementController {
     public ResponseEntity<Achievement> createAchievement(@PathVariable String leagueId,
                                                          @Valid @RequestBody Achievement achievement,
                                                          @RequestHeader("authToken") String authToken) {
-        if (!securityService.hasAccess(leagueId, authToken)) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
+//        if (!securityService.hasAccess(leagueId, authToken)) {
+//            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+//        }
 
         achievement.setLeagueId(leagueId);
         achievement.setAchievementId(UUID.randomUUID().toString());

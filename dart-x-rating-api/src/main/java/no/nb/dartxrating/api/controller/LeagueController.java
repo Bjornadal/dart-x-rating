@@ -56,9 +56,9 @@ public class LeagueController {
     public ResponseEntity<League> updateLeague(@PathVariable String leagueId,
                                                @RequestHeader("authToken") String authToken,
                                                @RequestBody League league) {
-        if (!securityService.hasAccess(leagueId, authToken)) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
+//        if (!securityService.hasAccess(leagueId, authToken)) {
+//            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+//        }
 
         League oldLeague = leagueRepository.findOne(leagueId);
         leagueRepository.save(oldLeague);

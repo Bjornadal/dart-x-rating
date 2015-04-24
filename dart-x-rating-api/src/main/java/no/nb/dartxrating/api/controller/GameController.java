@@ -44,9 +44,9 @@ public class GameController {
     public ResponseEntity<Game> createGame(@PathVariable String leagueId,
                                            @RequestHeader("authToken") String authToken,
                                            @Valid @RequestBody Game game) {
-        if (!securityService.hasAccess(leagueId, authToken)) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
+//        if (!securityService.hasAccess(leagueId, authToken)) {
+//            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+//        }
 
         // Set game variables
         game.setGameId(UUID.randomUUID().toString());
