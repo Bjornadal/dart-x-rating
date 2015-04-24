@@ -1,6 +1,7 @@
 package no.nb.dartxrating.model.database;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
@@ -9,10 +10,11 @@ import java.util.List;
 /**
  * Created by andreasb on 22.04.15.
  */
-@Document(collection = "Accounts")
+@Document(collection = "Users")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Account {
-    private String accountId;
+public class User {
+    @Id
+    private String userId;
     private String username;
     private String password;
     private String name;
@@ -20,6 +22,22 @@ public class Account {
     private Date dateCreated;
     private List<String> roles;
     private List<LeagueRole> leagueRoles;
+
+    public User() {
+
+    }
+
+    public User(User user) {
+        super();
+        this.userId = user.getUserId();
+        this.name = user.getName();
+        this.password = user.getPassword();
+        this.name = user.getName();
+        this.email = user.getEmail();
+        this.dateCreated = user.getDateCreated();
+        this.roles = user.getRoles();
+        this.leagueRoles = user.getLeagueRoles();
+    }
 
     public String getName() {
         return name;
@@ -29,12 +47,12 @@ public class Account {
         this.name = name;
     }
 
-    public String getAccountId() {
-        return accountId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setAccountId(String accountId) {
-        this.accountId = accountId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {

@@ -42,7 +42,6 @@ public class GameController {
 
     @RequestMapping(value = "/leagues/{leagueId}/games", method = RequestMethod.POST)
     public ResponseEntity<Game> createGame(@PathVariable String leagueId,
-                                           @RequestHeader("authToken") String authToken,
                                            @Valid @RequestBody Game game) {
 //        if (!securityService.hasAccess(leagueId, authToken)) {
 //            return new ResponseEntity<>(HttpStatus.FORBIDDEN);

@@ -45,7 +45,7 @@ public class OAuth2ServerConfiguration {
             // @formatter:off
             http
                     .authorizeRequests()
-                    .antMatchers("/accounts").hasRole("ADMIN")
+//                    .antMatchers("/accounts").hasRole("ADMIN")
                     .antMatchers("/users").authenticated();
             // @formatter:on
         }
@@ -64,7 +64,7 @@ public class OAuth2ServerConfiguration {
         private AuthenticationManager authenticationManager;
 
         @Autowired
-        private DartUserDetailsService userDetailsService;
+        private CustomUserDetailsService userDetailsService;
 
         @Override
         public void configure(AuthorizationServerEndpointsConfigurer endpoints)

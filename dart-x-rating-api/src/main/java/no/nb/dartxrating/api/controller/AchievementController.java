@@ -32,8 +32,7 @@ public class AchievementController {
 
     @RequestMapping(value = "/leagues/{leagueId}/achievements", method = RequestMethod.POST)
     public ResponseEntity<Achievement> createAchievement(@PathVariable String leagueId,
-                                                         @Valid @RequestBody Achievement achievement,
-                                                         @RequestHeader("authToken") String authToken) {
+                                                         @Valid @RequestBody Achievement achievement) {
 //        if (!securityService.hasAccess(leagueId, authToken)) {
 //            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 //        }

@@ -38,7 +38,6 @@ public class PlayerController {
 
     @RequestMapping(value = "/leagues/{leagueId}/players", method = RequestMethod.POST)
     public ResponseEntity createPlayer(@PathVariable String leagueId,
-                                       @RequestHeader("authToken") String authToken,
                                        @Valid @RequestBody Player player) {
 //        if (!securityService.hasAccess(leagueId, authToken)) {
 //            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -54,7 +53,6 @@ public class PlayerController {
     @RequestMapping(value = "/leagues/{leagueId}/players/{playerId}", method = RequestMethod.POST)
     public ResponseEntity updatePlayer(@PathVariable String leagueId,
                                        @PathVariable String playerId,
-                                       @RequestHeader("authToken") String authToken,
                                        @RequestBody Player player) {
 //        if (!securityService.hasAccess(leagueId, authToken)) {
 //            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -69,7 +67,6 @@ public class PlayerController {
     @RequestMapping(value = "/leagues/{leagueId}/players/{playerId}/achievements", method = RequestMethod.POST)
     public ResponseEntity<Player> addAchievement(@PathVariable String leagueId,
                                                  @PathVariable String playerId,
-                                                 @RequestHeader("authToken") String authToken,
                                                  @RequestBody Achievement achievement) {
 //        if (!securityService.hasAccess(leagueId, authToken)) {
 //            return new ResponseEntity<>(HttpStatus.FORBIDDEN);

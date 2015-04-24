@@ -12,6 +12,7 @@ import no.nb.dartxrating.model.rest.AuthToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -54,7 +55,6 @@ public class LeagueController {
 
     @RequestMapping(value = "/leagues/{leagueId}", method = RequestMethod.POST)
     public ResponseEntity<League> updateLeague(@PathVariable String leagueId,
-                                               @RequestHeader("authToken") String authToken,
                                                @RequestBody League league) {
 //        if (!securityService.hasAccess(leagueId, authToken)) {
 //            return new ResponseEntity<>(HttpStatus.FORBIDDEN);

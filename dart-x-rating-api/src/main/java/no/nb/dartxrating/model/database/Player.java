@@ -15,7 +15,7 @@ import java.util.List;
 public class Player {
     @Id
     private String playerId;
-    private String accountId;
+    private String userId;
     private String leagueId;
     private String name;
     private double rating;
@@ -117,11 +117,11 @@ public class Player {
         this.playedLastGame = playedLastGame;
     }
 
-    public String getAccountId() {
-        return accountId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setAccountId(String accountId) {
-        this.accountId = accountId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }
