@@ -3,7 +3,12 @@ package no.nb.dartxrating.model.database;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -12,7 +17,7 @@ import java.util.List;
  */
 @Document(collection = "Users")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class User {
+public class DartUser implements UserDetails {
     @Id
     private String userId;
     private String username;
@@ -23,20 +28,20 @@ public class User {
     private List<String> roles;
     private List<LeagueRole> leagueRoles;
 
-    public User() {
+    public DartUser() {
 
     }
 
-    public User(User user) {
-        super();
-        this.userId = user.getUserId();
-        this.name = user.getName();
-        this.password = user.getPassword();
-        this.name = user.getName();
-        this.email = user.getEmail();
-        this.dateCreated = user.getDateCreated();
-        this.roles = user.getRoles();
-        this.leagueRoles = user.getLeagueRoles();
+    public DartUser(DartUser dartUser) {
+        this.userId = dartUser.getUserId();
+        this.name = dartUser.getName();
+        this.username = dartUser.getUsername();
+        this.password = dartUser.getPassword();
+        this.name = dartUser.getName();
+        this.email = dartUser.getEmail();
+        this.dateCreated = dartUser.getDateCreated();
+        this.roles = dartUser.getRoles();
+        this.leagueRoles = dartUser.getLeagueRoles();
     }
 
     public String getName() {
@@ -59,8 +64,31 @@ public class User {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        String[] userRoles = this.getRoles().toArray(new String[this.getRoles().size()]);
+        Collection<? extends GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(userRoles);
+        return authorities;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public String getPassword() {

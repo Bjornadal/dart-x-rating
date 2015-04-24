@@ -1,7 +1,7 @@
 package no.nb.dartxrating.api.security;
 
 import no.nb.dartxrating.api.repository.UserRepository;
-import no.nb.dartxrating.model.database.User;
+import no.nb.dartxrating.model.database.DartUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -23,11 +23,16 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
+        DartUser user = userRepository.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("Username " + username + " not found");
         }
 
-        return new UserRepositoryUserDetails(user);
+        String[] userRoles = user.getRoles().toArray(new String[user.getRoles().size()]);
+        Collection<? extends GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(userRoles);
+
+        //return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
+        //return new UserRepositoryUserDetails(user);
+        return user;
     }
 }

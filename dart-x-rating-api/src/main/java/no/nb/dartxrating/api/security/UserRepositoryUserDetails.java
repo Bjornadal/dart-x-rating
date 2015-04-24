@@ -1,6 +1,6 @@
 package no.nb.dartxrating.api.security;
 
-import no.nb.dartxrating.model.database.User;
+import no.nb.dartxrating.model.database.DartUser;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,10 +10,14 @@ import java.util.Collection;
 /**
  * Created by andreasb on 24.04.15.
  */
-public class UserRepositoryUserDetails extends User implements UserDetails {
+public class UserRepositoryUserDetails extends DartUser implements UserDetails {
 
-    public UserRepositoryUserDetails(User user) {
-        super(user);
+    public UserRepositoryUserDetails() {
+
+    }
+
+    public UserRepositoryUserDetails(DartUser dartUser) {
+        super(dartUser);
     }
 
     @Override

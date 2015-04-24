@@ -43,10 +43,13 @@ public class OAuth2ServerConfiguration {
         @Override
         public void configure(HttpSecurity http) throws Exception {
             // @formatter:off
-            http
-                    .authorizeRequests()
+//            http
+//                    .authorizeRequests()
 //                    .antMatchers("/accounts").hasRole("ADMIN")
-                    .antMatchers("/users").authenticated();
+//                    .antMatchers("/accountsx").authenticated();
+
+            http.httpBasic().disable();
+            http.authorizeRequests().anyRequest().authenticated();
             // @formatter:on
         }
 

@@ -1,7 +1,8 @@
 package no.nb.dartxrating.api.controller;
 
 import no.nb.dartxrating.api.repository.UserRepository;
-import no.nb.dartxrating.model.database.User;
+import no.nb.dartxrating.api.security.UserRepositoryUserDetails;
+import no.nb.dartxrating.model.database.DartUser;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,20 +26,20 @@ public class UserController {
     private UserRepository userRepository;
 
     @RequestMapping(value = "/users", method = RequestMethod.POST)
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
-        user.setUserId(UUID.randomUUID().toString());
-        user.setDateCreated(DateTime.now().toDate());
-        user.setLeagueRoles(null);
-        user.setRoles(new ArrayList(Arrays.asList(new String[]{"ROLE_USER"})));
+    public ResponseEntity<DartUser> createUser(@Valid @RequestBody DartUser dartUser) {
+        dartUser.setUserId(UUID.randomUUID().toString());
+        dartUser.setDateCreated(DateTime.now().toDate());
+        dartUser.setLeagueRoles(null);
+        dartUser.setRoles(new ArrayList(Arrays.asList(new String[]{"ROLE_USER"})));
 
-        userRepository.save(user);
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
+        userRepository.save(dartUser);
+        return new ResponseEntity<>(dartUser, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/users/{username}", method = RequestMethod.GET)
-    //@PreAuthorize("#username == principal.username or hasRole('ROLE_ADMIN')")
-    public ResponseEntity<User> getUsers(@PathVariable String username) {
-        User user = userRepository.findByUsername(username);
+    @PreAuthorize("#username == principal.username")
+    public ResponseEntity<DartUser> getUsers(@PathVariable String username) {
+        DartUser user = userRepository.findByUsername(username);
 
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
