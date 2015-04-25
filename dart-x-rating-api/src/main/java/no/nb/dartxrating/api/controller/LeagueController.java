@@ -5,10 +5,7 @@ import no.nb.dartxrating.api.repository.GameRepository;
 import no.nb.dartxrating.api.repository.LeagueRepository;
 import no.nb.dartxrating.api.repository.PlayerRepository;
 import no.nb.dartxrating.api.security.PasswordHash;
-import no.nb.dartxrating.api.security.SecurityService;
-import no.nb.dartxrating.model.database.Achievement;
 import no.nb.dartxrating.model.database.League;
-import no.nb.dartxrating.model.rest.AuthToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,9 +39,7 @@ public class LeagueController {
     @Autowired
     private AchievementRepository achievementRepository;
 
-    @Autowired
-    private SecurityService securityService;
-
+    @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value = "/leagues", method = RequestMethod.POST)
     public ResponseEntity<League> createLeague(@Valid @RequestBody League league) throws InvalidKeySpecException, NoSuchAlgorithmException {
         league.setLeagueId(UUID.randomUUID().toString());
@@ -53,26 +48,16 @@ public class LeagueController {
         return new ResponseEntity<>(league, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasPermission(#leagueId, 'isLeagueAdmin')")
     @RequestMapping(value = "/leagues/{leagueId}", method = RequestMethod.POST)
     public ResponseEntity<League> updateLeague(@PathVariable String leagueId,
                                                @RequestBody League league) {
-//        if (!securityService.hasAccess(leagueId, authToken)) {
-//            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-//        }
-
         League oldLeague = leagueRepository.findOne(leagueId);
         leagueRepository.save(oldLeague);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/leagues/{leagueId}/authenticate", method = RequestMethod.POST)
-    public ResponseEntity<AuthToken> authenticateLeague(@PathVariable String leagueId,
-                                                        @RequestHeader("password") String password) throws IllegalAccessException, InvalidKeySpecException, NoSuchAlgorithmException {
-        League league = leagueRepository.findOne(leagueId);
-        AuthToken authToken = securityService.authenticate(league, password);
-        return new ResponseEntity<>(authToken, HttpStatus.OK);
-    }
-
+    @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value = "/leagues", method = RequestMethod.GET)
     public ResponseEntity<List<League>> listLeagues(@RequestParam(required = false) String[] expand) {
         List<League> leagues = leagueRepository.findAll();
@@ -104,6 +89,7 @@ public class LeagueController {
         return new ResponseEntity<>(leagues, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasPermission(#leagueId, 'isLeagueUser')")
     @RequestMapping(value = "/leagues/{leagueId}", method = RequestMethod.GET)
     public ResponseEntity<League> getLeague(@PathVariable String leagueId,
                                             @RequestParam(required = false) String[] expand) {

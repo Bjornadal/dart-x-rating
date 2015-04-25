@@ -48,8 +48,8 @@ public class OAuth2ServerConfiguration {
 //                    .antMatchers("/accounts").hasRole("ADMIN")
 //                    .antMatchers("/accountsx").authenticated();
 
-            http.httpBasic().disable();
-            http.authorizeRequests().anyRequest().authenticated();
+            http.authorizeRequests().antMatchers("/leagues/**").authenticated()
+                    .and().httpBasic().realmName("OAuth Server");
             // @formatter:on
         }
 

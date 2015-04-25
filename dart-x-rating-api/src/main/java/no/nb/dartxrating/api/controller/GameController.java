@@ -1,15 +1,17 @@
 package no.nb.dartxrating.api.controller;
 
 import no.nb.dartxrating.api.repository.GameRepository;
-import no.nb.dartxrating.api.repository.LeagueRepository;
 import no.nb.dartxrating.api.repository.PlayerRepository;
-import no.nb.dartxrating.api.security.SecurityService;
 import no.nb.dartxrating.api.service.RatingService;
-import no.nb.dartxrating.model.database.*;
+import no.nb.dartxrating.model.database.Game;
+import no.nb.dartxrating.model.database.Placement;
+import no.nb.dartxrating.model.database.Player;
+import no.nb.dartxrating.model.database.PlayerPlacement;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -31,22 +33,17 @@ public class GameController {
     @Autowired
     private RatingService ratingService;
 
-    @Autowired
-    private SecurityService securityService;
-
+    @PreAuthorize("hasPermission(#leagueId, 'isLeagueUser')")
     @RequestMapping(value = "/leagues/{leagueId}/games", method = RequestMethod.GET)
     public ResponseEntity<List<Game>> listGames(@PathVariable String leagueId) {
         List<Game> games = gameRepository.findByLeagueId(leagueId);
         return new ResponseEntity<>(games, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasPermission(#leagueId, 'isLeagueUser')")
     @RequestMapping(value = "/leagues/{leagueId}/games", method = RequestMethod.POST)
     public ResponseEntity<Game> createGame(@PathVariable String leagueId,
                                            @Valid @RequestBody Game game) {
-//        if (!securityService.hasAccess(leagueId, authToken)) {
-//            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-//        }
-
         // Set game variables
         game.setGameId(UUID.randomUUID().toString());
         game.setLeagueId(leagueId);

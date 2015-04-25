@@ -1,14 +1,12 @@
 package no.nb.dartxrating.api.controller;
 
 import no.nb.dartxrating.api.repository.UserRepository;
-import no.nb.dartxrating.api.security.UserRepositoryUserDetails;
 import no.nb.dartxrating.model.database.DartUser;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -27,9 +25,13 @@ public class UserController {
 
     @RequestMapping(value = "/users", method = RequestMethod.POST)
     public ResponseEntity<DartUser> createUser(@Valid @RequestBody DartUser dartUser) {
+        if (userRepository.findByUsername(dartUser.getUsername()) != null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         dartUser.setUserId(UUID.randomUUID().toString());
         dartUser.setDateCreated(DateTime.now().toDate());
-        dartUser.setLeagueRoles(null);
+        dartUser.setLeagueRoles(new ArrayList<>());
         dartUser.setRoles(new ArrayList(Arrays.asList(new String[]{"ROLE_USER"})));
 
         userRepository.save(dartUser);
