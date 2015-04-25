@@ -13,6 +13,6 @@ public class League {
     private Date dateCreated;
     private List<String> owners; //List of userIds
     private List<Season> seasons;
-//    private List<Cup> cups;
+    private List<Cup> cups;
     private List<Statistics> statistics;
 }
