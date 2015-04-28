@@ -1,0 +1,20 @@
+{
+  "generator-jhipster": {
+    "baseName": "dartxrating",
+    "packageName": "com.dartxrating",
+    "packageFolder": "com/dartxrating",
+    "authenticationType": "oauth2",
+    "hibernateCache": "no",
+    "clusteredHttpSession": "no",
+    "websocket": "spring-websocket",
+    "databaseType": "mongodb",
+    "devDatabaseType": "mongodb",
+    "prodDatabaseType": "mongodb",
+    "searchEngine": "no",
+    "useCompass": false,
+    "buildTool": "maven",
+    "frontendBuilder": "grunt",
+    "javaVersion": "8",
+    "rememberMeKey": "c9db88848077733dc871c643d1e25b6bd8921ff6"
+  }
+}
