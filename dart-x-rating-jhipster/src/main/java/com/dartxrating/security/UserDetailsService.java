@@ -2,6 +2,7 @@ package com.dartxrating.security;
 
 import com.dartxrating.domain.Authority;
 import com.dartxrating.domain.User;
+import com.dartxrating.domain.dart.LeagueRole;
 import com.dartxrating.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +45,12 @@ public class UserDetailsService implements org.springframework.security.core.use
             List<GrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
                     .map(authority -> new SimpleGrantedAuthority(authority.getName()))
                     .collect(Collectors.toList());
+
+            for (LeagueRole leagueRole : user.getLeagueRoles()) {
+                GrantedAuthority leagueAuthority = new SimpleGrantedAuthority(leagueRole.getRole() + ";" + leagueRole.getLeagueId());
+                grantedAuthorities.add(leagueAuthority);
+            }
+
             return new org.springframework.security.core.userdetails.User(lowercaseLogin,
                     user.getPassword(),
                     grantedAuthorities);

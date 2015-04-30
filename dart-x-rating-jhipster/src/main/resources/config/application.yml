@@ -21,7 +21,7 @@ mail:
     protocol: smtp
     tls: false
     auth: false
-    from: dartxrating@localhost
+    from: no-reply@dartxrating.com
 
 authentication:
     oauth:

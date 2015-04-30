@@ -1,5 +1,6 @@
 package com.dartxrating.domain;
 
+import com.dartxrating.domain.dart.LeagueRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.data.annotation.Id;
@@ -10,7 +11,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -54,6 +57,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Field("activation_key")
     @JsonIgnore
     private String activationKey;
+
+    @JsonIgnore
+    private List<LeagueRole> leagueRoles = new ArrayList<>();
 
     @JsonIgnore
     private Set<Authority> authorities = new HashSet<>();
@@ -136,6 +142,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
+    }
+
+    public List<LeagueRole> getLeagueRoles() {
+        return leagueRoles;
+    }
+
+    public void setLeagueRoles(List<LeagueRole> leagueRoles) {
+        this.leagueRoles = leagueRoles;
     }
 
     @Override
