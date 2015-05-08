@@ -14,12 +14,6 @@ angular.module('dartxratingApp')
                         templateUrl: 'scripts/app/games/games.html',
                         controller: 'GameController'
                     }
-                },
-                resolve: {
-                    mainTranslatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate,$translatePartialLoader) {
-                        $translatePartialLoader.addPart('main');
-                        return $translate.refresh();
-                    }]
                 }
             });
     });

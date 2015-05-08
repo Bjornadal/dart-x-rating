@@ -1,11 +1,10 @@
-package com.dartxrating.web.rest.dart;
+package com.dartxrating.web.rest;
 
 import com.dartxrating.domain.User;
 import com.dartxrating.domain.dart.League;
 import com.dartxrating.domain.dart.LeagueRole;
-import com.dartxrating.repository.UserRepository;
-import com.dartxrating.repository.dart.*;
-import com.dartxrating.security.PasswordHash;
+import com.dartxrating.repository.*;
+import com.dartxrating.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
@@ -32,7 +30,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
  */
 @RestController
 @RequestMapping("/api")
-public class LeagueController {
+public class LeagueResource {
 
     @Autowired
     private LeagueRepository leagueRepository;
@@ -90,10 +88,10 @@ public class LeagueController {
         }
 
         for (League league : filteredLeagues) {
-            league.add(linkTo(methodOn(LeagueController.class).getLeague(league.getLeagueId(), null)).withSelfRel());
-            league.add(linkTo(methodOn(GameController.class).listGames(league.getLeagueId())).withRel("games"));
-            league.add(ControllerLinkBuilder.linkTo(methodOn(PlayerController.class).listPlayers(league.getLeagueId())).withRel("players"));
-            league.add(linkTo(methodOn(AchievementController.class).listAchievements(league.getLeagueId())).withRel("achievements"));
+            league.add(linkTo(methodOn(LeagueResource.class).getLeague(league.getLeagueId(), null)).withSelfRel());
+            league.add(linkTo(methodOn(GameResource.class).listGames(league.getLeagueId())).withRel("games"));
+            league.add(ControllerLinkBuilder.linkTo(methodOn(PlayerResource.class).listPlayers(league.getLeagueId())).withRel("players"));
+            league.add(linkTo(methodOn(AchievementResource.class).listAchievements(league.getLeagueId())).withRel("achievements"));
 
             //Expand
             if (expand != null) {
@@ -122,9 +120,9 @@ public class LeagueController {
     public ResponseEntity<League> getLeague(@PathVariable String leagueId,
                                             @RequestParam(required = false) String[] expand) {
         League league = leagueRepository.findOne(leagueId);
-        league.add(linkTo(methodOn(GameController.class).listGames(league.getLeagueId())).withRel("games"));
-        league.add(ControllerLinkBuilder.linkTo(methodOn(PlayerController.class).listPlayers(league.getLeagueId())).withRel("players"));
-        league.add(linkTo(methodOn(AchievementController.class).listAchievements(league.getLeagueId())).withRel("achievements"));
+        league.add(linkTo(methodOn(GameResource.class).listGames(league.getLeagueId())).withRel("games"));
+        league.add(ControllerLinkBuilder.linkTo(methodOn(PlayerResource.class).listPlayers(league.getLeagueId())).withRel("players"));
+        league.add(linkTo(methodOn(AchievementResource.class).listAchievements(league.getLeagueId())).withRel("achievements"));
 
         //Expand
         if (expand != null) {

@@ -14,12 +14,6 @@ angular.module('dartxratingApp')
                         templateUrl: 'scripts/app/leagues/leagues.html',
                         controller: 'LeagueController'
                     }
-                },
-                resolve: {
-                    mainTranslatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate,$translatePartialLoader) {
-                        $translatePartialLoader.addPart('main');
-                        return $translate.refresh();
-                    }]
                 }
             });
     });

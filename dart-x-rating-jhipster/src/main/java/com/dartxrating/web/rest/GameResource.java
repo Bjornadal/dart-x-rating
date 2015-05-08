@@ -1,12 +1,12 @@
-package com.dartxrating.web.rest.dart;
+package com.dartxrating.web.rest;
 
 import com.dartxrating.domain.dart.Game;
 import com.dartxrating.domain.dart.Placement;
 import com.dartxrating.domain.dart.Player;
 import com.dartxrating.domain.dart.PlayerPlacement;
-import com.dartxrating.repository.dart.GameRepository;
-import com.dartxrating.repository.dart.PlayerRepository;
-import com.dartxrating.service.dart.RatingService;
+import com.dartxrating.repository.GameRepository;
+import com.dartxrating.repository.PlayerRepository;
+import com.dartxrating.service.RatingService;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,7 +23,7 @@ import java.util.UUID;
  */
 @RestController
 @RequestMapping("/api")
-public class GameController {
+public class GameResource {
 
     @Autowired
     private GameRepository gameRepository;

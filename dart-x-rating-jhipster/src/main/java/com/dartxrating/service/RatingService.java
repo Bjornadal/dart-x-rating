@@ -1,4 +1,4 @@
-package com.dartxrating.service.dart;
+package com.dartxrating.service;
 
 import com.dartxrating.domain.dart.Game;
 import com.dartxrating.domain.dart.Placement;

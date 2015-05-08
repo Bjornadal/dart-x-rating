@@ -17,19 +17,19 @@
                         <span translate="global.menu.home">Home</span>
                     </a>
                 </li>
-                <li ui-sref-active="active" has-role="ROLE_USER">
+                <li ui-sref-active="active" has-role="ROLE_USER" ng-switch-when="true">
                     <a ui-sref="leagues">
                         <span class="glyphicon glyphicon-th"></span>
                         <span>Leagues</span>
                     </a>
                 </li>
-                <li ui-sref-active="active" has-role="ROLE_USER">
+                <li ui-sref-active="active" has-role="ROLE_USER" ng-switch-when="true">
                     <a ui-sref="ratings">
                         <span class="glyphicon glyphicon-list-alt"></span>
                         <span>Ratings</span>
                     </a>
                 </li>
-                <li ui-sref-active="active" has-role="ROLE_USER">
+                <li ui-sref-active="active" has-role="ROLE_USER" ng-switch-when="true">
                     <a ui-sref="games">
                         <span class="glyphicon glyphicon-knight"></span>
                         <span>Games</span>
@@ -96,20 +96,6 @@
                             &#xA0;<span translate="global.menu.admin.logs">Logs</span></a></li>
                         <li ui-sref-active="active"><a ui-sref="docs"><span class="glyphicon glyphicon-book"></span>
                             &#xA0;<span translate="global.menu.admin.apidocs">API Docs</span></a></li>
-                    </ul>
-                </li>
-                <li ui-sref-active="active" class="dropdown pointer" ng-controller="LanguageController">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="">
-                                <span>
-                                    <span class="glyphicon glyphicon-flag"></span>
-                                    <span class="hidden-tablet" translate="global.menu.language">Language</span>
-                                    <b class="caret"></b>
-                                </span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li active-menu="{{language}}" ng-repeat="language in languages">
-                            <a href="" ng-click="changeLanguage(language)">{{'language.' + language| translate}}</a>
-                        </li>
                     </ul>
                 </li>
             </ul>

@@ -1,7 +1,7 @@
-package com.dartxrating.web.rest.dart;
+package com.dartxrating.web.rest;
 
 import com.dartxrating.domain.dart.Achievement;
-import com.dartxrating.repository.dart.AchievementRepository;
+import com.dartxrating.repository.AchievementRepository;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +18,7 @@ import java.util.UUID;
  */
 @RestController
 @RequestMapping("/api")
-public class AchievementController {
+public class AchievementResource {
 
     @Autowired
     private AchievementRepository achievementRepository;

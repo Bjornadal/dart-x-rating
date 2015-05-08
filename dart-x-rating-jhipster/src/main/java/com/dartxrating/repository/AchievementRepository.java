@@ -1,4 +1,4 @@
-package com.dartxrating.repository.dart;
+package com.dartxrating.repository;
 
 
 import com.dartxrating.domain.dart.Achievement;
