@@ -1,7 +1,7 @@
 {
     "main": {
-        "title": "Welcome, Java Hipster!",
-        "subtitle": "This is your homepage",
+        "title": "Welcome to Dart X Rating",
+        "subtitle": "This site is used to track your dart games and add rating to players. Please create a new league or choose a existing one. Note that you need the league administrator password to register games and players.",
         "logged": {
             "message": "You are logged in as user \"{{username}}\"."
         },

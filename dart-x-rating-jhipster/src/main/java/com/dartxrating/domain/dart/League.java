@@ -18,8 +18,6 @@ public class League extends ResourceSupport {
     private String leagueId;
     @NotEmpty
     private String name;
-    @NotEmpty
-    private String password;
     private List<Player> players;
     private List<Game> games;
     private List<Achievement> achievements;
@@ -46,14 +44,6 @@ public class League extends ResourceSupport {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getPassword(boolean display) {
-        return (display) ? this.password : null;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public List<Player> getPlayers() {

@@ -2,36 +2,28 @@
 
 angular.module('dartxratingApp')
     .controller('LeagueController', function ($scope, $filter, $state, DartService) {
-        $scope.selectedLeague = "";
+        $scope.selectedLeague = DartService.getSelectedLeague();;
+        $scope.newUserLeague = "";
+        $scope.newUser = {};
         $scope.newLeague = {};
         $scope.leagues = DartService.getLeagues();
 
-        $scope.selectLeague = function() {
-            DartService.setLeague($scope.selectedLeague);
-            DartService.authenticate($scope.selectedLeague).then(function(success) {
-                if (success) {
-                    //$state.go("ratings");
-                }
-                else {
-                    $scope.wrongPassword = true;
-                }
+        $scope.addPlayerToLeague = function() {
+            DartService.addPlayer($scope.newUser, $scope.newUserLeague).then(function() {
+                $scope.newUserLeague = "";
+                $scope.newUser = {};
             });
         };
 
+        $scope.selectLeague = function(league) {
+            DartService.setLeague(league);
+            $scope.selectedLeague = league;
+        };
+
         $scope.createLeague = function() {
-            var newLeague = $scope.newLeague;
             DartService.addLeague($scope.newLeague).then(function(league) {
-                league.password = newLeague.password;
-                DartService.setLeague(league);
-                DartService.authenticate(league).then(function(success) {
-                    if (success) {
-                        //$state.go("ratings");
-                    }
-                    else {
-                        $scope.wrongPassword = true;
-                    }
-                });
+                $scope.newLeague = {};
+                $scope.leagues.push(league);
             });
-            $scope.newLeague = {};
         };
     });

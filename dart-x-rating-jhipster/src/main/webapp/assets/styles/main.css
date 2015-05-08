@@ -69,9 +69,9 @@ Browser Upgrade Prompt
 
 .hipster {
     display: inline-block;
-    width: 347px;
-    height: 497px;
-    background: url("../images/hipster.png") no-repeat center top;
+    width: 100%;
+    height: 100px;
+    background: url("../images/logo.png") no-repeat center top;
     background-size: contain;
 }
 

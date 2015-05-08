@@ -7,6 +7,11 @@ public class LeagueRole {
     private String leagueId;
     private String role;
 
+    public LeagueRole(String leagueId, String role) {
+        this.leagueId = leagueId;
+        this.role = role;
+    }
+
     public String getLeagueId() {
         return leagueId;
     }

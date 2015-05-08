@@ -11,12 +11,8 @@
                             <span class="input-group-addon"><i class="glyphicon glyphicon-text-background"></i></span>
                             <input ng-model="newLeague.name" type="text" class="form-control" placeholder="Name" />
                         </div>
-                        <div class="input-group" style="margin-bottom: 20px;">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-text-background"></i></span>
-                            <input ng-model="newLeague.password" type="password" class="form-control" id="inputLeaguePassword" placeholder="Administrator password">
-                        </div>
                         <div class="input-group-btn">
-                            <button ng-click="createLeague()" class="form-control btn-info">Register</button>
+                            <button ng-click="createLeague()" class="form-control btn-info">Create</button>
                         </div>
                     </div>
                 </div>
@@ -31,14 +27,14 @@
                     <div class="form-horizontal">
                         <div class="input-group" style="margin-bottom: 20px;">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
-                            <input type="text" ng-model="selectedLeague" typeahead="league as league.name for league in leagues | filter:$viewValue | limitTo:8" class="form-control">
+                            <input type="text" ng-model="newUserLeague" typeahead="league as league.name for league in leagues | filter:$viewValue | limitTo:8" class="form-control" placeholder="League">
                         </div>
                         <div class="input-group" style="margin-bottom: 20px;">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-text-background"></i></span>
-                            <input ng-model="selectedLeague.password" type="password" class="form-control" placeholder="Administrator password (Optional)">
+                            <input ng-model="newUser.name" type="text" class="form-control" placeholder="Player name">
                         </div>
                         <div class="input-group-btn">
-                            <button ng-click="selectLeague()" class="form-control btn-info">Select</button>
+                            <button ng-click="addPlayerToLeague()" class="form-control btn-info">Add</button>
                         </div>
                     </div>
                     <br/>
@@ -61,16 +57,19 @@
                     <table class="table">
                         <thead>
                             <th>League</th>
-                            <th>Rank</th>
-                            <th>Role</th>
+                            <!--<th>Rank</th>-->
+                            <!--<th>Role</th>-->
                             <th>Select</th>
                         </thead>
                         <tbody>
                             <tr ng-repeat="league in leagues">
                                 <td> {{ league.name }}</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <!--<td></td>-->
+                                <!--<td></td>-->
+                                <td>
+                                    <span ng-if="league.leagueId == selectedLeague.leagueId">Selected</span>
+                                    <span ng-if="league.leagueId != selectedLeague.leagueId"><a href="#" ng-click="selectLeague(league)">Select</a></span>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

@@ -1,18 +1,18 @@
 package com.dartxrating.web.rest.dart;
 
-import com.dartxrating.domain.dart.DartUser;
-import com.dartxrating.repository.dart.UserRepository;
-import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.UUID;
+//import com.dartxrating.domain.dart.DartUser;
+//import com.dartxrating.repository.dart.UserRepository;
+//import org.joda.time.DateTime;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.http.HttpStatus;
+//import org.springframework.http.ResponseEntity;
+//import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.web.bind.annotation.*;
+//
+//import javax.validation.Valid;
+//import java.util.ArrayList;
+//import java.util.Arrays;
+//import java.util.UUID;
 
 /**
  * Created by andreasb on 22.04.15.

@@ -2,8 +2,12 @@
  * Created by Andreas on 17.04.2015.
  */
 
-angular.module('dartxratingApp').service('DartService', function (LeagueFactory, PlayerFactory, GameFactory, AchievementFactory, $cookies, $q, $http) {
+angular.module('dartxratingApp').service('DartService', function (LeagueFactory, PlayerFactory, GameFactory, AchievementFactory, $cookies, $q, $http, User) {
     this.selectedLeague;
+
+    this.getUsers = function() {
+      return User.query();
+    };
 
     this.getLeagues = function() {
         return LeagueFactory.query();
@@ -34,8 +38,8 @@ angular.module('dartxratingApp').service('DartService', function (LeagueFactory,
         return PlayerFactory.players($cookies.authToken).query({leagueId: this.selectedLeague.leagueId});
     };
 
-    this.addPlayer = function(player) {
-        return PlayerFactory.players($cookies.authToken).save({leagueId: this.selectedLeague.leagueId}, player).$promise;
+    this.addPlayer = function(player, league) {
+        return PlayerFactory.players($cookies.authToken).save({leagueId: league.leagueId}, player).$promise;
     };
 
     this.addAchievementOnPlayer = function(achievement, player) {

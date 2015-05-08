@@ -1,22 +1,28 @@
 package com.dartxrating.web.rest.dart;
 
+import com.dartxrating.domain.User;
 import com.dartxrating.domain.dart.League;
-import com.dartxrating.repository.dart.AchievementRepository;
-import com.dartxrating.repository.dart.GameRepository;
-import com.dartxrating.repository.dart.LeagueRepository;
-import com.dartxrating.repository.dart.PlayerRepository;
+import com.dartxrating.domain.dart.LeagueRole;
+import com.dartxrating.repository.UserRepository;
+import com.dartxrating.repository.dart.*;
 import com.dartxrating.security.PasswordHash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.NoSuchAlgorithmException;
+import java.security.Principal;
 import java.security.spec.InvalidKeySpecException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
@@ -38,13 +44,22 @@ public class LeagueController {
     private GameRepository gameRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private AchievementRepository achievementRepository;
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value = "/leagues", method = RequestMethod.POST)
-    public ResponseEntity<League> createLeague(@Valid @RequestBody League league) throws InvalidKeySpecException, NoSuchAlgorithmException {
+    public ResponseEntity<League> createLeague(Principal principal,
+                                               @Valid @RequestBody League league) throws InvalidKeySpecException, NoSuchAlgorithmException {
         league.setLeagueId(UUID.randomUUID().toString());
-        league.setPassword(PasswordHash.createHash(league.getPassword(true)));
+
+        User user = userRepository.findOneByLogin(principal.getName()).get();
+        user.getLeagueRoles().add(new LeagueRole(league.getLeagueId(), "LEAGUE_ADMIN"));
+        user.getLeagueRoles().add(new LeagueRole(league.getLeagueId(), "LEAGUE_USER"));
+        userRepository.save(user);
+
         leagueRepository.save(league);
         return new ResponseEntity<>(league, HttpStatus.CREATED);
     }
@@ -60,9 +75,21 @@ public class LeagueController {
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value = "/leagues", method = RequestMethod.GET)
-    public ResponseEntity<List<League>> listLeagues(@RequestParam(required = false) String[] expand) {
+    public ResponseEntity<List<League>> listLeagues(Authentication authentication,
+                                                    @RequestParam(required = false) String[] expand) {
+        List<League> filteredLeagues = new ArrayList<>();
         List<League> leagues = leagueRepository.findAll();
-        for (League league : leagues) {
+
+        // Add only leagues that user has permission to
+        for (GrantedAuthority authority : authentication.getAuthorities()) {
+            if (authority.getAuthority().startsWith("LEAGUE_USER")) {
+                String roleForLeagueId = authority.getAuthority().split(";")[1];
+                Optional<League> leagueResult = leagues.stream().filter(league -> league.getLeagueId().equals(roleForLeagueId)).findFirst();
+                filteredLeagues.add(leagueResult.get());
+            }
+        }
+
+        for (League league : filteredLeagues) {
             league.add(linkTo(methodOn(LeagueController.class).getLeague(league.getLeagueId(), null)).withSelfRel());
             league.add(linkTo(methodOn(GameController.class).listGames(league.getLeagueId())).withRel("games"));
             league.add(ControllerLinkBuilder.linkTo(methodOn(PlayerController.class).listPlayers(league.getLeagueId())).withRel("players"));
@@ -87,7 +114,7 @@ public class LeagueController {
             }
         }
 
-        return new ResponseEntity<>(leagues, HttpStatus.OK);
+        return new ResponseEntity<>(filteredLeagues, HttpStatus.OK);
     }
 
     @PreAuthorize("hasPermission(#leagueId, 'isLeagueUser')")
