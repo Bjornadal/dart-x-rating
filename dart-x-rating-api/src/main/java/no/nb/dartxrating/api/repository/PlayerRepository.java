@@ -3,7 +3,6 @@ package no.nb.dartxrating.api.repository;
 import no.nb.dartxrating.model.database.Game;
 import no.nb.dartxrating.model.database.Player;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
