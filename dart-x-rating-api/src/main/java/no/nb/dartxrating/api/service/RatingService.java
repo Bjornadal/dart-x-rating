@@ -3,7 +3,6 @@ package no.nb.dartxrating.api.service;
 import no.nb.dartxrating.model.database.Game;
 import no.nb.dartxrating.model.database.Placement;
 import no.nb.dartxrating.model.database.Player;
-import no.nb.dartxrating.model.database.PlayerPlacement;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,33 +17,30 @@ public class RatingService {
 
     private final int kValue = 32;
 
-    public List<PlayerPlacement> calculateRatings(Game game) {
+    public List<Player> calculateRatings(Game game) {
 
         List<Placement> currentPlacements = new ArrayList<>();
         for (Placement currentPlacement : game.getPlacements()) {
-            Placement placement = new Placement();
-            placement.setPlacement(currentPlacement.getPlacement());
-
-            PlayerPlacement player = new PlayerPlacement();
-            player.setPlayerId(currentPlacement.getPlayer().getPlayerId());
-            player.setName(currentPlacement.getPlayer().getName());
-            player.setRating(currentPlacement.getPlayer().getRating());
-            placement.setPlayer(player);
-
-            currentPlacements.add(placement);
+            try {
+                currentPlacements.add(currentPlacement.clone());
+            }
+            catch (CloneNotSupportedException cne) {
+                currentPlacements.add(currentPlacement);
+            }
         }
 
         for (Placement placement : game.getPlacements()) {
-            PlayerPlacement player = placement.getPlayer();
+            Player player = placement.getPlayer();
             double rating = player.getRating();
+            player.setPreviousRating(rating);
             double ratingAdjustment = 0;
             int wl = (placement.getPlacement() == 1) ? 1 : 0;
             boolean playerWinner = (placement.getPlacement() == 1);
 
             for (Placement comparePlacement : currentPlacements) {
-                PlayerPlacement comparePlayer = comparePlacement.getPlayer();
-                boolean comparePlayerWinner = (comparePlacement.getPlacement() == 1);
-                if (!player.getPlayerId().equals(comparePlayer.getPlayerId()) && (playerWinner || (!playerWinner && comparePlayerWinner))) {
+                Player comparePlayer = comparePlacement.getPlayer();
+                boolean comparePlayerWinner = (placement.getPlacement() != 1);
+                if (player.getPlayerId().equals(comparePlayer.getPlayerId()) && (playerWinner || (!playerWinner && comparePlayerWinner))) {
                     double opponentRating = comparePlayer.getRating();
                     double winChance = 1/(1 + (Math.pow(10, ((opponentRating - rating) / 400))));
                     double currentRatingAdjustment = (rating+kValue*(wl-winChance))-rating;
@@ -62,7 +58,7 @@ public class RatingService {
             System.out.println("=========================================");
         }
 
-        List<PlayerPlacement> players = new ArrayList<>();
+        List<Player> players = new ArrayList<>();
         game.getPlacements().forEach(element -> players.add(element.getPlayer()));
 
         return players;

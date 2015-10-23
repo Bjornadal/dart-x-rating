@@ -23,28 +23,24 @@ angular
     .config(function ($routeProvider) {
         $routeProvider
             .when('/', {
-                templateUrl: 'views/leagues.html',
-                controller: 'LeagueCtrl'
-            })
-            .when('/ratings', {
-                templateUrl: 'views/ratings.html',
-                controller: 'RatingCtrl'
+                templateUrl: 'views/main.html',
+                controller: 'MainCtrl'
             })
             .when('/players', {
                 templateUrl: 'views/players.html',
-                controller: 'PlayerCtrl'
+                controller: 'PlayersCtrl'
             })
             .when('/achievements', {
                 templateUrl: 'views/achievements.html',
-                controller: 'AchievementCtrl'
+                controller: 'AchievementsCtrl'
             })
-            .when('/games', {
-                templateUrl: 'views/games.html',
-                controller: 'GameCtrl'
+            .when('/match', {
+                templateUrl: 'views/match.html',
+                controller: 'MatchCtrl'
             })
             .when('/statistics', {
                 templateUrl: 'views/statistics/statistics.html',
-                controller: 'StatisticCtrl'
+                controller: 'StatisticsCtrl'
             })
             .when('/admin', {
                 templateUrl: 'views/admin/index.html',
@@ -53,7 +49,7 @@ angular
             .otherwise({
                 redirectTo: '/'
             });
-    }).run(function($rootScope, $location, DartService) {
+    }).run(function($rootScope) {
         $rootScope.createGuid = function() {
             function s4() {
                 return Math.floor((1 + Math.random()) * 0x10000)
@@ -63,14 +59,4 @@ angular
             return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
                 s4() + '-' + s4() + s4() + s4();
         }
-
-        $rootScope.$on( "$routeChangeStart", function(event, next, current) {
-            if (!DartService.getSelectedLeague()) {
-                // no league selected, redirect to /login
-                if ( next.templateUrl === "views/leagues.html") {
-                } else {
-                    $location.path("/");
-                }
-            }
-        });
     });

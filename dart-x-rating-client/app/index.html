@@ -22,37 +22,34 @@
 <![endif]-->
 
 <!-- Add your site or application content here -->
-<div class="header" ng-controller="HeaderCtrl" ng-show="hasSelectedLeague">
+<div class="header">
     <div class="navbar navbar-default" role="navigation">
         <div class="container">
             <div class="navbar-header">
+
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#js-navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <img height="50px" style="padding: 5px;" src="images/logo.png" />
+
+                <a href="#/"><img height="50px" src="images/logo.png" /></a>
             </div>
-            <div class="collapse navbar-collapse" id="js-navbar-collapse">
+
+            <div class="collapse navbar-collapse" id="js-navbar-collapse" ng-controller="HeaderCtrl">
                 <ul class="nav navbar-nav">
-                    <li ng-class="{ active: isActive('/ratings')}"><a href="#/ratings">Ratings</a></li>
-                    <li ng-class="{ active: isActive('/games')}"><a ng-href="#/games">Games</a></li>
+                    <li ng-class="{ active: isActive('/')}"><a href="#/">Home</a></li>
+                    <li ng-class="{ active: isActive('/match')}"><a ng-href="#/match">Match</a></li>
                     <li ng-class="{ active: isActive('/players')}"><a ng-href="#/players">Players</a></li>
                     <li ng-class="{ active: isActive('/achievements')}"><a ng-href="#/achievements">Achievements</a></li>
-                    <li ng-show="false" ng-class="{ active: isActive('/statistics')}"><a ng-href="#/statistics">Statistics</a></li>
+                    <li ng-class="{ active: isActive('/statistics')}"><a ng-href="#/statistics">Statistics</a></li>
                     <li ng-show="false" ng-class="{ active: isActive('/admin')}"><a href="#/admin">Admin</a></li>
-                </ul>
-
-                <ul class="nav navbar-nav navbar-right">
-                    <p ng-show="isLeagueAdmin" class="navbar-text">Signed in as admin</p>
-                    <li><a href="#" ng-click="logout()">Logout</a></li>
                 </ul>
             </div>
         </div>
     </div>
 </div>
-
 
 <div ng-view=""></div>
 
@@ -72,7 +69,7 @@
             r = n.getElementsByTagName(g)[0], a.src = u, r.parentNode.insertBefore(a, r)
     }(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-    ga('create', 'UA-61929566-2', 'auto');
+    ga('create', 'UA-XXXXX-X');
     ga('send', 'pageview');
 </script>
 
@@ -91,27 +88,25 @@
 <script src="bower_components/moment/moment.js"></script>
 <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
 <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-<script src="bower_components/Chart.js/Chart.min.js"></script>
+<script src="bower_components/Chart.js/Chart.js"></script>
 <script src="bower_components/angular-chart.js/dist/angular-chart.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 
 <!-- build:js({.tmp,app}) scripts/scripts.js -->
 <script src="scripts/app.js"></script>
-<script src="scripts/controllers/headerController.js"></script>
-<script src="scripts/controllers/leagueController.js"></script>
-<script src="scripts/controllers/ratingController.js"></script>
+<script src="scripts/controllers/mainController.js"></script>
 <script src="scripts/controllers/playerController.js"></script>
 <script src="scripts/controllers/achievementController.js"></script>
-<script src="scripts/controllers/gameController.js"></script>
-<script src="scripts/controllers/statisticController.js"></script>
+<script src="scripts/controllers/matchController.js"></script>
+<script src="scripts/controllers/statisticsController.js"></script>
 <script src="scripts/controllers/adminController.js"></script>
+<script src="scripts/services/ratingService.js"></script>
 <script src="scripts/services/statisticsService.js"></script>
-<script src="scripts/services/dartApiService.js"></script>
-<script src="scripts/directives/gameDirective.js"></script>
+<script src="scripts/directives/matchDirective.js"></script>
 <script src="scripts/directives/animationDirective.js"></script>
 <script src="scripts/directives/statisticsDirective.js"></script>
-<script src="scripts/factories/dartApiFactory.js"></script>
+<script src="scripts/factories/firebaseFactory.js"></script>
 <script src="scripts/filters/numberFilter.js"></script>
 <script src="scripts/filters/stringFilter.js"></script>
 <script src="scripts/config/defaultConfig.js"></script>

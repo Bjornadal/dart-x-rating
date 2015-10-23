@@ -21,7 +21,6 @@ public class League extends ResourceSupport {
     private String password;
     private List<Player> players;
     private List<Game> games;
-    private List<Achievement> achievements;
 
     public League() {
 
@@ -36,7 +35,7 @@ public class League extends ResourceSupport {
     }
 
     public String getExpand() {
-        return "players,games,achievements";
+        return "players,games";
     }
 
     public String getName() {
@@ -69,13 +68,5 @@ public class League extends ResourceSupport {
 
     public void setGames(List<Game> games) {
         this.games = games;
-    }
-
-    public List<Achievement> getAchievements() {
-        return achievements;
-    }
-
-    public void setAchievements(List<Achievement> achievements) {
-        this.achievements = achievements;
     }
 }

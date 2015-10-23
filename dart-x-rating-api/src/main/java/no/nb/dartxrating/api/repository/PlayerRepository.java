@@ -11,7 +11,4 @@ import java.util.List;
  */
 public interface PlayerRepository extends MongoRepository<Player, String> {
     List<Player> findByLeagueId(String leagueId);
-
-    @Override
-    <S extends Player> S save(S s);
 }

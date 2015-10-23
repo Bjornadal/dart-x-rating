@@ -8,14 +8,12 @@
  * Controller of the dartXRatingApp
  */
 angular.module('dartXRatingApp')
-    .controller('PlayerCtrl', function ($scope, DartService) {
-        $scope.isLeagueAdmin = DartService.isLeagueAdmin();
+    .controller('PlayersCtrl', function ($scope, PlayerFactory) {
         $scope.player = {};
-        $scope.players = DartService.getPlayers();
+        $scope.players = PlayerFactory();
 
         $scope.registerPlayer = function() {
-            DartService.addPlayer($scope.player);
-            $scope.players.push($scope.player)
+            $scope.players.registerPlayer($scope.player);
             $scope.player = {};
         };
 });

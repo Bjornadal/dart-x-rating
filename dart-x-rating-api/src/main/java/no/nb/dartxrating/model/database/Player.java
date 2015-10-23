@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,16 +14,15 @@ import java.util.List;
 public class Player {
     @Id
     private String playerId;
-    private String userId;
     private String leagueId;
     private String name;
+    private String email;
     private double rating;
     private double previousRating;
     private double ratingAdjustment;
     private int games;
     private int wins;
-    private boolean playedLastGame;
-    private List<Achievement> achievements = new ArrayList<>();
+    private List<Achievement> achievements;
 
     public Player() {
 
@@ -32,6 +30,7 @@ public class Player {
 
     public void merge(Player player) {
         this.name = (player.getName() != null) ? player.getName() : this.name;
+        this.email = (player.getEmail() != null) ? player.getEmail() : this.email;
         this.rating = (player.getRating() != 0) ? player.getRating() : this.rating;
         this.previousRating = (player.getPreviousRating() != 0) ? player.getPreviousRating() : this.previousRating;
         this.ratingAdjustment = (player.getRatingAdjustment() != 0) ? player.getRatingAdjustment() : this.ratingAdjustment;
@@ -51,6 +50,14 @@ public class Player {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public double getRating() {
@@ -107,21 +114,5 @@ public class Player {
 
     public void setLeagueId(String leagueId) {
         this.leagueId = leagueId;
-    }
-
-    public boolean isPlayedLastGame() {
-        return playedLastGame;
-    }
-
-    public void setPlayedLastGame(boolean playedLastGame) {
-        this.playedLastGame = playedLastGame;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 }

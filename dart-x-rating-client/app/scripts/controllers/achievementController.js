@@ -4,10 +4,10 @@
  * Created by andreasb on 27.02.15.
  */
 
-angular.module('dartXRatingApp').controller('AchievementCtrl', function ($scope, DartService) {
-    $scope.isLeagueAdmin = DartService.isLeagueAdmin();
-    $scope.players = DartService.getPlayers();
-    $scope.achievements = DartService.getAchievements();
+angular.module('dartXRatingApp').controller('AchievementsCtrl', function ($scope, AchievementFactory, PlayerFactory) {
+
+    $scope.players = PlayerFactory();
+    $scope.achievements = AchievementFactory();
     $scope.achievement = {};
 
     // Register achievement on player
@@ -21,15 +21,19 @@ angular.module('dartXRatingApp').controller('AchievementCtrl', function ($scope,
     };
 
     $scope.registerAchievementOnPlayer = function() {
-        DartService.addAchievementOnPlayer($scope.ddSelectedAchievement, $scope.ddSelectedPlayer)
+        $scope.ddSelectedAchievement.date = new Date().getTime();
+
+        $scope.ddSelectedPlayer.achievements = ($scope.ddSelectedPlayer.achievements) ? $scope.ddSelectedPlayer.achievements : [];
+        $scope.ddSelectedPlayer.achievements.push($scope.ddSelectedAchievement);
+        $scope.players.updatePlayer($scope.ddSelectedPlayer);
+
         $scope.ddSelectedPlayer = { name: 'Select player'};
         $scope.ddSelectedAchievement = { name: 'Select achievement'}
     };
 
     // Register new achievement
     $scope.registerAchievement = function() {
-        DartService.addAchievement($scope.achievement);
-        $scope.achievements.push($scope.achievement);
+        AchievementFactory().registerAchievement($scope.achievement);
         $scope.achievement = {};
     };
 });
