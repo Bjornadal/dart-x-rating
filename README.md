@@ -1,7 +1,3 @@
-# About
-
-This is a branch that is using the dart-x-rating-api and not Firebase.
-
 # dart-xrating
 
 This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular)
