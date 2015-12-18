@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dartXRatingApp')
+angular.module('xgames')
     .filter('split', function () {
         return function (input, splitChar, splitIndex) {
             // do some bounds checking here to ensure it has that index

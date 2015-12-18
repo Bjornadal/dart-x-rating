@@ -1,6 +1,8 @@
 'use strict';
 
-angular.module('dartXRatingApp').factory("PlayerFactory", function ($firebaseArray, $q, defaultConfig) {
+angular.module('xgames').factory("PlayerFactory", function ($firebaseArray, $q, defaultConfig, $localstorage) {
+    var settings = $localstorage.getObject('settings');
+
     var PlayerFactory = $firebaseArray.$extend({
         registerPlayer: function (player) {
             player.rating = 1500;
@@ -8,7 +10,7 @@ angular.module('dartXRatingApp').factory("PlayerFactory", function ($firebaseArr
             var playerFound = false;
             if (this.$list.length > 0) {
                 this.$list.some(function (p) {
-                    if (p.email === player.email) {
+                    if (p.name === player.name) {
                         playerFound = true;
                     }
                 });
@@ -16,7 +18,6 @@ angular.module('dartXRatingApp').factory("PlayerFactory", function ($firebaseArr
             if (!playerFound) {
                 this.$list.$add({
                     name: player.name,
-                    email: player.email,
                     rating: player.rating
                 });
             }
@@ -38,12 +39,14 @@ angular.module('dartXRatingApp').factory("PlayerFactory", function ($firebaseArr
     });
 
     return function () {
-        var ref = new Firebase(defaultConfig.firebaseBackend + '/players' + (defaultConfig.production ? '' : 'Dev'));
+        var ref = new Firebase(defaultConfig.firebaseBackend + '/leagues/' + settings.league +  '/games/' + settings.game + '/seasons/' + settings.season + '/players');
         return new PlayerFactory(ref);
     }
 });
 
-angular.module('dartXRatingApp').factory("MatchFactory", function ($firebaseArray, $q, defaultConfig) {
+angular.module('xgames').factory("MatchFactory", function ($firebaseArray, $q, defaultConfig, $localstorage) {
+    var settings = $localstorage.getObject('settings');
+
     var MatchFactory = $firebaseArray.$extend({
         registerMatch: function (match) {
             match.date = new Date().getTime();
@@ -61,12 +64,14 @@ angular.module('dartXRatingApp').factory("MatchFactory", function ($firebaseArra
     });
 
     return function () {
-        var ref = new Firebase(defaultConfig.firebaseBackend + '/matches' + (defaultConfig.production ? '' : 'Dev'));
+        var ref = new Firebase(defaultConfig.firebaseBackend + '/leagues/' + settings.league +  '/games/' + settings.game + '/seasons/' + settings.season + '/matches');
         return new MatchFactory(ref);
     }
 });
 
-angular.module('dartXRatingApp').factory("AchievementFactory", function ($firebaseArray, $q, defaultConfig) {
+angular.module('xgames').factory("AchievementFactory", function ($firebaseArray, $q, defaultConfig, $localstorage) {
+    var settings = $localstorage.getObject('settings');
+
     var AchievementFactory = $firebaseArray.$extend({
         registerAchievement: function (achievement) {
             this.$list.$add(achievement);
@@ -84,7 +89,7 @@ angular.module('dartXRatingApp').factory("AchievementFactory", function ($fireba
     });
 
     return function () {
-        var ref = new Firebase(defaultConfig.firebaseBackend + '/achievements' + (defaultConfig.production ? '' : 'Dev'));
+        var ref = new Firebase(defaultConfig.firebaseBackend + '/achievements');
         return new AchievementFactory(ref);
     }
 });

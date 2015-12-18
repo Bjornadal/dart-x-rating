@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dartXRatingApp').service('StatisticsService', function ($q, $filter, PlayerFactory, MatchFactory) {
+angular.module('xgames').service('StatisticsService', function ($q, $filter, PlayerFactory, MatchFactory) {
     var DATE_FORMAT = 'DD.MM.YYYY';
     var playerFactory = new PlayerFactory;
     var matchFactory = new MatchFactory;

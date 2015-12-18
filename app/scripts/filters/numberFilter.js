@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module('dartXRatingApp');
+var app = angular.module('xgames');
 
 app.filter('roundWhole', function () {
     return function (input) {

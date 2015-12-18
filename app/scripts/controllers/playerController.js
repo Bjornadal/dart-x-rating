@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dartXRatingApp')
+angular.module('xgames')
     .controller('PlayersCtrl', function ($scope, PlayerFactory) {
         $scope.player = {};
         $scope.players = PlayerFactory();

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dartXRatingApp').controller('AchievementsCtrl', function ($scope, AchievementFactory, PlayerFactory) {
+angular.module('xgames').controller('AchievementsCtrl', function ($scope, AchievementFactory, PlayerFactory) {
 
     $scope.players = PlayerFactory();
     $scope.achievements = AchievementFactory();

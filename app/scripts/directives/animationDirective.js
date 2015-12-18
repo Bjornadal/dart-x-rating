@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dartXRatingApp')
+angular.module('xgames')
     .directive('playerUpdateAnimation', function ($animate) {
         return {
             restrict: 'A',

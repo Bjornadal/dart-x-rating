@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dartXRatingApp').controller('MatchCtrl', function ($scope, $filter, RatingService, $location, PlayerFactory, MatchFactory, AchievementFactory) {
+angular.module('xgames').controller('MatchCtrl', function ($scope, $filter, RatingService, $location, PlayerFactory, MatchFactory, AchievementFactory) {
     var achievementFactory = new AchievementFactory;
     $scope.match = {};
     $scope.matches = MatchFactory();
@@ -29,7 +29,6 @@ angular.module('dartXRatingApp').controller('MatchCtrl', function ($scope, $filt
             if (player.wasPlaying) {
                 toSave.players.push(
                     {
-                        email: player.email,
                         name: player.name,
                         winner: player.winner,
                         rating: player.rating
@@ -50,7 +49,7 @@ angular.module('dartXRatingApp').controller('MatchCtrl', function ($scope, $filt
 
         angular.forEach(toSave.players, function (matchPlayer) {
             angular.forEach($scope.players, function (player) {
-                if (matchPlayer.email === player.email) {
+                if (matchPlayer.name === player.name) {
                     player.ratingAdjustment = matchPlayer.ratingAdjustment;
                     player.rating = matchPlayer.rating;
                     player.matches = (player.matches) ? player.matches + 1 : 1;
@@ -129,7 +128,7 @@ angular.module('dartXRatingApp').controller('MatchCtrl', function ($scope, $filt
         var winstreak = 0;
         angular.forEach($scope.matches, function (match) {
             angular.forEach(match.players, function (matchPlayer) {
-                if (matchPlayer.email == player.email) {
+                if (matchPlayer.name == player.name) {
                     if (matchPlayer.winner) {
                         winstreak++;
                     } else {
@@ -145,7 +144,7 @@ angular.module('dartXRatingApp').controller('MatchCtrl', function ($scope, $filt
         var loseStreak = 0;
         angular.forEach($scope.matches, function (match) {
             angular.forEach(match.players, function (matchPlayer) {
-                if (matchPlayer.email == player.email) {
+                if (matchPlayer.name == player.name) {
                     if (matchPlayer.winner) {
                         loseStreak = 0;
                     } else {

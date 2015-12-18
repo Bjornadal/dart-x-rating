@@ -1,6 +1,7 @@
 'use strict';
 
-angular.module('dartXRatingApp').controller('MainCtrl', function ($scope, $filter, RatingService, PlayerFactory, StatisticsService, $timeout, $interval) {
+angular.module('xgames').controller('MainCtrl', function ($scope, $filter, RatingService, PlayerFactory, StatisticsService, $timeout, $interval, $localstorage) {
+    $scope.settings = $localstorage.getObject('settings');
     $scope.players = PlayerFactory();
     $scope.startDate = new Date(new Date().setDate(new Date().getDate() - 7));
     $scope.endDate = new Date();
@@ -51,7 +52,8 @@ angular.module('dartXRatingApp').controller('MainCtrl', function ($scope, $filte
     }
 });
 
-angular.module('dartXRatingApp').controller('HeaderCtrl', function ($scope, $location) {
+angular.module('xgames').controller('HeaderCtrl', function ($scope, $location, $localstorage) {
+    $scope.settings = $localstorage.getObject('settings');
     $scope.isActive = function (viewLocation) {
         return viewLocation === $location.path();
     };

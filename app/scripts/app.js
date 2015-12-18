@@ -2,14 +2,14 @@
 
 /**
  * @ngdoc overview
- * @name dartXRatingApp
+ * @name xgames
  * @description
- * # dartXRatingApp
+ * # xgames
  *
  * Main module of the application.
  */
 angular
-    .module('dartXRatingApp', [
+    .module('xgames', [
         'ngAnimate',
         'ngCookies',
         'ngResource',
@@ -42,9 +42,9 @@ angular
                 templateUrl: 'views/statistics/statistics.html',
                 controller: 'StatisticsCtrl'
             })
-            .when('/admin', {
-                templateUrl: 'views/admin/index.html',
-                controller: 'AdminCtrl'
+            .when('/settings', {
+                templateUrl: 'views/settings.html',
+                controller: 'SettingsCtrl'
             })
             .otherwise({
                 redirectTo: '/'

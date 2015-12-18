@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dartXRatingApp')
+angular.module('xgames')
     .directive('matchValidation', function () {
         return {
             restrict: 'A',

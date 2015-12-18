@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dartXRatingApp').service('RatingService', function () {
+angular.module('xgames').service('RatingService', function () {
     var kValue = 32;
 
     this.calculateRating = function (players) {
@@ -12,7 +12,7 @@ angular.module('dartXRatingApp').service('RatingService', function () {
             var ratingAdjustment = 0;
             var wl = (player.winner) ? 1 : 0;
             angular.forEach(currentPlayers, function (comparePlayer) {
-                if (player.email !== comparePlayer.email && (player.winner || (!player.winner && comparePlayer.winner))) {
+                if (player.name !== comparePlayer.name && (player.winner || (!player.winner && comparePlayer.winner))) {
                     var opponentRating = comparePlayer.rating;
                     var winChance = 1 / (1 + (Math.pow(10, ((opponentRating - rating) / 400))));
 
