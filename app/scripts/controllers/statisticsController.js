@@ -10,23 +10,10 @@ angular.module('xgames').controller('StatisticsCtrl', function ($scope, Statisti
     StatisticsService.generateStatistics().then(function (players) {
         $scope.players = players;
 
-        $scope.$watch('[startDate, endDate]', function (newValue, oldValue) {
-            StatisticsService.createLineChartRating($scope.startDate, $scope.endDate).then(function (data) {
-                $scope.chartData = data;
-            });
-        });
-
         $scope.players.$watch(function (event) {
             StatisticsService.updateStatistics().then(function (players) {
                 $scope.players = players;
-                StatisticsService.createLineChartRating($scope.startDate, $scope.endDate).then(function (data) {
-                    $scope.chartData = data;
-                });
             });
-        });
-
-        StatisticsService.createLineChartRating($scope.startDate, $scope.endDate).then(function (data) {
-            $scope.chartData = data;
         });
     });
 });

@@ -150,55 +150,6 @@ angular.module('xgames').service('StatisticsService', function ($q, $filter, Pla
         return deferred.promise;
     };
 
-    this.createLineChartRating = function (startDate, endDate) {
-        var deferred = $q.defer();
-        var dateFormat = "yyyy-MM-dd";
-        var chartData = {};
-        chartData.options = {
-            datasetFill: false,
-            responsive: true
-        };
-        chartData.series = [];
-        chartData.rating = [];
-        angular.forEach(players, function (player, index) {
-            chartData.series[index] = player.name;
-            chartData.rating[index] = player.rating;
-        });
-        var fromDate = moment(startDate).format('YYYY-MM-DD');
-        chartData.labels = [];
-        chartData.labels.push(fromDate);
-        chartData.data = [];
-
-        angular.forEach(matches, function (match) {
-            if ($filter('date')(match.date, dateFormat) >= $filter('date')(startDate, dateFormat) && $filter('date')(match.date, dateFormat) <= $filter('date')(endDate, dateFormat)) {
-                chartData.labels.push(moment(match.date).format('YYYY-MM-DD HH:mm'));
-                angular.forEach(chartData.series, function (serie, pos) {
-                    var playerRatings = [];
-
-                    if (angular.isUndefined(chartData.data[pos])) {
-                        chartData.data[pos] = [];
-                        playerRatings.push(1500);
-                        chartData.data[pos] = playerRatings;
-                    } else {
-                        playerRatings = chartData.data[pos];
-                    }
-
-                    var hasPlayed = false;
-                    var playerRating = playerRatings[playerRatings.length - 1];
-                    angular.forEach(match.players, function (player) {
-                        if (serie === player.name) {
-                            hasPlayed = true;
-                            playerRating = player.rating;
-                        }
-                    });
-                    playerRatings.push(playerRating);
-                });
-            }
-        });
-        deferred.resolve(chartData);
-        return deferred.promise;
-    };
-
     this.generateFunFacts = function () {
         var funFacts = ['Dart X Rating Awesome Fun Facts'];
         var playersWithMostMatches = [], playersWithFewestMatches = [], playersWithMostWins = [], playersWithFewestWins = [], playersWithHighestRating = [], playersWithLowestRating = [];
