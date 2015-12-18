@@ -1,21 +1,14 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name dartXRatingApp.controller:MainCtrl
- * @description
- * # MainCtrl
- * Controller of the dartXRatingApp
- */
 angular.module('dartXRatingApp').controller('MainCtrl', function ($scope, $filter, RatingService, PlayerFactory, StatisticsService, $timeout, $interval) {
     $scope.players = PlayerFactory();
-    $scope.startDate = new Date(new Date().setDate(new Date().getDate()-7));
+    $scope.startDate = new Date(new Date().setDate(new Date().getDate() - 7));
     $scope.endDate = new Date();
 
     var funFacts = ["Dart X Rating Awesome Fun Facts"];
     var funFactIndex = 0;
     updateFunFact(funFactIndex);
-    $interval(function() {
+    $interval(function () {
         funFactIndex++;
         if (funFactIndex >= funFacts.length) {
             funFactIndex = 0;
@@ -23,21 +16,21 @@ angular.module('dartXRatingApp').controller('MainCtrl', function ($scope, $filte
         updateFunFact(funFactIndex);
     }, 10000);
 
-    StatisticsService.generateStatistics().then(function(players) {
+    StatisticsService.generateStatistics().then(function (players) {
         $scope.players = players;
         funFacts = StatisticsService.generateFunFacts();
 
-        $scope.players.$watch(function() {
-            StatisticsService.createLineChartRating($scope.startDate, $scope.endDate).then(function(data) {
+        $scope.players.$watch(function () {
+            StatisticsService.createLineChartRating($scope.startDate, $scope.endDate).then(function (data) {
                 $scope.chartData = data;
-                StatisticsService.generateStatistics().then(function() {
+                StatisticsService.generateStatistics().then(function () {
                     funFacts = StatisticsService.generateFunFacts();
                 });
             });
         });
 
-        $scope.$watch('[startDate, endDate]', function(newValue, oldValue) {
-            StatisticsService.createLineChartRating($scope.startDate, $scope.endDate).then(function(data) {
+        $scope.$watch('[startDate, endDate]', function (newValue, oldValue) {
+            StatisticsService.createLineChartRating($scope.startDate, $scope.endDate).then(function (data) {
                 $scope.chartData = data;
             });
         });
@@ -51,14 +44,14 @@ angular.module('dartXRatingApp').controller('MainCtrl', function ($scope, $filte
         } else {
             $scope.showFunFact = false;
         }
-        $timeout(function() {
+        $timeout(function () {
             $scope.funFact = funFacts[index];
             $scope.showFunFact = true;
         }, delay);
     }
 });
 
-angular.module('dartXRatingApp').controller('HeaderCtrl', function($scope, $location) {
+angular.module('dartXRatingApp').controller('HeaderCtrl', function ($scope, $location) {
     $scope.isActive = function (viewLocation) {
         return viewLocation === $location.path();
     };

@@ -1,9 +1,5 @@
 'use strict';
 
-/**
- * Created by andreasb on 27.02.15.
- */
-
 angular.module('dartXRatingApp').service('RatingService', function () {
     var kValue = 32;
 
@@ -18,13 +14,13 @@ angular.module('dartXRatingApp').service('RatingService', function () {
             angular.forEach(currentPlayers, function (comparePlayer) {
                 if (player.email !== comparePlayer.email && (player.winner || (!player.winner && comparePlayer.winner))) {
                     var opponentRating = comparePlayer.rating;
-                    var winChance = 1/(1 + (Math.pow(10, ((opponentRating - rating) / 400)))) ;
+                    var winChance = 1 / (1 + (Math.pow(10, ((opponentRating - rating) / 400))));
 
-                    var currentRatingAdjustment = (rating+kValue*(wl-winChance))-rating;
+                    var currentRatingAdjustment = (rating + kValue * (wl - winChance)) - rating;
                     ratingAdjustment += currentRatingAdjustment;
 
-                    console.log("'" + player.name + "' has win chance of " + winChance + " against '" + comparePlayer.name  + "'");
-                    console.log("'" + player.name + "' gets rating adjusted " + currentRatingAdjustment + " for " + (player.winner ? 'winning' : 'losing') + " against '" + comparePlayer.name  + "'");
+                    console.log("'" + player.name + "' has win chance of " + winChance + " against '" + comparePlayer.name + "'");
+                    console.log("'" + player.name + "' gets rating adjusted " + currentRatingAdjustment + " for " + (player.winner ? 'winning' : 'losing') + " against '" + comparePlayer.name + "'");
                 }
             });
 

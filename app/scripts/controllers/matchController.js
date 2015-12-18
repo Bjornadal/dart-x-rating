@@ -5,27 +5,27 @@ angular.module('dartXRatingApp').controller('MatchCtrl', function ($scope, $filt
     $scope.match = {};
     $scope.matches = MatchFactory();
 
-    PlayerFactory().getPlayersAsync().then(function(players) {
+    PlayerFactory().getPlayersAsync().then(function (players) {
         $scope.players = players;
         $scope.match.players = angular.copy($scope.players);
     });
 
-    $scope.togglePlayer = function(player) {
+    $scope.togglePlayer = function (player) {
         player.wasPlaying = !player.wasPlaying;
         player.winner = (player.wasPlaying) ? player.winner : false;
     };
 
-    $scope.setWinner = function(player) {
-        angular.forEach($scope.match.players, function(matchPlayer) {
+    $scope.setWinner = function (player) {
+        angular.forEach($scope.match.players, function (matchPlayer) {
             matchPlayer.winner = false;
         });
         player.winner = true;
     };
 
-    $scope.registerMatch = function() {
+    $scope.registerMatch = function () {
         // Copy the selected players to its own object
-        var toSave = { players: []};
-        angular.forEach($scope.match.players, function(player) {
+        var toSave = {players: []};
+        angular.forEach($scope.match.players, function (player) {
             if (player.wasPlaying) {
                 toSave.players.push(
                     {
@@ -40,7 +40,7 @@ angular.module('dartXRatingApp').controller('MatchCtrl', function ($scope, $filt
         });
 
         // Update players
-        angular.forEach($scope.players, function(player) {
+        angular.forEach($scope.players, function (player) {
             player.playedLastMatch = false;
             $scope.players.updatePlayer(player);
         });
@@ -48,8 +48,8 @@ angular.module('dartXRatingApp').controller('MatchCtrl', function ($scope, $filt
         // Update player ratings
         RatingService.calculateRating(toSave.players);
 
-        angular.forEach(toSave.players, function(matchPlayer) {
-            angular.forEach($scope.players, function(player) {
+        angular.forEach(toSave.players, function (matchPlayer) {
+            angular.forEach($scope.players, function (player) {
                 if (matchPlayer.email === player.email) {
                     player.ratingAdjustment = matchPlayer.ratingAdjustment;
                     player.rating = matchPlayer.rating;
@@ -59,8 +59,8 @@ angular.module('dartXRatingApp').controller('MatchCtrl', function ($scope, $filt
 
                     // Update form
                     var form = (matchPlayer.winner) ? 'W' : 'L';
-                    if(player.form) {
-                        if(player.form.length >= 5) {
+                    if (player.form) {
+                        if (player.form.length >= 5) {
                             player.form = player.form.slice(1, player.form.length);
                         }
 
@@ -70,8 +70,8 @@ angular.module('dartXRatingApp').controller('MatchCtrl', function ($scope, $filt
                     }
 
                     /*
-                    * Automatic registration of achievements
-                    */
+                     * Automatic registration of achievements
+                     */
                     if (player.playedLastMatch) {
                         var playerWinStreak = getPlayerWinStreak(player) + 1;
                         var playerLoseStreak = getPlayerLoseStreak(player) + 1;
@@ -125,7 +125,7 @@ angular.module('dartXRatingApp').controller('MatchCtrl', function ($scope, $filt
         $location.url('/');
     };
 
-    var getPlayerWinStreak = function(player) {
+    var getPlayerWinStreak = function (player) {
         var winstreak = 0;
         angular.forEach($scope.matches, function (match) {
             angular.forEach(match.players, function (matchPlayer) {
@@ -141,9 +141,9 @@ angular.module('dartXRatingApp').controller('MatchCtrl', function ($scope, $filt
         return winstreak;
     };
 
-    var getPlayerLoseStreak = function(player) {
+    var getPlayerLoseStreak = function (player) {
         var loseStreak = 0;
-        angular.forEach($scope.matches, function(match) {
+        angular.forEach($scope.matches, function (match) {
             angular.forEach(match.players, function (matchPlayer) {
                 if (matchPlayer.email == player.email) {
                     if (matchPlayer.winner) {
@@ -157,9 +157,9 @@ angular.module('dartXRatingApp').controller('MatchCtrl', function ($scope, $filt
         return loseStreak;
     };
 
-    var hasPlayerAchievement = function(player, achievement) {
+    var hasPlayerAchievement = function (player, achievement) {
         var hasAchievement = false;
-        angular.forEach(player.achievements, function(a) {
+        angular.forEach(player.achievements, function (a) {
             if (!hasAchievement && achievement.name == a.name) {
                 hasAchievement = true;
             }

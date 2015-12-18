@@ -1,62 +1,58 @@
 'use strict';
 
-/**
- * Created by raymondk on 18.03.15.
- */
-
-angular.module('dartXRatingApp').service('StatisticsService', function($q, $filter, PlayerFactory, MatchFactory) {
+angular.module('dartXRatingApp').service('StatisticsService', function ($q, $filter, PlayerFactory, MatchFactory) {
     var DATE_FORMAT = 'DD.MM.YYYY';
     var playerFactory = new PlayerFactory;
     var matchFactory = new MatchFactory;
     var players, matches;
 
-    this.generateStatistics = function() {
+    this.generateStatistics = function () {
         var deferred = $q.defer();
         loadData()
             .then(ratingStats)
             .then(matchStats)
-            .then(function() {
+            .then(function () {
                 deferred.resolve(players);
             })
-            .catch(function(error) {
+            .catch(function (error) {
                 deferred.reject(error);
             });
         return deferred.promise;
     };
 
-    this.updateStatistics = function() {
+    this.updateStatistics = function () {
         var deferred = $q.defer();
         ratingStats()
             .then(matchStats)
-            .then(function() {
+            .then(function () {
                 deferred.resolve(players);
             })
-            .catch(function(error) {
+            .catch(function (error) {
                 deferred.reject(error);
             });
         return deferred.promise;
     };
 
-    var loadData = function() {
+    var loadData = function () {
         var deferred = $q.defer();
         playerFactory.getPlayersAsync()
-            .then(function(p) {
+            .then(function (p) {
                 players = p;
             })
             .then(matchFactory.getMatchesAsync)
-            .then(function(m) {
+            .then(function (m) {
                 matches = m;
             })
-            .then(function() {
+            .then(function () {
                 deferred.resolve(players);
             })
-            .catch(function(error) {
+            .catch(function (error) {
                 deferred.reject(error);
             });
         return deferred.promise;
     };
 
-    var ratingStats = function() {
+    var ratingStats = function () {
         var deferred = $q.defer();
         angular.forEach(players, function (player) {
             if (angular.isUndefined(player.stats)) {
@@ -105,7 +101,7 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
         return deferred.promise;
     };
 
-    var matchStats = function() {
+    var matchStats = function () {
         var deferred = $q.defer();
         angular.forEach(players, function (player) {
             if (angular.isUndefined(player.stats)) {
@@ -154,17 +150,17 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
         return deferred.promise;
     };
 
-    this.createLineChartRating = function(startDate, endDate) {
+    this.createLineChartRating = function (startDate, endDate) {
         var deferred = $q.defer();
         var dateFormat = "yyyy-MM-dd";
         var chartData = {};
         chartData.options = {
-            datasetFill : false,
+            datasetFill: false,
             responsive: true
         };
         chartData.series = [];
         chartData.rating = [];
-        angular.forEach(players, function(player, index) {
+        angular.forEach(players, function (player, index) {
             chartData.series[index] = player.name;
             chartData.rating[index] = player.rating;
         });
@@ -173,7 +169,7 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
         chartData.labels.push(fromDate);
         chartData.data = [];
 
-        angular.forEach(matches, function(match) {
+        angular.forEach(matches, function (match) {
             if ($filter('date')(match.date, dateFormat) >= $filter('date')(startDate, dateFormat) && $filter('date')(match.date, dateFormat) <= $filter('date')(endDate, dateFormat)) {
                 chartData.labels.push(moment(match.date).format('YYYY-MM-DD HH:mm'));
                 angular.forEach(chartData.series, function (serie, pos) {
@@ -203,22 +199,22 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
         return deferred.promise;
     };
 
-    this.generateFunFacts = function() {
+    this.generateFunFacts = function () {
         var funFacts = ['Dart X Rating Awesome Fun Facts'];
         var playersWithMostMatches = [], playersWithFewestMatches = [], playersWithMostWins = [], playersWithFewestWins = [], playersWithHighestRating = [], playersWithLowestRating = [];
         var playersWithHighestRatingImprovement = [], playersWithHighestRatingLoss = [];
         var playersWithHighestWinStreak = [], playersWithHighestLoseStreak = [];
         var playersWithMostAchievements = [];
 
-        angular.forEach(players, function(player) {
+        angular.forEach(players, function (player) {
             //Most matches
             if (playersWithMostMatches.length === 0) {
                 playersWithMostMatches.push(player);
             } else {
-                if (player.stats.matches.value > playersWithMostMatches[playersWithMostMatches.length-1].stats.matches.value) {
+                if (player.stats.matches.value > playersWithMostMatches[playersWithMostMatches.length - 1].stats.matches.value) {
                     playersWithMostMatches = [];
                     playersWithMostMatches.push(player);
-                } else if (player.stats.matches.value === playersWithMostMatches[playersWithMostMatches.length-1].stats.matches.value) {
+                } else if (player.stats.matches.value === playersWithMostMatches[playersWithMostMatches.length - 1].stats.matches.value) {
                     playersWithMostMatches.push(player);
                 }
             }
@@ -226,10 +222,10 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
             if (playersWithFewestMatches.length === 0) {
                 playersWithFewestMatches.push(player);
             } else {
-                if (player.stats.matches.value < playersWithFewestMatches[playersWithFewestMatches.length-1].stats.matches.value) {
+                if (player.stats.matches.value < playersWithFewestMatches[playersWithFewestMatches.length - 1].stats.matches.value) {
                     playersWithFewestMatches = [];
                     playersWithFewestMatches.push(player);
-                } else if (player.stats.matches.value === playersWithFewestMatches[playersWithFewestMatches.length-1].stats.matches.value) {
+                } else if (player.stats.matches.value === playersWithFewestMatches[playersWithFewestMatches.length - 1].stats.matches.value) {
                     playersWithFewestMatches.push(player);
                 }
             }
@@ -237,10 +233,10 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
             if (playersWithMostWins.length === 0) {
                 playersWithMostWins.push(player);
             } else {
-                if (player.stats.wins.value > playersWithMostWins[playersWithMostWins.length-1].stats.wins.value) {
+                if (player.stats.wins.value > playersWithMostWins[playersWithMostWins.length - 1].stats.wins.value) {
                     playersWithMostWins = [];
                     playersWithMostWins.push(player);
-                } else if (player.stats.wins.value === playersWithMostWins[playersWithMostWins.length-1].stats.wins.value) {
+                } else if (player.stats.wins.value === playersWithMostWins[playersWithMostWins.length - 1].stats.wins.value) {
                     playersWithMostWins.push(player);
                 }
             }
@@ -248,10 +244,10 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
             if (playersWithFewestWins.length === 0) {
                 playersWithFewestWins.push(player);
             } else {
-                if (player.stats.wins.value < playersWithFewestWins[playersWithFewestWins.length-1].stats.wins.value) {
+                if (player.stats.wins.value < playersWithFewestWins[playersWithFewestWins.length - 1].stats.wins.value) {
                     playersWithFewestWins = [];
                     playersWithFewestWins.push(player);
-                } else if (player.stats.wins.value === playersWithFewestWins[playersWithFewestWins.length-1].stats.wins.value) {
+                } else if (player.stats.wins.value === playersWithFewestWins[playersWithFewestWins.length - 1].stats.wins.value) {
                     playersWithFewestWins.push(player);
                 }
             }
@@ -259,10 +255,10 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
             if (playersWithHighestRating.length === 0) {
                 playersWithHighestRating.push(player);
             } else {
-                if ($filter('number')(player.stats.highestRating.value, 2) > $filter('number')(playersWithHighestRating[playersWithHighestRating.length-1].stats.highestRating.value, 2)) {
+                if ($filter('number')(player.stats.highestRating.value, 2) > $filter('number')(playersWithHighestRating[playersWithHighestRating.length - 1].stats.highestRating.value, 2)) {
                     playersWithHighestRating = [];
                     playersWithHighestRating.push(player);
-                } else if ($filter('number')(player.stats.highestRating.value, 2) === $filter('number')(playersWithHighestRating[playersWithHighestRating.length-1].stats.highestRating.value, 2)) {
+                } else if ($filter('number')(player.stats.highestRating.value, 2) === $filter('number')(playersWithHighestRating[playersWithHighestRating.length - 1].stats.highestRating.value, 2)) {
                     playersWithHighestRating.push(player);
                 }
             }
@@ -270,10 +266,10 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
             if (playersWithLowestRating.length === 0) {
                 playersWithLowestRating.push(player);
             } else {
-                if ($filter('number')(player.stats.lowestRating.value, 2) < $filter('number')(playersWithLowestRating[playersWithLowestRating.length-1].stats.lowestRating.value, 2)) {
+                if ($filter('number')(player.stats.lowestRating.value, 2) < $filter('number')(playersWithLowestRating[playersWithLowestRating.length - 1].stats.lowestRating.value, 2)) {
                     playersWithLowestRating = [];
                     playersWithLowestRating.push(player);
-                } else if ($filter('number')(player.stats.lowestRating.value, 2) === $filter('number')(playersWithLowestRating[playersWithLowestRating.length-1].stats.lowestRating.value, 2)) {
+                } else if ($filter('number')(player.stats.lowestRating.value, 2) === $filter('number')(playersWithLowestRating[playersWithLowestRating.length - 1].stats.lowestRating.value, 2)) {
                     playersWithLowestRating.push(player);
                 }
             }
@@ -281,10 +277,10 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
             if (playersWithHighestRatingImprovement.length === 0) {
                 playersWithHighestRatingImprovement.push(player);
             } else {
-                if ($filter('number')(player.stats.highestRatingImprovement.value, 2) > $filter('number')(playersWithHighestRatingImprovement[playersWithHighestRatingImprovement.length-1].stats.highestRatingImprovement.value, 2)) {
+                if ($filter('number')(player.stats.highestRatingImprovement.value, 2) > $filter('number')(playersWithHighestRatingImprovement[playersWithHighestRatingImprovement.length - 1].stats.highestRatingImprovement.value, 2)) {
                     playersWithHighestRatingImprovement = [];
                     playersWithHighestRatingImprovement.push(player);
-                } else if ($filter('number')(player.stats.highestRatingImprovement.value, 2) === $filter('number')(playersWithHighestRatingImprovement[playersWithHighestRatingImprovement.length-1].stats.highestRatingImprovement.value, 2)) {
+                } else if ($filter('number')(player.stats.highestRatingImprovement.value, 2) === $filter('number')(playersWithHighestRatingImprovement[playersWithHighestRatingImprovement.length - 1].stats.highestRatingImprovement.value, 2)) {
                     playersWithHighestRatingImprovement.push(player);
                 }
             }
@@ -292,10 +288,10 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
             if (playersWithHighestRatingLoss.length === 0) {
                 playersWithHighestRatingLoss.push(player);
             } else {
-                if ($filter('number')(player.stats.highestRatingLoss.value, 2) > $filter('number')(playersWithHighestRatingLoss[playersWithHighestRatingLoss.length-1].stats.highestRatingLoss.value, 2)) {
+                if ($filter('number')(player.stats.highestRatingLoss.value, 2) > $filter('number')(playersWithHighestRatingLoss[playersWithHighestRatingLoss.length - 1].stats.highestRatingLoss.value, 2)) {
                     playersWithHighestRatingLoss = [];
                     playersWithHighestRatingLoss.push(player);
-                } else if ($filter('number')(player.stats.highestRatingLoss.value, 2) === $filter('number')(playersWithHighestRatingLoss[playersWithHighestRatingLoss.length-1].stats.highestRatingLoss.value, 2)) {
+                } else if ($filter('number')(player.stats.highestRatingLoss.value, 2) === $filter('number')(playersWithHighestRatingLoss[playersWithHighestRatingLoss.length - 1].stats.highestRatingLoss.value, 2)) {
                     playersWithHighestRatingLoss.push(player);
                 }
             }
@@ -304,10 +300,10 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
             if (playersWithHighestWinStreak.length === 0) {
                 playersWithHighestWinStreak.push(player);
             } else {
-                if (player.stats.biggestWinStreak.value > playersWithHighestWinStreak[playersWithHighestWinStreak.length-1].stats.biggestWinStreak.value) {
+                if (player.stats.biggestWinStreak.value > playersWithHighestWinStreak[playersWithHighestWinStreak.length - 1].stats.biggestWinStreak.value) {
                     playersWithHighestWinStreak = [];
                     playersWithHighestWinStreak.push(player);
-                } else if (player.stats.biggestWinStreak.value === playersWithHighestWinStreak[playersWithHighestWinStreak.length-1].stats.biggestWinStreak.value) {
+                } else if (player.stats.biggestWinStreak.value === playersWithHighestWinStreak[playersWithHighestWinStreak.length - 1].stats.biggestWinStreak.value) {
                     playersWithHighestWinStreak.push(player);
                 }
             }
@@ -315,10 +311,10 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
             if (playersWithHighestLoseStreak.length === 0) {
                 playersWithHighestLoseStreak.push(player);
             } else {
-                if (player.stats.biggestLoseStreak.value > playersWithHighestLoseStreak[playersWithHighestLoseStreak.length-1].stats.biggestLoseStreak.value) {
+                if (player.stats.biggestLoseStreak.value > playersWithHighestLoseStreak[playersWithHighestLoseStreak.length - 1].stats.biggestLoseStreak.value) {
                     playersWithHighestLoseStreak = [];
                     playersWithHighestLoseStreak.push(player);
-                } else if (player.stats.biggestLoseStreak.value === playersWithHighestLoseStreak[playersWithHighestLoseStreak.length-1].stats.biggestLoseStreak.value) {
+                } else if (player.stats.biggestLoseStreak.value === playersWithHighestLoseStreak[playersWithHighestLoseStreak.length - 1].stats.biggestLoseStreak.value) {
                     playersWithHighestLoseStreak.push(player);
                 }
             }
@@ -355,12 +351,12 @@ angular.module('dartXRatingApp').service('StatisticsService', function($q, $filt
         return funFacts;
     };
 
-    var buildFact = function(players, stat, text, decimals) {
+    var buildFact = function (players, stat, text, decimals) {
         var string = "";
         if (players.length === 1 && !angular.isUndefined(stat.date)) {
             string += moment(stat.date).format(DATE_FORMAT) + ' - ';
         }
-        angular.forEach(players, function(player, index) {
+        angular.forEach(players, function (player, index) {
             string += $filter('bold')(player.name);
             if ((index + 2) < players.length) {
                 string += ', ';

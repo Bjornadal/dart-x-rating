@@ -21,7 +21,8 @@
                                 <input class="checkbox form-control" type="checkbox" ng-click="togglePlayer(player)">
                             </td>
                             <td style="width: 100px;">
-                                <button type="button" class="btn" ng-class="{'btn-success' : player.winner}" ng-click="setWinner(player)" ng-show="player.wasPlaying">
+                                <button type="button" class="btn" ng-class="{'btn-success' : player.winner}" ng-click="setWinner(player)"
+                                        ng-show="player.wasPlaying">
                                     <span ng-show="player.winner">Winner</span>
                                     <span ng-show="!player.winner">Loser</span>
                                 </button>

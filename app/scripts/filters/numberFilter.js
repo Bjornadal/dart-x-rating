@@ -1,6 +1,5 @@
-/**
- * Created by andreasb on 03.03.15.
- */
+'use strict';
+
 var app = angular.module('dartXRatingApp');
 
 app.filter('roundWhole', function () {
