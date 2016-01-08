@@ -8,27 +8,35 @@
                 <div class="form-group" ng-class="{ 'has-error': leagueForm.league.$invalid }">
                     <label for="inputLeague" class="col-sm-2 control-label">League</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputLeague" name="league" placeholder="League" ng-model="settings.league" required>
+                        <input type="text" class="form-control" id="inputLeague" name="league" placeholder="League" ng-model="settings.league"
+                               required>
                     </div>
                 </div>
                 <div class="form-group" ng-class="{ 'has-error': leagueForm.game.$invalid }">
-                    <label for="inputGame" class="col-sm-2 control-label">Game</label>
+                    <label for="gameTypeDropdown" class="col-sm-2 control-label">Game</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputGame" name="game"  placeholder="Game" ng-model="settings.game" required>
+                        <div class="btn-group" id="gameTypeDropdown" dropdown>
+                            <button type="button" class="btn dropdown-toggle" dropdown-toggle>
+                                {{settings.game}} <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li ng-repeat="gameType in gameTypes">
+                                    <a href ng-click="setGameType(gameType)">{{gameType}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <input type="text" class="form-control" id="inputGameType" name="gameType" placeholder="Game type" ng-model="settings.game"
+                               required style="display: none;">
                     </div>
                 </div>
                 <div class="form-group" ng-class="{ 'has-error': leagueForm.season.$invalid }">
                     <label for="inputSeason" class="col-sm-2 control-label">Season</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputSeason" name="season"  placeholder="Season" ng-model="settings.season" required>
+                        <input type="text" class="form-control" id="inputSeason" name="season" placeholder="Season" ng-model="settings.season"
+                               required>
                     </div>
                 </div>
-                <!--<div class="form-group">-->
-                    <!--<label for="inputPassword3" class="col-sm-2 control-label">Password</label>-->
-                    <!--<div class="col-sm-10">-->
-                        <!--<input type="password" class="form-control" id="inputPassword3" placeholder="Password">-->
-                    <!--</div>-->
-                <!--</div>-->
+
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                         <button type="submit" class="btn btn-default" ng-click="setLeague()" ng-disabled="leagueForm.$invalid">Set league</button>
