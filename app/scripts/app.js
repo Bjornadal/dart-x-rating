@@ -39,7 +39,7 @@ angular
                 controller: 'MatchCtrl'
             })
             .when('/statistics', {
-                templateUrl: 'views/statistics/statistics.html',
+                templateUrl: 'views/statistics.html',
                 controller: 'StatisticsCtrl'
             })
             .when('/settings', {
