@@ -7,7 +7,7 @@ angular.module('xgames')
             link: function (scope, element, attrs, controllers) {
 
                 scope.$watch('player', function (newValue, oldValue) {
-                    if (newValue === oldValue) return;
+                    if (newValue === oldValue) {return;}
 
                     if (newValue.playedLastMatch) {
                         $animate.addClass(element, 'playerUpdate').then(function () {
@@ -16,5 +16,5 @@ angular.module('xgames')
                     }
                 }, true);
             }
-        }
+        };
     });

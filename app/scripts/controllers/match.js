@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('xgames').controller('MatchCtrl', function ($scope, $filter, RatingService, $location, PlayerFactory, MatchFactory, AchievementFactory) {
-    var achievementFactory = new AchievementFactory;
+    var achievementFactory = new AchievementFactory();
     $scope.match = {};
-    $scope.matches = MatchFactory();
+    $scope.matches = new MatchFactory();
 
-    PlayerFactory().getPlayersAsync().then(function (players) {
+    new PlayerFactory().getPlayersAsync().then(function (players) {
         $scope.players = players;
         $scope.match.players = angular.copy($scope.players);
     });
@@ -78,7 +78,7 @@ angular.module('xgames').controller('MatchCtrl', function ($scope, $filter, Rati
                             .then(function (achievements) {
                                 angular.forEach(achievements, function (achievement) {
                                     if (!hasPlayerAchievement(player, achievement)) {
-                                        achievement.date = moment().format("YYYY-MM-DD HH:mm");
+                                        achievement.date = moment().format('YYYY-MM-DD HH:mm');
                                         if (angular.isUndefined(player.achievements)) {
                                             player.achievements = [];
                                         }
@@ -89,19 +89,19 @@ angular.module('xgames').controller('MatchCtrl', function ($scope, $filter, Rati
                                                 (achievement.name === '1800 rating' && player.rating >= 1800) ||
                                                 (achievement.name === '1900 rating' && player.rating >= 1900) ||
                                                 (achievement.name === '2000 rating' && player.rating >= 2000) ||
-                                                (achievement.name === 'Win streak 3x' && playerWinStreak == 3) ||
-                                                (achievement.name === 'Win streak 5x' && playerWinStreak == 5) ||
-                                                (achievement.name === 'Win streak 10x' && playerWinStreak == 10)) {
+                                                (achievement.name === 'Win streak 3x' && playerWinStreak === 3) ||
+                                                (achievement.name === 'Win streak 5x' && playerWinStreak === 5) ||
+                                                (achievement.name === 'Win streak 10x' && playerWinStreak === 10)) {
 
                                                 player.achievements.push(achievement);
                                             }
                                         } else {
-                                            if (achievement.name === 'Lose streak 10x' && playerLoseStreak == 10) {
+                                            if (achievement.name === 'Lose streak 10x' && playerLoseStreak === 10) {
                                                 player.achievements.push(achievement);
                                             }
                                         }
                                     }
-                                })
+                                });
                             })
                             .then(function () {
                                 $scope.players.updatePlayer(player);
@@ -110,11 +110,11 @@ angular.module('xgames').controller('MatchCtrl', function ($scope, $filter, Rati
                         $scope.players.updatePlayer(player);
                     }
                 }
-            })
+            });
         });
 
         // Save match
-        MatchFactory().registerMatch(toSave);
+        new MatchFactory().registerMatch(toSave);
 
         // Reset form
         $scope.match = {};
@@ -128,7 +128,7 @@ angular.module('xgames').controller('MatchCtrl', function ($scope, $filter, Rati
         var winstreak = 0;
         angular.forEach($scope.matches, function (match) {
             angular.forEach(match.players, function (matchPlayer) {
-                if (matchPlayer.name == player.name) {
+                if (matchPlayer.name === player.name) {
                     if (matchPlayer.winner) {
                         winstreak++;
                     } else {
@@ -144,7 +144,7 @@ angular.module('xgames').controller('MatchCtrl', function ($scope, $filter, Rati
         var loseStreak = 0;
         angular.forEach($scope.matches, function (match) {
             angular.forEach(match.players, function (matchPlayer) {
-                if (matchPlayer.name == player.name) {
+                if (matchPlayer.name === player.name) {
                     if (matchPlayer.winner) {
                         loseStreak = 0;
                     } else {
@@ -159,10 +159,10 @@ angular.module('xgames').controller('MatchCtrl', function ($scope, $filter, Rati
     var hasPlayerAchievement = function (player, achievement) {
         var hasAchievement = false;
         angular.forEach(player.achievements, function (a) {
-            if (!hasAchievement && achievement.name == a.name) {
+            if (!hasAchievement && achievement.name === a.name) {
                 hasAchievement = true;
             }
         });
         return hasAchievement;
-    }
+    };
 });

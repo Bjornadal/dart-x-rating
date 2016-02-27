@@ -19,16 +19,16 @@ angular.module('xgames').service('RatingService', function () {
                     var currentRatingAdjustment = (rating + kValue * (wl - winChance)) - rating;
                     ratingAdjustment += currentRatingAdjustment;
 
-                    console.log("'" + player.name + "' has win chance of " + winChance + " against '" + comparePlayer.name + "'");
-                    console.log("'" + player.name + "' gets rating adjusted " + currentRatingAdjustment + " for " + (player.winner ? 'winning' : 'losing') + " against '" + comparePlayer.name + "'");
+                    console.log('\'' + player.name + '\' has win chance of ' + winChance + ' against \'' + comparePlayer.name + '\'');
+                    console.log('\'' + player.name + '\' gets rating adjusted ' + currentRatingAdjustment + ' for ' + (player.winner ? 'winning' : 'losing') + ' against \'' + comparePlayer.name + '\'');
                 }
             });
 
             player.ratingAdjustment = ratingAdjustment;
             player.rating = rating + ratingAdjustment;
 
-            console.log("'" + player.name + "' gets total adjustment of " + ratingAdjustment + ". New rating " + player.rating + "");
-            console.log("=========================================");
+            console.log('\'' + player.name + '\' gets total adjustment of ' + ratingAdjustment + '. New rating ' + player.rating + '');
+            console.log('=========================================');
         });
     };
 });

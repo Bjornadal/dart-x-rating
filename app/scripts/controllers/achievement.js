@@ -2,8 +2,8 @@
 
 angular.module('xgames').controller('AchievementsCtrl', function ($scope, AchievementFactory, PlayerFactory) {
 
-    $scope.players = PlayerFactory();
-    $scope.achievements = AchievementFactory();
+    $scope.players = new PlayerFactory();
+    $scope.achievements = new AchievementFactory();
     $scope.achievement = {};
 
     // Register achievement on player
@@ -24,12 +24,12 @@ angular.module('xgames').controller('AchievementsCtrl', function ($scope, Achiev
         $scope.players.updatePlayer($scope.ddSelectedPlayer);
 
         $scope.ddSelectedPlayer = {name: 'Select player'};
-        $scope.ddSelectedAchievement = {name: 'Select achievement'}
+        $scope.ddSelectedAchievement = {name: 'Select achievement'};
     };
 
     // Register new achievement
     $scope.registerAchievement = function () {
-        AchievementFactory().registerAchievement($scope.achievement);
+        new AchievementFactory().registerAchievement($scope.achievement);
         $scope.achievement = {};
     };
 });

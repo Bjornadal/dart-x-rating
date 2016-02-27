@@ -2,8 +2,8 @@
 
 angular.module('xgames').service('StatisticsService', function ($q, $filter, PlayerFactory, MatchFactory) {
     var DATE_FORMAT = 'DD.MM.YYYY';
-    var playerFactory = new PlayerFactory;
-    var matchFactory = new MatchFactory;
+    var playerFactory = new PlayerFactory();
+    var matchFactory = new MatchFactory();
     var players, matches;
 
     this.generateStatistics = function () {
@@ -72,7 +72,7 @@ angular.module('xgames').service('StatisticsService', function ($q, $filter, Pla
             player.stats.highestRatingLoss.date = moment('01.03.2015', DATE_FORMAT);
             angular.forEach(matches, function (match) {
                 angular.forEach(match.players, function (matchPlayer) {
-                    if (matchPlayer.name == player.name) {
+                    if (matchPlayer.name === player.name) {
                         //Highest rating
                         if (matchPlayer.rating >= player.stats.highestRating.value) {
                             player.stats.highestRating.value = matchPlayer.rating;
@@ -120,7 +120,7 @@ angular.module('xgames').service('StatisticsService', function ($q, $filter, Pla
             var winStreak = 0, loseStreak = 0, currentWinStreak = 0, currentLoseStreak = 0;
             angular.forEach(matches, function (match) {
                 angular.forEach(match.players, function (p) {
-                    if (p.name == player.name) {
+                    if (p.name === player.name) {
                         if (p.winner) {
                             winStreak++;
                             currentWinStreak++;
@@ -141,7 +141,7 @@ angular.module('xgames').service('StatisticsService', function ($q, $filter, Pla
                             currentWinStreak = 0;
                         }
                     }
-                })
+                });
             });
             player.stats.currentWinStreak = currentWinStreak;
             player.stats.currentLoseStreak = currentLoseStreak;
@@ -303,7 +303,7 @@ angular.module('xgames').service('StatisticsService', function ($q, $filter, Pla
     };
 
     var buildFact = function (players, stat, text, decimals) {
-        var string = "";
+        var string = '';
         if (players.length === 1 && !angular.isUndefined(stat.date)) {
             string += moment(stat.date).format(DATE_FORMAT) + ' - ';
         }

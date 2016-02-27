@@ -10,7 +10,7 @@
 angular.module('xgames').controller('ChartCtrl', function ($scope, $firebaseArray, defaultConfig, $localstorage, $filter) {
   var settings = $localstorage.getObject('settings');
   var ref = new Firebase(defaultConfig.firebaseBackend + '/leagues/' + settings.league +  '/games/' + settings.game + '/seasons/' + settings.season + '/matches');
-  var query = ref.orderByChild("date").limitToLast(15);
+  var query = ref.orderByChild('date').limitToLast(15);
 
   $scope.matches = $firebaseArray(query);
   $scope.chartData = {

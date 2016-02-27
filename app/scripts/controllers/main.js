@@ -2,11 +2,11 @@
 
 angular.module('xgames').controller('MainCtrl', function ($scope, $filter, RatingService, PlayerFactory, StatisticsService, $timeout, $interval, $localstorage) {
     $scope.settings = $localstorage.getObject('settings');
-    $scope.players = PlayerFactory();
+    $scope.players = new PlayerFactory();
     $scope.startDate = new Date(new Date().setDate(new Date().getDate() - 7));
     $scope.endDate = new Date();
 
-    var funFacts = ["Dart X Rating Awesome Fun Facts"];
+    var funFacts = ['Dart X Rating Awesome Fun Facts'];
     var funFactIndex = 0;
     updateFunFact(funFactIndex);
     $interval(function () {

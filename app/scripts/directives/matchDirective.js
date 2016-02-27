@@ -12,7 +12,7 @@ angular.module('xgames')
                         hasWinner = (player.winner) ? true : hasWinner;
                     });
 
-                    scope.matchForm.$setValidity('incomplete', (totalPlayers > 1 && hasWinner))
+                    scope.matchForm.$setValidity('incomplete', (totalPlayers > 1 && hasWinner));
                 }, true);
             }
         };
