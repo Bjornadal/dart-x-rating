@@ -1,44 +1,83 @@
 <div class="container">
-    <div class="panel">
-        <div>
-            <h3>Settings</h3>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="">Settings</h3>
+            <ul class="nav nav-pills">
+                <li role="presentation" ng-class="{'active': page === 'set'}"><a href="" ng-click="setPage('set');">Set</a></li>
+                <li role="presentation" ng-class="{'active': page === 'new'}"><a href="" ng-click="setPage('new');">New</a></li>
+            </ul>
         </div>
-        <div>
-            <form class="form-horizontal" name="leagueForm" cg-busy="loading">
-                <div class="form-group" ng-class="{ 'has-error': leagueForm.league.$invalid }">
-                    <label for="inputLeague" class="col-sm-2 control-label">League</label>
-                    <div class="col-sm-3">
-                        <select id="inputLeague" class="form-control" ng-model="settings.league" ng-change="getGamesByLeague()">
-                            <option value="none">Choose league</option>
-                            <option ng-repeat="league in leagues">{{league.$id}}</option>
-                        </select>
+        <div class="panel-body">
+            <div ng-show="page === 'set'">
+                <form class="form-horizontal" name="leagueForm" cg-busy="loading">
+                    <div class="form-group" ng-class="{ 'has-error': leagueForm.league.$invalid }">
+                        <label for="leagueDropdown" class="col-sm-2 control-label">League</label>
+                        <div class="col-sm-3">
+                            <select id="leagueDropdown" class="form-control" ng-model="settings.league" ng-change="getGamesByLeague()">
+                                <option value="none">Choose league</option>
+                                <option ng-repeat="league in leagues">{{league.$id}}</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group" ng-class="{ 'has-error': leagueForm.game.$invalid }">
-                    <label for="gameTypeDropdown" class="col-sm-2 control-label">Game</label>
-                    <div class="col-sm-3">
-                        <select id="gameTypeDropdown" class="form-control" ng-model="settings.game" ng-change="getSeasonsByGame()" ng-disabled="settings.league === 'none'">
-                            <option value="none">Choose game</option>
-                            <option ng-repeat="(game, object) in gameTypes">{{game}}</option>
-                        </select>
+                    <div class="form-group" ng-class="{ 'has-error': leagueForm.game.$invalid }">
+                        <label for="gameTypeDropdown" class="col-sm-2 control-label">Game</label>
+                        <div class="col-sm-3">
+                            <select id="gameTypeDropdown" class="form-control" ng-model="settings.game" ng-change="getSeasonsByGame()" ng-disabled="settings.league === 'none'">
+                                <option value="none">Choose game</option>
+                                <option ng-repeat="(game, object) in gameTypes">{{game}}</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group" ng-class="{ 'has-error': leagueForm.season.$invalid }">
-                    <label for="inputSeason" class="col-sm-2 control-label">Season</label>
-                    <div class="col-sm-3">
-                        <select id="inputSeason" class="form-control" ng-model="settings.season" ng-disabled="settings.game === 'none'">
-                            <option value="none">Choose season</option>
-                            <option ng-repeat="(season, object) in seasons" ng-if="season != '0'">{{season}}</option>
-                        </select>
+                    <div class="form-group" ng-class="{ 'has-error': leagueForm.season.$invalid }">
+                        <label for="seasonDropdown" class="col-sm-2 control-label">Season</label>
+                        <div class="col-sm-3">
+                            <select id="seasonDropdown" class="form-control" ng-model="settings.season" ng-disabled="settings.game === 'none'">
+                                <option value="none">Choose season</option>
+                                <option ng-repeat="(season, object) in seasons" ng-if="season != '0'">{{season}}</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-default" ng-click="setLeague()" ng-disabled="leagueForm.$invalid">Set league</button>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-default" ng-click="setLeague()" ng-disabled="leagueForm.$invalid">Set league</button>
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
+            <div ng-show="page === 'new'">
+                <form class="form-horizontal" name="newLeagueForm">
+                    <div class="form-group" ng-class="{ 'has-error': newLeagueForm.league.$invalid && !newLeagueForm.league.$pristine }">
+                        <label for="inputNewLeague" class="col-sm-2 control-label">League</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" id="inputNewLeague" name="league" placeholder="League" ng-model="settings.newLeague" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-class="{ 'has-error': newLeagueForm.game.$invalid || (settings.newGame === 'none' && !newLeagueForm.game.$pristine) }">
+                        <label for="newGameType" class="col-sm-2 control-label">Game</label>
+                        <div class="col-sm-4">
+                            <select id="newGameType" name="game" class="form-control" ng-model="settings.newGame">
+                                <option value="none">Choose game</option>
+                                <option ng-repeat="game in newGameTypes">{{game}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-class="{ 'has-error': newLeagueForm.season.$invalid && !newLeagueForm.season.$pristine }">
+                        <label for="inputNewSeason" class="col-sm-2 control-label">Season</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" id="inputNewSeason" name="season" placeholder="Season" ng-model="settings.newSeason" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-4">
+                            <button type="submit" class="btn btn-default" ng-click="newLeague()" ng-disabled="newLeagueForm.$invalid || settings.newGame === 'none'">New league</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

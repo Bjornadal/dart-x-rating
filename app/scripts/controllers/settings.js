@@ -1,10 +1,15 @@
 'use strict';
 
 angular.module('xgames').controller('SettingsCtrl', function ($scope, SettingsService, $localstorage, $location, $window) {
+    $scope.page = "set";
     $scope.settings = $localstorage.getObject('settings');
     $scope.leagues = null;
     $scope.gameTypes = null;
     $scope.seasons = null;
+    $scope.newGameTypes = ["Dart", "Basket", "Bordtennis"];
+    $scope.settings.newLeague = null;
+    $scope.settings.newGame = "none";
+    $scope.settings.newSeason = null;
 
     if ($scope.settings == null) {
         $scope.settings = {league:"none",game:"none",season:"none"};
@@ -12,7 +17,6 @@ angular.module('xgames').controller('SettingsCtrl', function ($scope, SettingsSe
 
     $scope.loading = SettingsService.getLeagues()
         .then(function(leagues) {
-            console.log(leagues);
             $scope.leagues = leagues;
             if ($scope.settings.league != null && $scope.settings.league != 'none') {
                 $scope.getGamesByLeague();
@@ -58,4 +62,13 @@ angular.module('xgames').controller('SettingsCtrl', function ($scope, SettingsSe
         $location.path('/');
         $window.location.reload();
     };
+
+    $scope.newLeague = function() {
+        $scope.settings = {league: $scope.settings.newLeague, game: $scope.settings.newGame, season: $scope.settings.newSeason};
+        $scope.setLeague();
+    };
+
+    $scope.setPage = function(page) {
+        $scope.page = page;
+    }
 });
