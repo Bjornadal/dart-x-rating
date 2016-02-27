@@ -18,7 +18,8 @@ angular
         'ngTouch',
         'firebase',
         'ui.bootstrap',
-        'chart.js'
+        'chart.js',
+        'cgBusy'
     ])
     .config(function ($routeProvider) {
         $routeProvider
@@ -59,5 +60,5 @@ angular
 
         return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
             s4() + '-' + s4() + s4() + s4();
-    }
+    };
 });
